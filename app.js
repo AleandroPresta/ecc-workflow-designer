@@ -61,8 +61,9 @@ angular.module('app', ['flowChart', ])
 
 		nodes: [
 			{
-				name: "Example Node 1",
+				name: "Device",
 				id: 0,
+				type: "device",
 				x: 0,
 				y: 0,
 				width: 350,
@@ -91,8 +92,9 @@ angular.module('app', ['flowChart', ])
 			},
 
 			{
-				name: "Example Node 2",
+				name: "Computation",
 				id: 1,
+				type: "computation",
 				x: 400,
 				y: 200,
 				inputConnectors: [
@@ -196,21 +198,22 @@ angular.module('app', ['flowChart', ])
 	};
 
 	//
-	// Add a new node to the chart.
+	// Add a new device to the chart.
 	//
-	$scope.addNewNode = function () {
+	$scope.addDevice = function () {
 
-		var nodeName = prompt("Enter a node name:", "New node");
+		var nodeName = prompt("Enter a device name:", "New node");
 		if (!nodeName) {
 			return;
 		}
 
 		//
-		// Template for a new node.
+		// Template for a new device.
 		//
 		var newNodeDataModel = {
 			name: nodeName,
 			id: nextNodeID++,
+			type: "device",
 			x: 0,
 			y: 0,
 			inputConnectors: [
@@ -239,7 +242,51 @@ angular.module('app', ['flowChart', ])
 
 		$scope.chartViewModel.addNode(newNodeDataModel);
 	};
+	//
+	// Add a new Computation to the chart.
+	//
+	$scope.addComputation = function () {
 
+		var nodeName = prompt("Enter a computation name:", "New node");
+		if (!nodeName) {
+			return;
+		}
+
+		//
+		// Template for a new node.
+		//
+		var newNodeDataModel = {
+			name: nodeName,
+			id: nextNodeID++,
+			type: "computation",
+			x: 0,
+			y: 0,
+			inputConnectors: [
+				{
+					name: "X"
+				},
+				{
+					name: "Y"
+				},
+				{
+					name: "Z"
+				}
+			],
+			outputConnectors: [ 
+				{
+					name: "1"
+				},
+				{
+					name: "2"
+				},
+				{
+					name: "3"
+				}
+			],
+		};
+
+		$scope.chartViewModel.addNode(newNodeDataModel);
+	};
 	//
 	// Add an input connector to selected nodes.
 	//
