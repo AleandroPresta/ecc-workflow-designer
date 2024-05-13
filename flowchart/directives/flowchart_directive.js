@@ -7,9 +7,10 @@ angular.module('flowChart', ['dragging'])
 	// Directive that generates the rendered chart from the data model.
 	//
 	.directive('flowChart', function () {
+		console.log('flowChart is being used');
 		return {
 			restrict: 'E',
-			templateUrl: "flowchart/flowchart_template.html",
+			templateUrl: "flowchart/templates/flowchart_template.html",
 			replace: true,
 			scope: {
 				chart: "=chart",

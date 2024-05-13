@@ -142,6 +142,134 @@ var flowchart = {
 			return this.data.width;
 		}
 
+		// The type of then node (device, computation, storage, communication)
+		this.type = function () {
+			console.log(this.data.type);
+			return this.data.type;
+		}
+
+		//
+		// Height of the node.
+		//
+		this.height = function () {
+			var numConnectors =
+				Math.max(
+					this.inputConnectors.length, 
+					this.outputConnectors.length);
+			return flowchart.computeConnectorY(numConnectors);
+		}
+
+		//
+		// Select the node.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the node.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the node.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the node is selected.
+		//
+		this.selected = function () {
+			return this._selected;
+		};
+
+		//
+		// Internal function to add a connector.
+		this._addConnector = function (connectorDataModel, x, connectorsDataModel, connectorsViewModel) {
+			var connectorViewModel = 
+				new flowchart.ConnectorViewModel(connectorDataModel, x, 
+						flowchart.computeConnectorY(connectorsViewModel.length), this);
+
+			connectorsDataModel.push(connectorDataModel);
+
+			// Add to node's view model.
+			connectorsViewModel.push(connectorViewModel);
+		}
+
+		//
+		// Add an input connector to the node.
+		//
+		this.addInputConnector = function (connectorDataModel) {
+
+			if (!this.data.inputConnectors) {
+				this.data.inputConnectors = [];
+			}
+			this._addConnector(connectorDataModel, 0, this.data.inputConnectors, this.inputConnectors);
+		};
+
+		//
+		// Add an ouput connector to the node.
+		//
+		this.addOutputConnector = function (connectorDataModel) {
+
+			if (!this.data.outputConnectors) {
+				this.data.outputConnectors = [];
+			}
+			this._addConnector(connectorDataModel, this.data.width, this.data.outputConnectors, this.outputConnectors);
+		};
+	};
+
+	flowchart.DeviceViewModel = function (nodeDataModel) {
+
+		this.data = nodeDataModel;
+
+		// set the default width value of the node
+		if (!this.data.width || this.data.width < 0) {
+			this.data.width = flowchart.defaultNodeWidth;
+		}
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, this.data.width, this);
+
+		// Set to true when the node is selected.
+		this._selected = false;
+
+		//
+		// Name of the node.
+		//
+		this.name = function () {
+			return this.data.name || "";
+		};
+
+		//
+		// X coordinate of the node.
+		//
+		this.x = function () { 
+			return this.data.x;
+		};
+
+		//
+		// Y coordinate of the node.
+		//
+		this.y = function () {
+			return this.data.y;
+		};
+
+		//
+		// Width of the node.
+		//
+		this.width = function () {
+			return this.data.width;
+		}
+
+		// The type of then node (device, computation, storage, communication)
+		this.type = function () {
+			return this.data.type;
+		}
+
 		//
 		// Height of the node.
 		//
@@ -225,7 +353,13 @@ var flowchart = {
 
 		if (nodesDataModel) {
 			for (var i = 0; i < nodesDataModel.length; ++i) {
-				nodesViewModel.push(new flowchart.NodeViewModel(nodesDataModel[i]));
+				// TODO capire se ha senso oppure no
+				if (nodesDataModel[i].type === "device") {
+					nodesViewModel.push(new flowchart.DeviceViewModel(nodesDataModel[i]));
+				}
+				if (nodesDataModel[i].type === "computation") {
+					nodesViewModel.push(new flowchart.NodeViewModel(nodesDataModel[i]));
+				}
 			}
 		}
 
@@ -564,6 +698,25 @@ var flowchart = {
 			// Update the view model.
 			//
 			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));		
+		}
+
+		//
+		// Add a device to the view model.
+		//
+		this.addNode = function (nodeDataModel) {
+			if (!this.data.nodes) {
+				this.data.nodes = [];
+			}
+
+			// 
+			// Update the data model.
+			//
+			this.data.nodes.push(nodeDataModel);
+
+			// 
+			// Update the view model.
+			//
+			this.nodes.push(new flowchart.DeviceViewModel(nodeDataModel));		
 		}
 
 		//
