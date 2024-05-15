@@ -343,6 +343,7 @@ var flowchart = {
 			}
 			this._addConnector(connectorDataModel, this.data.width, this.data.outputConnectors, this.outputConnectors);
 		};
+	
 	};
 
 	// 
@@ -685,6 +686,7 @@ var flowchart = {
 		// Add a node to the view model.
 		//
 		this.addNode = function (nodeDataModel) {
+			console.log('addNode used');
 			if (!this.data.nodes) {
 				this.data.nodes = [];
 			}
@@ -703,7 +705,8 @@ var flowchart = {
 		//
 		// Add a device to the view model.
 		//
-		this.addNode = function (nodeDataModel) {
+		this.addDevice = function (nodeDataModel) {
+			console.log('addDevice used');
 			if (!this.data.nodes) {
 				this.data.nodes = [];
 			}

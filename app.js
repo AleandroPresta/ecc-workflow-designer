@@ -240,7 +240,7 @@ angular.module('app', ['flowChart', ])
 			],
 		};
 
-		$scope.chartViewModel.addNode(newNodeDataModel);
+		$scope.chartViewModel.addDevice(newNodeDataModel);
 	};
 	//
 	// Add a new Computation to the chart.
