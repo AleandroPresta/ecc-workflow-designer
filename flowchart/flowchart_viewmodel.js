@@ -144,10 +144,12 @@ var flowchart = {
 
 		// The type of then node (device, computation, storage, communication)
 		this.type = function () {
-			console.log(this.data.type);
 			return this.data.type;
 		}
 
+		this.backgroundColor = function() {
+			return "rgb(255, 255, 255)";
+		}
 		//
 		// Height of the node.
 		//
@@ -165,6 +167,8 @@ var flowchart = {
 		this.select = function () {
 			this._selected = true;
 		};
+
+		
 
 		//
 		// Deselect the node.
