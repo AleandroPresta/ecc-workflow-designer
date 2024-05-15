@@ -63,7 +63,7 @@ angular.module('app', ['flowChart', ])
 			{
 				name: "Device",
 				id: 0,
-				type: "device",
+				type: "Device",
 				x: 0,
 				y: 0,
 				width: 350,
@@ -94,7 +94,7 @@ angular.module('app', ['flowChart', ])
 			{
 				name: "Computation",
 				id: 1,
-				type: "computation",
+				type: "Computation",
 				x: 400,
 				y: 200,
 				inputConnectors: [
@@ -213,7 +213,7 @@ angular.module('app', ['flowChart', ])
 		var newNodeDataModel = {
 			name: nodeName,
 			id: nextNodeID++,
-			type: "device",
+			type: "Device",
 			x: 0,
 			y: 0,
 			inputConnectors: [
@@ -258,7 +258,7 @@ angular.module('app', ['flowChart', ])
 		var newNodeDataModel = {
 			name: nodeName,
 			id: nextNodeID++,
-			type: "computation",
+			type: "Computation",
 			x: 0,
 			y: 0,
 			inputConnectors: [
