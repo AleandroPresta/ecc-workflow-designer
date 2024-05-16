@@ -57,81 +57,83 @@ angular.module('app', ['flowChart',])
 		// Setup the data-model for the chart.
 		//
 		var chartDataModel = {
-			"nodes": [
+			nodes: [
 				{
-					"name": "Device",
-					"id": 0,
-					"type": "Device",
-					"x": 26,
-					"y": 27,
-					"width": 350,
-					"inputConnectors": [
+					name: "Device",
+					id: 0,
+					type: "Device",
+					x: 26,
+					y: 27,
+					width: 350,
+					inputConnectors: [
 						{
-							"name": "A"
+							name: "in_0_0"
 						}
 					],
-					"outputConnectors": [
+					outputConnectors: [
 						{
-							"name": "A"
+							name: "out_0_0"
 						}
 					]
 				},
 				{
-					"name": "Computation",
-					"id": 1,
-					"type": "Computation",
-					"x": 418,
-					"y": 138,
-					"inputConnectors": [
+					name: "Computation",
+					id: 1,
+					type: "Computation",
+					executionTime: "10ms",
+					volumeOfData: "25mb",
+					x: 418,
+					y: 138,
+					inputConnectors: [
 						{
-							"name": "A"
+							name: "in_1_0"
 						}
 					],
-					"outputConnectors": [
+					outputConnectors: [
 						{
-							"name": "A"
+							name: "out_1_0"
 						}
 					],
-					"width": 250
+					width: 250
 				},
 				{
-					"name": "Storage",
-					"id": 10,
-					"type": "Storage",
-					"x": 722,
-					"y": 371,
-					"inputConnectors": [
+					name: "Storage",
+					id: 3,
+					type: "Storage",
+					x: 687,
+					y: 296,
+					inputConnectors: [
 						{
-							"name": "X"
+							name: "in_3_0"
 						}
 					],
-					"outputConnectors": [
+					outputConnectors: [
 						{
-							"name": "1"
+							name: "out_3_0"
 						}
 					],
-					"width": 250
+					width: 250
 				},
 				{
-					"name": "Communication",
-					"id": 11,
-					"type": "Communication",
-					"x": 750,
-					"y": 31,
-					"inputConnectors": [
+					name: "Communication",
+					id: 2,
+					type: "Communication",
+					x: 985,
+					y: 423,
+					inputConnectors: [
 						{
-							"name": "X"
+							name: "in_2_0"
 						}
 					],
-					"outputConnectors": [
+					outputConnectors: [
 						{
-							"name": "1"
+							name: "out_2_0"
 						}
 					],
-					"width": 250
+					width: 250
 				}
 			],
-			"connections": [
+			connections: [
 				{
 					"name": "Connection 1",
 					"source": {
@@ -149,17 +151,17 @@ angular.module('app', ['flowChart',])
 						"connectorIndex": 0
 					},
 					"dest": {
-						"nodeID": 11,
+						"nodeID": 3,
 						"connectorIndex": 0
 					}
 				},
 				{
 					"source": {
-						"nodeID": 11,
+						"nodeID": 3,
 						"connectorIndex": 0
 					},
 					"dest": {
-						"nodeID": 10,
+						"nodeID": 2,
 						"connectorIndex": 0
 					}
 				}
@@ -249,8 +251,16 @@ angular.module('app', ['flowChart',])
 		//
 		$scope.addComputation = function () {
 
-			var nodeName = prompt("Enter a computation name:", "New node");
+			var nodeName = prompt("Enter a computation name:", "Computation");
 			if (!nodeName) {
+				return;
+			}
+			let executionTime = prompt("Enter execution time:", "");
+			if (!executionTime) {
+				return;
+			}
+			let volumeOfData = prompt("Enter the volume of data:", "");
+			if (!volumeOfData) {
 				return;
 			}
 
@@ -261,16 +271,18 @@ angular.module('app', ['flowChart',])
 				name: nodeName,
 				id: nextNodeID++,
 				type: "Computation",
+				executionTime: executionTime,
+				volumeOfData: volumeOfData,
 				x: 0,
 				y: 0,
 				inputConnectors: [
 					{
-						name: "X"
+						name: `in_${nextNodeID-1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: "1"
+						name: `out${nextNodeID-1}_1`
 					},
 				],
 			};
@@ -296,12 +308,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: "X"
+						name: `in_${nextNodeID-1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: "1"
+						name: `out${nextNodeID-1}_1`
 					},
 				],
 			};
@@ -327,12 +339,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: "X"
+						name: `in_${nextNodeID-1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: "1"
+						name: `out_${nextNodeID}_1`
 					},
 				],
 			};
