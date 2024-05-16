@@ -135,32 +135,32 @@ angular.module('app', ['flowChart',])
 			],
 			connections: [
 				{
-					"name": "Connection 1",
-					"source": {
+					name: "Connection 1",
+					source: {
 						"nodeID": 0,
 						"connectorIndex": 0
 					},
-					"dest": {
+					dest: {
 						"nodeID": 1,
 						"connectorIndex": 0
 					}
 				},
 				{
-					"source": {
+					source: {
 						"nodeID": 1,
 						"connectorIndex": 0
 					},
-					"dest": {
+					dest: {
 						"nodeID": 2,
 						"connectorIndex": 0
 					}
 				},
 				{
-					"source": {
+					source: {
 						"nodeID": 2,
 						"connectorIndex": 0
 					},
-					"dest": {
+					dest: {
 						"nodeID": 3,
 						"connectorIndex": 0
 					}
@@ -394,6 +394,12 @@ angular.module('app', ['flowChart',])
 		$scope.deleteSelected = function () {
 
 			$scope.chartViewModel.deleteSelected();
+		};
+		//
+		//	Change the name of a connection
+		//
+		$scope.modifyName = function() {
+			$scope.chartViewModel.modifyName();
 		};
 		//
 		// Create the view-model for the chart and attach to the scope.

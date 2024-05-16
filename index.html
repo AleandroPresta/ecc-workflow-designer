@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>AngularJS-FlowChart</title>
+		<title>ECC Workflow Designer</title>
 
 		<!-- 
 		LiveReload support.
@@ -68,6 +68,11 @@
     				title="Delete selected nodes and connections"
     				>
     				Delete Selected
+				</button>
+				<button
+					ng-click="modifyName()"
+					ng-disabled="chartViewModel.getSelectedConnections().length == 0">
+					Modify Name
 				</button>
 				
 

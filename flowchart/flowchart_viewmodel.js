@@ -720,6 +720,39 @@ var flowchart = {
 			this.data.connections = newConnectionDataModels;
 		};
 
+		this.modifyName = function() {
+			console.log('Modify name');
+			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
+
+				let connection = this.connections[connectionIndex];
+
+				if (connection.selected()) {
+					const newName = prompt('Insert the new connection name', connection.data.name);
+					connection.data.name = newName;
+				}
+
+				/*var connection = this.connections[connectionIndex];
+				if (!connection.selected() &&
+					deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
+					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1) {
+					//
+					// The nodes this connection is attached to, where not deleted,
+					// so keep the connection.
+					//
+					newConnectionViewModels.push(connection);
+					newConnectionDataModels.push(connection.data);
+				} */
+			}
+
+			/*//
+			// Update nodes and connections.
+			//
+			this.nodes = newNodeViewModels;
+			this.data.nodes = newNodeDataModels;
+			this.connections = newConnectionViewModels;
+			this.data.connections = newConnectionDataModels; */
+		}
+
 		//
 		// Select nodes and connections that fall within the selection rect.
 		//
