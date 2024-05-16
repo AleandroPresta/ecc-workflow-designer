@@ -231,7 +231,6 @@ var flowchart = {
 
 		if (nodesDataModel) {
 			for (var i = 0; i < nodesDataModel.length; ++i) {
-				// TODO capire se ha senso oppure no
 				nodesViewModel.push(new flowchart.NodeViewModel(nodesDataModel[i]));
 			}
 		}
@@ -730,27 +729,7 @@ var flowchart = {
 					const newName = prompt('Insert the new connection name', connection.data.name);
 					connection.data.name = newName;
 				}
-
-				/*var connection = this.connections[connectionIndex];
-				if (!connection.selected() &&
-					deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
-					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1) {
-					//
-					// The nodes this connection is attached to, where not deleted,
-					// so keep the connection.
-					//
-					newConnectionViewModels.push(connection);
-					newConnectionDataModels.push(connection.data);
-				} */
 			}
-
-			/*//
-			// Update nodes and connections.
-			//
-			this.nodes = newNodeViewModels;
-			this.data.nodes = newNodeDataModels;
-			this.connections = newConnectionViewModels;
-			this.data.connections = newConnectionDataModels; */
 		}
 
 		//

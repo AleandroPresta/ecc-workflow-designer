@@ -218,7 +218,7 @@ angular.module('app', ['flowChart',])
 		//
 		$scope.addDevice = function () {
 
-			var nodeName = prompt("Enter a device name:", "New node");
+			var nodeName = prompt("Enter a device name:", "New Device");
 			if (!nodeName) {
 				return;
 			}
@@ -251,7 +251,7 @@ angular.module('app', ['flowChart',])
 		//
 		$scope.addComputation = function () {
 
-			var nodeName = prompt("Enter a computation name:", "Computation");
+			var nodeName = prompt("Enter a computation name:", "New Computation");
 			if (!nodeName) {
 				return;
 			}
@@ -292,7 +292,7 @@ angular.module('app', ['flowChart',])
 
 		$scope.addStorage = function () {
 
-			var nodeName = prompt("Enter a computation name:", "New node");
+			var nodeName = prompt("Enter a storage name:", "New Storage");
 			if (!nodeName) {
 				return;
 			}
@@ -323,7 +323,7 @@ angular.module('app', ['flowChart',])
 
 		$scope.addCommunication = function () {
 
-			var nodeName = prompt("Enter a computation name:", "New node");
+			var nodeName = prompt("Enter a communication name:", "New Communication");
 			if (!nodeName) {
 				return;
 			}
