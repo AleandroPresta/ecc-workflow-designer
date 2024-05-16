@@ -573,28 +573,6 @@ var flowchart = {
 			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
 		}
 
-		//
-		// Add a device to the view model.
-		//
-		this.addDevice = function (nodeDataModel) {
-			if (!this.data.nodes) {
-				this.data.nodes = [];
-			}
-
-			// 
-			// Update the data model.
-			//
-			this.data.nodes.push(nodeDataModel);
-
-			// 
-			// Update the view model.
-			//
-			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
-		}
-
-		//
-		// Select all nodes and connections in the chart.
-		//
 		this.selectAll = function () {
 
 			var nodes = this.nodes;

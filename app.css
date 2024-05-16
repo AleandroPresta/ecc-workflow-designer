@@ -129,3 +129,18 @@ Drag selection rectangle.
 	stroke-width: 2;
 	fill: transparent;
 }
+
+/* ADDED STYLES BY aleandro.presta */
+.json-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#json-textarea {
+	
+}
+
+#refresh-button {
+	
+}
