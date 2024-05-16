@@ -234,12 +234,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID-1}_1`
+						name: `in_${nextNodeID - 1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID-1}_1`
+						name: `out${nextNodeID - 1}_1`
 					},
 				],
 			};
@@ -277,12 +277,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID-1}_1`
+						name: `in_${nextNodeID - 1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID-1}_1`
+						name: `out${nextNodeID - 1}_1`
 					},
 				],
 			};
@@ -308,12 +308,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID-1}_1`
+						name: `in_${nextNodeID - 1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID-1}_1`
+						name: `out${nextNodeID - 1}_1`
 					},
 				],
 			};
@@ -339,7 +339,7 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID-1}_1`
+						name: `in_${nextNodeID - 1}_1`
 					},
 				],
 				outputConnectors: [
@@ -356,12 +356,26 @@ angular.module('app', ['flowChart',])
 		// Add an input connector to selected nodes.
 		//
 		$scope.addNewInputConnector = function () {
-			var connectorName = prompt("Enter a connector name:", "New connector");
+
+			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+			console.log(selectedNodes.length);
+			
+
+			let suggestedConnectorName = "New connector";
+
+			// If only one node is selected then the suggested name will be
+			// in_<id>_<id_port>
+			if (selectedNodes.length === 1) {
+				const nodeId = selectedNodes[0].data.id
+				const connectorId = selectedNodes[0].data.inputConnectors.length;
+				suggestedConnectorName = `in_${nodeId}_${connectorId}`;
+			}
+
+			var connectorName = prompt("Enter a connector name:", suggestedConnectorName);
 			if (!connectorName) {
 				return;
 			}
 
-			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 			for (var i = 0; i < selectedNodes.length; ++i) {
 				var node = selectedNodes[i];
 				node.addInputConnector({
@@ -374,12 +388,25 @@ angular.module('app', ['flowChart',])
 		// Add an output connector to selected nodes.
 		//
 		$scope.addNewOutputConnector = function () {
-			var connectorName = prompt("Enter a connector name:", "New connector");
+			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+			console.log(selectedNodes.length);
+			
+
+			let suggestedConnectorName = "New connector";
+
+			// If only one node is selected then the suggested name will be
+			// in_<id>_<id_port>
+			if (selectedNodes.length === 1) {
+				const nodeId = selectedNodes[0].data.id
+				const connectorId = selectedNodes[0].data.outputConnectors.length;
+				suggestedConnectorName = `out_${nodeId}_${connectorId}`;
+			}
+
+			var connectorName = prompt("Enter a connector name:", suggestedConnectorName);
 			if (!connectorName) {
 				return;
 			}
 
-			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 			for (var i = 0; i < selectedNodes.length; ++i) {
 				var node = selectedNodes[i];
 				node.addOutputConnector({
@@ -398,7 +425,7 @@ angular.module('app', ['flowChart',])
 		//
 		//	Change the name of a connection
 		//
-		$scope.modifyName = function() {
+		$scope.modifyName = function () {
 			$scope.chartViewModel.modifyName();
 		};
 		//
