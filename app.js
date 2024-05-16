@@ -51,7 +51,7 @@ angular.module('app', ['flowChart',])
 		//
 		// Selects the next node id.
 		//
-		var nextNodeID = 10;
+		var nextNodeID = 4;
 
 		//
 		// Setup the data-model for the chart.
@@ -98,28 +98,10 @@ angular.module('app', ['flowChart',])
 				},
 				{
 					name: "Storage",
-					id: 3,
+					id: 2,
 					type: "Storage",
 					x: 687,
 					y: 296,
-					inputConnectors: [
-						{
-							name: "in_3_0"
-						}
-					],
-					outputConnectors: [
-						{
-							name: "out_3_0"
-						}
-					],
-					width: 250
-				},
-				{
-					name: "Communication",
-					id: 2,
-					type: "Communication",
-					x: 985,
-					y: 423,
 					inputConnectors: [
 						{
 							name: "in_2_0"
@@ -128,6 +110,24 @@ angular.module('app', ['flowChart',])
 					outputConnectors: [
 						{
 							name: "out_2_0"
+						}
+					],
+					width: 250
+				},
+				{
+					name: "Communication",
+					id: 3,
+					type: "Communication",
+					x: 985,
+					y: 423,
+					inputConnectors: [
+						{
+							name: "in_3_0"
+						}
+					],
+					outputConnectors: [
+						{
+							name: "out_3_0"
 						}
 					],
 					width: 250
@@ -151,17 +151,17 @@ angular.module('app', ['flowChart',])
 						"connectorIndex": 0
 					},
 					"dest": {
-						"nodeID": 3,
+						"nodeID": 2,
 						"connectorIndex": 0
 					}
 				},
 				{
 					"source": {
-						"nodeID": 3,
+						"nodeID": 2,
 						"connectorIndex": 0
 					},
 					"dest": {
-						"nodeID": 2,
+						"nodeID": 3,
 						"connectorIndex": 0
 					}
 				}
@@ -234,12 +234,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: "X"
+						name: `in_${nextNodeID-1}_1`
 					},
 				],
 				outputConnectors: [
 					{
-						name: "1"
+						name: `out${nextNodeID-1}_1`
 					},
 				],
 			};
