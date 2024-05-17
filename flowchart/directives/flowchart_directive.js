@@ -86,7 +86,7 @@ angular.module('flowChart', ['dragging'])
 			});
 		};
 	})
-	
+
 
 	//
 	// Controller for the flowchart directive.
@@ -433,12 +433,51 @@ angular.module('flowChart', ['dragging'])
 		//
 		// Handle rightclick on draggable-component
 		//
+		//	TODO when two nodes are pressed, the name changed is the one of the first
+		//	pressed, not the second
 		$scope.openContextMenu = function (evt, node) {
 
 			contextMenuOptions = [
-				{ name: 'Option 1', action: function () { console.log('Option 1 clicked'); } },
-				{ name: 'Option 2', action: function () { console.log('Option 2 clicked'); } }
+				
 			];
+
+			// Change the contextMenuOptions based on which node we are using
+			if (node.data.type === "Device") {
+				console.log('Device context menu'); //TODO remove
+				contextMenuOptions = [
+					{
+						name: 'Change name', action: function () {
+							var newNodeName = prompt("Enter a device name:", "New name");
+							if (!newNodeName) {
+								return;
+							}
+							node.data.name = newNodeName;
+
+						}
+					}
+				];
+			}
+			if (node.data.type === "Computation") {
+				console.log('Computation context menu'); //TODO remove
+				contextMenuOptions = [
+					{
+						name: 'Change name', action: function () {
+							var newNodeName = prompt("Enter a device name:", "New name");
+							if (!newNodeName) {
+								return;
+							}
+							node.data.name = newNodeName;
+
+						}
+					}
+				];
+			}
+			if (node.data.type === "Storage") {
+				console.log("Storage");
+			}
+			if (node.data.type === "Communication") {
+				console.log("Communication");
+			}
 
 			var contextMenu = angular.element(document.getElementById('context-menu'));
 			contextMenu.css('top', evt.clientY + 'px');
@@ -475,21 +514,6 @@ angular.module('flowChart', ['dragging'])
 
 			// Append <ul> element to the document body
 			document.body.appendChild(ulElement);
-
-			// Set the options depending on the type of node pressed
-			if (node.data.type === "Device") {
-				console.log("Device");
-				return;
-			}
-			if (node.data.type === "Computation") {
-				console.log("Computation");
-			}
-			if (node.data.type === "Storage") {
-				console.log("Storage");
-			}
-			if (node.data.type === "Communication") {
-				console.log("Communication");
-			}
 
 		}
 	}])
