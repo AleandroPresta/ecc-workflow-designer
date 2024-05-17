@@ -17,7 +17,7 @@ var flowchart = {
 	//
 	// Amount of space reserved for displaying the node's name.
 	//
-	flowchart.nodeNameHeight = 40;
+	flowchart.nodeNameHeight = 60;
 
 	//
 	// Height of a connector in a node.

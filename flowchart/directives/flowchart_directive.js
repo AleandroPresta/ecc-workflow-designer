@@ -73,6 +73,22 @@ angular.module('flowChart', ['dragging'])
 	})
 
 	//
+	// Directive that opens a context menù on right click
+	//
+	.directive('ngRightClick', function ($parse) {
+		return function (scope, element, attrs) {
+			var fn = $parse(attrs.ngRightClick);
+			element.bind('contextmenu', function (event) {
+				scope.$apply(function () {
+					event.preventDefault();
+					fn(scope, { $event: event });
+				});
+			});
+		};
+	})
+	
+
+	//
 	// Controller for the flowchart directive.
 	// Having a separate controller is better for unit testing, otherwise
 	// it is painful to unit test a directive without instantiating the DOM 
@@ -413,5 +429,68 @@ angular.module('flowChart', ['dragging'])
 
 			});
 		};
+
+		//
+		// Handle rightclick on draggable-component
+		//
+		$scope.openContextMenu = function (evt, node) {
+
+			contextMenuOptions = [
+				{ name: 'Option 1', action: function () { console.log('Option 1 clicked'); } },
+				{ name: 'Option 2', action: function () { console.log('Option 2 clicked'); } }
+			];
+
+			var contextMenu = angular.element(document.getElementById('context-menu'));
+			contextMenu.css('top', evt.clientY + 'px');
+			contextMenu.css('left', evt.clientX + 'px');
+			contextMenu.css('display', 'block');
+
+			// Create the <ul> element
+			var ulElement = document.createElement('ul');
+			ulElement.setAttribute('style', 'position: fixed; display: none');
+			ulElement.setAttribute('id', 'context-menu');
+
+			// Assuming contextMenuOptions is an array of objects with name and action properties
+			contextMenuOptions.forEach(function (option) {
+				// Create <li> element for each option
+				var liElement = document.createElement('li');
+
+				// Create <a> element for each option
+				var aElement = document.createElement('a');
+				aElement.setAttribute('href', '#');
+				aElement.textContent = option.name;
+
+				// Add click event listener to execute the action
+				aElement.addEventListener('click', function (event) {
+					event.preventDefault(); // Prevent default link behavior
+					option.action(); // Execute the action associated with the option
+				});
+
+				// Append <a> element to <li> element
+				liElement.appendChild(aElement);
+
+				// Append <li> element to <ul> element
+				ulElement.appendChild(liElement);
+			});
+
+			// Append <ul> element to the document body
+			document.body.appendChild(ulElement);
+
+			// Set the options depending on the type of node pressed
+			if (node.data.type === "Device") {
+				console.log("Device");
+				return;
+			}
+			if (node.data.type === "Computation") {
+				console.log("Computation");
+			}
+			if (node.data.type === "Storage") {
+				console.log("Storage");
+			}
+			if (node.data.type === "Communication") {
+				console.log("Communication");
+			}
+
+		}
 	}])
 	;

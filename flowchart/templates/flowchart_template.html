@@ -2,7 +2,7 @@
   class="draggable-container"
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
-  ng-mousemove="mouseMove($event)"  
+  ng-mousemove="mouseMove($event)"
   >
   <defs>
     <linearGradient  
@@ -67,6 +67,7 @@
     ng-mousedown="nodeMouseDown($event, node)"
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
     >
+
     <rect 
       ng-attr-class="{{node.selected() && 'selected-node-rect' || (node == mouseOverNode && 'mouseover-node-rect' || 'node-rect')}}"
       ry="0" 
@@ -76,6 +77,7 @@
       ng-attr-width="{{node.width()}}" 
       ng-attr-height="{{node.height()}}" 
       fill="url(#nodeBackgroundGradient{{node.type()}})"
+      ng-right-click="openContextMenu($event, node)"
       >
 
     </rect>

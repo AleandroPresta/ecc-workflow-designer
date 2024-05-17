@@ -144,3 +144,21 @@ Drag selection rectangle.
 #refresh-button {
 	
 }
+
+#context-menu {
+    z-index: 1000; /* Ensure it's above other elements */
+    background-color: white; /* Set background color */
+    border: 1px solid #ccc; /* Add border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+    list-style-type: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+}
+
+#context-menu li {
+    padding: 8px 12px; /* Add padding to list items */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+#context-menu li:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}

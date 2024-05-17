@@ -100,6 +100,7 @@ angular.module('app', ['flowChart',])
 					name: "Storage",
 					id: 2,
 					type: "Storage",
+					availableMemory: '20TB',
 					x: 687,
 					y: 296,
 					inputConnectors: [
@@ -146,6 +147,7 @@ angular.module('app', ['flowChart',])
 					}
 				},
 				{
+					name: "Connection 2",
 					source: {
 						"nodeID": 1,
 						"connectorIndex": 0
@@ -156,6 +158,7 @@ angular.module('app', ['flowChart',])
 					}
 				},
 				{
+					name: "Connection 3",
 					source: {
 						"nodeID": 2,
 						"connectorIndex": 0
@@ -296,6 +299,7 @@ angular.module('app', ['flowChart',])
 			if (!nodeName) {
 				return;
 			}
+			var availableMemory = prompt("Enter the quantity of available memory:", "");
 
 			//
 			// Template for a new node.
@@ -304,6 +308,7 @@ angular.module('app', ['flowChart',])
 				name: nodeName,
 				id: nextNodeID++,
 				type: "Storage",
+				availableMemory: availableMemory,
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -432,6 +437,16 @@ angular.module('app', ['flowChart',])
 		// Create the view-model for the chart and attach to the scope.
 		//
 		$scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
+
+		//
+		// Pressing anywhere on the body hides the context menu
+		//
+		$scope.hideContextMenu = function() {
+			const element = document.getElementById("context-menu");
+			if (element) {
+				element.style.display = 'none';
+			}
+		}
 	}])
 	;
 
