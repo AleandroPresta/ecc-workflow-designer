@@ -463,6 +463,12 @@ angular.module('flowChart', ['dragging'])
 					}
 				}
 			};
+			const deleteNodeOption = {
+				name: 'Delete',
+				action: function () {
+					$scope.chart.deleteSelected();
+				}
+			};
 			// Define device context menu options (TODO)
 			// Define computation options
 			const computationChangeExecutionTime = {
@@ -508,7 +514,9 @@ angular.module('flowChart', ['dragging'])
 				// Nothing for the moment
 			}
 
-			// Adding delete functionality at the end
+			// Adding common functionalities at the end
+			contextMenuOptions.push(deleteNodeOption);
+
 
 			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {
