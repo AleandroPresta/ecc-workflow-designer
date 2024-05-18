@@ -29,7 +29,8 @@
 				</textarea>
 			</div>
 		    <div style="margin-left: 600px;">
-    			<button
+				<div class="top-menu">
+					<button
     				ng-click="addDevice()"
     				title="Add a new device to the chart"
     				>
@@ -75,6 +76,7 @@
 					ng-disabled="chartViewModel.getSelectedConnections().length == 0">
 					Modify Name
 				</button>
+				</div>
 				
 
 				<!--

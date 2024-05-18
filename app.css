@@ -166,11 +166,11 @@ Drag selection rectangle.
     background-color: var(--color-bg-secondary);
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(#404040, 0.15);
-	border: 1px solid black;
+    border: 1px solid black;
 }
 
 .menu-list {
-	list-style-type: none;
+    list-style-type: none;
     margin: 0;
     display: block;
     width: 100%;
@@ -195,9 +195,36 @@ Drag selection rectangle.
     align-items: center;
     position: relative;
     background-color: var(--color-bg-secondary);
-	cursor: pointer;
+    cursor: pointer;
     &:hover {
         background-color: var(--color-bg-primary-offset);
+        & + .menu-sub-list {
+            display: flex;
+        }
+        svg {
+            stroke: var(--color-text-primary);
+        }
+    }
+}
+
+.top-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-menu > button {
+    color: #ffffff;
+    background-color: #005180;
+    font-weight: 600;
+    outline: none;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 45px;
+    width: 160px;
+	&:hover {
+        background-color: var(--color-green);
         & + .menu-sub-list {
             display: flex;
         }

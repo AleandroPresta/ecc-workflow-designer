@@ -237,12 +237,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_1`
+						name: `in_${nextNodeID - 1}_0`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID - 1}_1`
+						name: `out${nextNodeID - 1}_0`
 					},
 				],
 			};
@@ -280,12 +280,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_1`
+						name: `in_${nextNodeID - 1}_0`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID - 1}_1`
+						name: `out${nextNodeID - 1}_0`
 					},
 				],
 			};
@@ -313,12 +313,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_1`
+						name: `in_${nextNodeID - 1}_0`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID - 1}_1`
+						name: `out${nextNodeID - 1}_0`
 					},
 				],
 			};
@@ -344,12 +344,12 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_1`
+						name: `in_${nextNodeID - 1}_0`
 					},
 				],
 				outputConnectors: [
 					{
-						name: `out_${nextNodeID}_1`
+						name: `out_${nextNodeID}_0`
 					},
 				],
 			};
