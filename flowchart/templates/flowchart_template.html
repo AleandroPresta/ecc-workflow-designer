@@ -143,6 +143,7 @@
       ng-mousedown="connectionMouseDown($event, connection)"
       >
         <path
+          ng-right-click="openContextMenu($event, connection)"
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
           ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
                      C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
