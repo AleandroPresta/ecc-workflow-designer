@@ -349,7 +349,7 @@ angular.module('app', ['flowChart',])
 				],
 				outputConnectors: [
 					{
-						name: `out_${nextNodeID}_0`
+						name: `out_${nextNodeID - 1}_0`
 					},
 				],
 			};
@@ -364,7 +364,7 @@ angular.module('app', ['flowChart',])
 
 			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 			console.log(selectedNodes.length);
-			
+
 
 			let suggestedConnectorName = "New connector";
 
@@ -395,7 +395,7 @@ angular.module('app', ['flowChart',])
 		$scope.addNewOutputConnector = function () {
 			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 			console.log(selectedNodes.length);
-			
+
 
 			let suggestedConnectorName = "New connector";
 
@@ -441,7 +441,7 @@ angular.module('app', ['flowChart',])
 		//
 		// Pressing anywhere on the body hides the context menu
 		//
-		$scope.hideContextMenu = function() {
+		$scope.hideContextMenu = function () {
 			const element = document.getElementById("context-menu");
 			if (element) {
 				element.style.display = 'none';
