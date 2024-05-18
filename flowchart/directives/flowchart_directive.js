@@ -443,7 +443,6 @@ angular.module('flowChart', ['dragging'])
 
 			// Change the contextMenuOptions based on which node we are using
 			if (node.data.type === "Device") {
-				console.log('Device context menu'); //TODO remove
 				contextMenuOptions = [
 					{
 						name: 'Change name', action: function () {
@@ -484,36 +483,44 @@ angular.module('flowChart', ['dragging'])
 			contextMenu.css('left', evt.clientX + 'px');
 			contextMenu.css('display', 'block');
 
+			let divElement = document.createElement('div');
+			divElement.setAttribute('style', 'position: fixed; display: none');
+			divElement.setAttribute('id', 'context-menu');
+
+
 			// Create the <ul> element
-			var ulElement = document.createElement('ul');
-			ulElement.setAttribute('style', 'position: fixed; display: none');
-			ulElement.setAttribute('id', 'context-menu');
+			let ulElement = document.createElement('ul');
+			// ulElement.setAttribute('style', 'position: fixed; display: none');
+			ulElement.setAttribute('class', 'menu-list');
 
 			// Assuming contextMenuOptions is an array of objects with name and action properties
 			contextMenuOptions.forEach(function (option) {
 				// Create <li> element for each option
-				var liElement = document.createElement('li');
+				let liElement = document.createElement('li');
+				liElement.setAttribute('class', 'menu-item');
 
-				// Create <a> element for each option
-				var aElement = document.createElement('a');
-				aElement.setAttribute('href', '#');
-				aElement.textContent = option.name;
+				// Create <button> element for each option
+				let buttonElement = document.createElement('button');
+				buttonElement.setAttribute('class', 'menu-button')
+				buttonElement.textContent = option.name;
 
 				// Add click event listener to execute the action
-				aElement.addEventListener('click', function (event) {
+				buttonElement.addEventListener('click', function (event) {
 					event.preventDefault(); // Prevent default link behavior
 					option.action(); // Execute the action associated with the option
 				});
 
 				// Append <a> element to <li> element
-				liElement.appendChild(aElement);
+				liElement.appendChild(buttonElement);
 
 				// Append <li> element to <ul> element
 				ulElement.appendChild(liElement);
 			});
 
+			divElement.appendChild(ulElement);
+
 			// Append <ul> element to the document body
-			document.body.appendChild(ulElement);
+			document.body.appendChild(divElement);
 
 		}
 	}])
