@@ -436,92 +436,105 @@ angular.module('flowChart', ['dragging'])
 		//	TODO when two nodes are pressed, the name changed is the one of the first
 		//	pressed, not the second
 		$scope.openContextMenu = function (evt, node) {
-
-			contextMenuOptions = [
-				
-			];
-
-			// Change the contextMenuOptions based on which node we are using
-			if (node.data.type === "Device") {
-				contextMenuOptions = [
-					{
-						name: 'Change name', action: function () {
-							var newNodeName = prompt("Enter a device name:", "New name");
-							if (!newNodeName) {
-								return;
-							}
-							node.data.name = newNodeName;
-
-						}
-					}
-				];
+			// Remove any existing context menu to avoid duplication
+			let existingMenu = document.getElementById('context-menu');
+			if (existingMenu) {
+				existingMenu.remove();
 			}
-			if (node.data.type === "Computation") {
-				console.log('Computation context menu'); //TODO remove
-				contextMenuOptions = [
-					{
-						name: 'Change name', action: function () {
-							var newNodeName = prompt("Enter a device name:", "New name");
-							if (!newNodeName) {
-								return;
-							}
-							node.data.name = newNodeName;
-
-						}
-					}
-				];
-			}
-			if (node.data.type === "Storage") {
-				console.log("Storage");
-			}
-			if (node.data.type === "Communication") {
-				console.log("Communication");
-			}
-
-			var contextMenu = angular.element(document.getElementById('context-menu'));
-			contextMenu.css('top', evt.clientY + 'px');
-			contextMenu.css('left', evt.clientX + 'px');
-			contextMenu.css('display', 'block');
-
-			let divElement = document.createElement('div');
-			divElement.setAttribute('style', 'position: fixed; display: none');
-			divElement.setAttribute('id', 'context-menu');
-
-
+		
+			// Create the context menu container
+			let contextMenu = document.createElement('div');
+			contextMenu.setAttribute('id', 'context-menu');
+			contextMenu.setAttribute('style', `position: fixed; top: ${evt.clientY}px; left: ${evt.clientX}px; display: block; z-index: 1000; background: white; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.2);`);
+		
 			// Create the <ul> element
 			let ulElement = document.createElement('ul');
-			// ulElement.setAttribute('style', 'position: fixed; display: none');
 			ulElement.setAttribute('class', 'menu-list');
-
-			// Assuming contextMenuOptions is an array of objects with name and action properties
+			ulElement.setAttribute('style', 'list-style-type: none; margin: 0;');
+		
+			// Define context menu options
+			const deviceChangeNameOption = {
+				name: 'Change name',
+				action: function () {
+					const newNodeName = prompt("Enter the new device's name:", node.data.name);
+					if (newNodeName) {
+						node.data.name = newNodeName;
+					}
+				}
+			};
+			const computationChangeNameOption = {
+				name: 'Change name',
+				action: function () {
+					const newNodeName = prompt("Enter the new computation's name:", node.data.name);
+					if (newNodeName) {
+						node.data.name = newNodeName;
+					}
+				}
+			};
+			const computationChangeExecutionTime = {
+				name: 'Change execution time',
+				action: function () {
+					const newExecutionTime = prompt("Enter the new execution time:", node.data.executionTime);
+					if (newExecutionTime) {
+						node.data.executionTime = newExecutionTime;
+					}
+				}
+			}
+			const computationChangeVolumeOfData = {
+				name: 'Change volume of data',
+				action: function () {
+					const newVolumeOfData = prompt("Enter the volume of data:", node.data.volumeOfData);
+					if (newVolumeOfData) {
+						node.data.volumeOfData = newVolumeOfData;
+					}
+				}
+			}
+		
+			let contextMenuOptions = [];
+		
+			// Adding contextMenuOptions based on the type of node selected
+			if (node.data.type == "Device") {
+				contextMenuOptions.push(deviceChangeNameOption);
+			} else if (node.data.type == "Computation") {
+				contextMenuOptions.push(computationChangeNameOption);
+				contextMenuOptions.push(computationChangeExecutionTime);
+				contextMenuOptions.push(computationChangeVolumeOfData);
+			}
+		
+			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {
-				// Create <li> element for each option
 				let liElement = document.createElement('li');
 				liElement.setAttribute('class', 'menu-item');
-
-				// Create <button> element for each option
+		
+				// Create button element for the option
 				let buttonElement = document.createElement('button');
-				buttonElement.setAttribute('class', 'menu-button')
+				buttonElement.setAttribute('class', 'menu-button');
 				buttonElement.textContent = option.name;
-
+		
 				// Add click event listener to execute the action
 				buttonElement.addEventListener('click', function (event) {
 					event.preventDefault(); // Prevent default link behavior
 					option.action(); // Execute the action associated with the option
+					contextMenu.remove(); // Remove context menu after action
 				});
-
-				// Append <a> element to <li> element
+		
+				// Append button to li and li to ul
 				liElement.appendChild(buttonElement);
-
-				// Append <li> element to <ul> element
 				ulElement.appendChild(liElement);
 			});
-
-			divElement.appendChild(ulElement);
-
-			// Append <ul> element to the document body
-			document.body.appendChild(divElement);
-
-		}
+		
+			contextMenu.appendChild(ulElement);
+		
+			// Append context menu to the document body
+			document.body.appendChild(contextMenu);
+		
+			// Remove context menu when clicking outside
+			document.addEventListener('click', function removeContextMenu(event) {
+				if (!contextMenu.contains(event.target)) {
+					contextMenu.remove();
+					document.removeEventListener('click', removeContextMenu);
+				}
+			}, { once: true });
+		};
 	}])
 	;
