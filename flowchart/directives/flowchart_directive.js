@@ -461,6 +461,18 @@ angular.module('flowChart', ['dragging'])
 					}
 				}
 			};
+			const addInputConnectorOption = {
+				name: 'Add input connector',
+				action: function () {
+					$scope.$parent.addNewInputConnector();
+				}
+			};
+			const addOutputConnectorOption = {
+				name: 'Add output connector',
+				action: function () {
+					$scope.$parent.addNewOutputConnector();
+				}
+			};
 			const deleteNodeOption = {
 				name: 'Delete',
 				action: function () {
@@ -498,7 +510,7 @@ angular.module('flowChart', ['dragging'])
 				}
 			}
 
-			let contextMenuOptions = [changeNameOption];
+			let contextMenuOptions = [changeNameOption, addInputConnectorOption, addOutputConnectorOption];
 
 			// Adding contextMenuOptions based on the type of node selected
 			if (node.data.type == "Device") {

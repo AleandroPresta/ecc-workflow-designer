@@ -424,7 +424,6 @@ angular.module('app', ['flowChart',])
 		// Delete selected nodes and connections.
 		//
 		$scope.deleteSelected = function () {
-
 			$scope.chartViewModel.deleteSelected();
 		};
 		//
@@ -448,7 +447,13 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
-		$scope.openContextMenuChart = function (evt) {
+		// TODO fix the fact that it opens also when right-clicking on a node or edge
+		/*$scope.openContextMenuChart = function (evt) {
+			// Check if the event target is a node or an edge
+			if (evt.target.classList.contains('node') || evt.target.classList.contains('edge')) {
+				// If it is, do nothing and return
+				return;
+			}
 			// Remove any existing context menu to avoid duplication
 			let existingMenu = document.getElementById('context-menu');
 			if (existingMenu) {
@@ -532,7 +537,7 @@ angular.module('app', ['flowChart',])
 					document.removeEventListener('click', removeContextMenu);
 				}
 			}, { once: true });
-		};
+		}; */
 	}])
 	;
 
