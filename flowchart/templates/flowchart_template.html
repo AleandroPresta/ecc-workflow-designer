@@ -85,7 +85,7 @@
       ng-attr-width="{{node.width()}}" 
       ng-attr-height="{{node.height()}}" 
       fill="url(#nodeBackgroundGradient{{node.type()}})"
-      ng-right-click="openContextMenuNodesAndEdges($event, node)"
+      ng-right-click="openContextMenuNodes($event, node)"
       >
 
     </rect>
@@ -151,7 +151,7 @@
       ng-mousedown="connectionMouseDown($event, connection)"
       >
         <path
-          ng-right-click="openContextMenuNodesAndEdges($event, connection)"
+          ng-right-click="openContextMenuEdges($event, connection)"
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
           ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
                      C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
