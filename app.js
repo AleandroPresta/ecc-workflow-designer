@@ -447,6 +447,92 @@ angular.module('app', ['flowChart',])
 				element.style.display = 'none';
 			}
 		}
+
+		$scope.openContextMenuChart = function (evt) {
+			// Remove any existing context menu to avoid duplication
+			let existingMenu = document.getElementById('context-menu');
+			if (existingMenu) {
+				existingMenu.remove();
+			}
+
+			// Create the context menu container
+			let contextMenu = document.createElement('div');
+			contextMenu.setAttribute('id', 'context-menu');
+			contextMenu.setAttribute('style', `position: fixed; top: ${evt.clientY}px; left: ${evt.clientX}px; display: block; z-index: 1000; background: white; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.2);`);
+
+			// Create the <ul> element
+			let ulElement = document.createElement('ul');
+			ulElement.setAttribute('class', 'menu-list');
+			ulElement.setAttribute('style', 'list-style-type: none; margin: 0;');
+
+			// Definition of context menu options
+			// Define context menu options common for all node types
+			const addNewDevice = {
+				name: ' Add Device',
+				action: function () {
+					$scope.addDevice();
+				}
+			};
+
+			const addNewComputation = {
+				name: ' Add Computation',
+				action: function () {
+					$scope.addComputation();
+				}
+			};
+
+			const addNewStorage = {
+				name: ' Add Storage',
+				action: function () {
+					$scope.addStorage();
+				}
+			};
+
+			const addNewCommunication = {
+				name: ' Add Communication',
+				action: function () {
+					$scope.addCommunication();
+				}
+			};
+
+			let contextMenuOptions = [addNewDevice, addNewComputation, addNewStorage, addNewCommunication];
+
+
+			// Create and append <li> elements for each context menu option
+			contextMenuOptions.forEach(function (option) {
+				let liElement = document.createElement('li');
+				liElement.setAttribute('class', 'menu-item');
+
+				// Create button element for the option
+				let buttonElement = document.createElement('button');
+				buttonElement.setAttribute('class', 'menu-button');
+				buttonElement.textContent = option.name;
+
+				// Add click event listener to execute the action
+				buttonElement.addEventListener('click', function (event) {
+					event.preventDefault(); // Prevent default link behavior
+					option.action(); // Execute the action associated with the option
+					contextMenu.remove(); // Remove context menu after action
+				});
+
+				// Append button to li and li to ul
+				liElement.appendChild(buttonElement);
+				ulElement.appendChild(liElement);
+			});
+
+			contextMenu.appendChild(ulElement);
+
+			// Append context menu to the document body
+			document.body.appendChild(contextMenu);
+
+			// Remove context menu when clicking outside
+			document.addEventListener('click', function removeContextMenu(event) {
+				if (!contextMenu.contains(event.target)) {
+					contextMenu.remove();
+					document.removeEventListener('click', removeContextMenu);
+				}
+			}, { once: true });
+		};
 	}])
 	;
 

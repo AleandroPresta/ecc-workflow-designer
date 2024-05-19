@@ -433,9 +433,7 @@ angular.module('flowChart', ['dragging'])
 		//
 		// Handle rightclick on draggable-component
 		//
-		//	TODO when two nodes are pressed, the name changed is the one of the first
-		//	pressed, not the second
-		$scope.openContextMenu = function (evt, node) {
+		$scope.openContextMenuNodesAndEdges = function (evt, node) {
 			// Remove any existing context menu to avoid duplication
 			let existingMenu = document.getElementById('context-menu');
 			if (existingMenu) {
