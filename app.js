@@ -242,7 +242,7 @@ angular.module('app', ['flowChart',])
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID - 1}_0`
+						name: `out_${nextNodeID - 1}_0`
 					},
 				],
 			};
@@ -285,7 +285,7 @@ angular.module('app', ['flowChart',])
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID - 1}_0`
+						name: `out_${nextNodeID - 1}_0`
 					},
 				],
 			};
@@ -318,7 +318,7 @@ angular.module('app', ['flowChart',])
 				],
 				outputConnectors: [
 					{
-						name: `out${nextNodeID - 1}_0`
+						name: `out_${nextNodeID - 1}_0`
 					},
 				],
 			};
