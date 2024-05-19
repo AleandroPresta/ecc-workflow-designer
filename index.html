@@ -18,18 +18,25 @@
 		ng-click="hideContextMenu()"
 		>
 
-		<div style="width: 100%; overflow: hidden;">
-		    <div class="json-container" style="width: 600px; float: left;"> 
-				<textarea 
-					id="json-textarea"
-					style="width: 100%; height: 100%;"
-					chart-json-edit
-					view-model="chartViewModel"
-					>
-				</textarea>
+		<div class='app-container' style="width: 100%; overflow: hidden;">
+		    <div class="json-container" style="width: 600px; float: left;">
+				<div class="json-content">
+					<textarea 
+						id="json-textarea"
+						style="width: 100%; height: 100%;"
+						chart-json-edit
+						view-model="chartViewModel"
+						>
+					</textarea>
+				</div>
 			</div>
-		    <div style="margin-left: 600px;">
+		    <div class="flowchart-container">
 				<div class="top-menu">
+					<button
+					ng-click="toggleJsonButton()"
+					class="json-button">
+					 Hide JSON
+					</button> 
 					<button
     				ng-click="addDevice()"
     				title="Add a new device to the chart"
@@ -73,7 +80,6 @@
 				</button>
 				</div>
 				
-
 				<!--
 				This custom element defines the flowchart.
 				-->

@@ -643,7 +643,6 @@ angular.module('flowChart', ['dragging'])
 		// Handle rightclick on the background of the flowchart
 		//
 		$scope.openContextMenuBackground = function (evt) {
-			console.log('Opening context menu');
 			// Remove any existing context menu to avoid duplication
 			let existingMenu = document.getElementById('context-menu');
 			if (existingMenu) {

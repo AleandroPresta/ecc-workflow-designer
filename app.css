@@ -67,8 +67,6 @@ Styles for nodes and connectors.
 Style for connections.
 */
 
-.connection {
-}
 
 .connection-line {
     stroke: gray;
@@ -148,16 +146,26 @@ Drag selection rectangle.
 }
 
 /* ADDED STYLES BY aleandro.presta */
+.app-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
 .json-container {
+    flex-basis: 30%;
+}
+
+.flowchart-container {
+    flex-basis: 70%;
+}
+
+.json-content {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
-}
-
-#json-textarea {
-}
-
-#refresh-button {
+    width: 100%;
 }
 
 #context-menu {

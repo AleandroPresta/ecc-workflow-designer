@@ -363,8 +363,6 @@ angular.module('app', ['flowChart',])
 		$scope.addNewInputConnector = function () {
 
 			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-			console.log(selectedNodes.length);
-
 
 			let suggestedConnectorName = "New connector";
 
@@ -394,8 +392,6 @@ angular.module('app', ['flowChart',])
 		//
 		$scope.addNewOutputConnector = function () {
 			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-			console.log(selectedNodes.length);
-
 
 			let suggestedConnectorName = "New connector";
 
@@ -444,6 +440,22 @@ angular.module('app', ['flowChart',])
 			const element = document.getElementById("context-menu");
 			if (element) {
 				element.style.display = 'none';
+			}
+		}
+
+		$scope.toggleJsonButton = function () {
+			const element = document.querySelector(".json-container");
+			const jsonButton = document.querySelector(".json-button");
+			const flowchartContainer = document.querySelector(".flowchart-container");
+
+			if (element.style.display === 'none') {
+				element.style.display = 'block';
+				jsonButton.textContent = "Hide JSON";
+				flowchartContainer.style.flexBasis = "70%";
+			} else {
+				element.style.display = 'none';
+				jsonButton.textContent = "Show JSON";
+				flowchartContainer.style.flexBasis = "100%";
 			}
 		}
 	}])
