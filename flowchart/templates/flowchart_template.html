@@ -62,6 +62,14 @@
         />
     </linearGradient>
   </defs>
+
+  <g class="background-board">
+    <rect 
+    class="background-board-rect"
+    ng-right-click="openContextMenuBackground($event)">
+  </rect>
+  </g>
+
   <g
     ng-repeat="node in chart.nodes"
     ng-mousedown="nodeMouseDown($event, node)"
@@ -216,5 +224,4 @@
       ng-attr-height="{{dragSelectionRect.height}}"
     >
   </rect>
-  
 </svg>
