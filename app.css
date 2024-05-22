@@ -224,6 +224,7 @@ Drag selection rectangle.
 
 .top-menu > button {
     color: #ffffff;
+    border: 1px solid white;
     font-weight: 600;
     height: 45px;
     width: 160px;
@@ -233,11 +234,13 @@ Drag selection rectangle.
 	color:#FFF;
 	font-size:15px;
     margin-top: 3px;
+    border-radius: 10px;
 }
 
 .top-menu > button:hover {
-	background:#0CF;
-	transition:background-color 0.3s ease-in-out;
+    border: 1px solid #0CF;
+    background: #0CF;
+    transition: 0.5s;
 }
 
 .background-board {
