@@ -254,24 +254,113 @@ angular.module('app', ['flowChart',])
 		//
 		$scope.addComputation = function () {
 
-			var nodeName = prompt("Enter a computation name:", "New Computation");
-			if (!nodeName) {
-				return;
-			}
-			let executionTime = prompt("Enter execution time:", "");
-			if (!executionTime) {
-				return;
-			}
-			let volumeOfData = prompt("Enter the volume of data:", "");
-			if (!volumeOfData) {
-				return;
+			const form = createComputationForm();
+			document.body.appendChild(form);
+		};
+
+		/* UTILITY FUNCTIONS FOR CREATION OF HTML ELEMENTS */
+		function createComputationForm() {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'computation-creation-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const fieldset4 = document.createElement('fieldset');
+			const fieldset5 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const input2 = document.createElement('input');
+			const input3 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create';
+			form.action = '';
+			h3.textContent = 'Create Computation';
+			input1.placeholder = 'Computation Name';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			input2.placeholder = 'Computation execution time';
+			input2.type = 'text';
+			input2.tabIndex = '2';
+			input2.required = true;
+			input3.placeholder = 'Computation volume of data';
+			input3.type = 'text';
+			input3.tabIndex = '3';
+			input3.required = true;
+			textarea.placeholder = 'Computation description....';
+			textarea.tabIndex = '4';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+			submitButton.onclick = submitComputationCreation;
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
 			}
 
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(input2);
+			fieldset3.appendChild(input3);
+			fieldset4.appendChild(textarea);
+			fieldset5.appendChild(submitButton);
+			fieldset5.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			form.appendChild(fieldset4);
+			form.appendChild(fieldset5);
+			container.appendChild(form);
+
+			return container;
+		}
+
+
+		function submitComputationCreation(event) {
+
+			// Avoids the reloading of the page
+			event.preventDefault();
+			const container = document.getElementById('computation-creation-container');
+
+			// Check if the form is valid before removing it from the document
+			// TODO add custom validation for the values
+			if (container.querySelector('form').checkValidity()) {
+				// Form is valid, continue with the next line of code
+				// Get the values from the form
+				const computationName = container.querySelector('input[placeholder="Computation Name"]').value;
+				const executionTime = container.querySelector('input[placeholder="Computation execution time"]').value;
+				const volumeOfData = container.querySelector('input[placeholder="Computation volume of data"]').value;
+				createNewComputation(computationName, executionTime, volumeOfData);
+				// Remove the form
+				document.body.removeChild(container);
+			} else {
+				// Form is not valid, handle the error or show an error message
+				alert("Please fill in all fields.");
+			}
+
+		}
+
+		function createNewComputation(computationName, executionTime, volumeOfData, description) {
 			//
 			// Template for a new node.
 			//
-			var newNodeDataModel = {
-				name: nodeName,
+			let newNodeDataModel = {
+				name: computationName,
 				id: nextNodeID++,
 				type: "Computation",
 				executionTime: executionTime,
@@ -291,7 +380,8 @@ angular.module('app', ['flowChart',])
 			};
 
 			$scope.chartViewModel.addNode(newNodeDataModel);
-		};
+		}
+
 
 		$scope.addStorage = function () {
 
@@ -460,5 +550,3 @@ angular.module('app', ['flowChart',])
 		}
 	}])
 	;
-
-
