@@ -235,7 +235,7 @@ angular.module('app', ['flowChart',])
 			const container = document.createElement('div');
 			container.id = 'device-creation-container';
 			const form = document.createElement('form');
-			
+
 			const h3 = document.createElement('h3');
 			const fieldset1 = document.createElement('fieldset');
 			const fieldset2 = document.createElement('fieldset');
@@ -282,7 +282,7 @@ angular.module('app', ['flowChart',])
 			form.appendChild(fieldset3);
 			container.appendChild(form);
 
-			return container; 
+			return container;
 		}
 
 		function submitDeviceCreation(event) {
@@ -473,20 +473,108 @@ angular.module('app', ['flowChart',])
 
 		$scope.addStorage = function () {
 
-			var nodeName = prompt("Enter a storage name:", "New Storage");
-			if (!nodeName) {
-				return;
-			}
-			var availableMemory = prompt("Enter the quantity of available memory:", "");
+			const form = createStorageForm();
+			document.body.appendChild(form);
 
+		};
+
+		function createStorageForm() {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'storage-creation-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const fieldset4 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const input2 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-storage-form';
+			form.action = '';
+			h3.textContent = 'Create Storage';
+			input1.placeholder = 'Storage Name';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			input2.placeholder = 'Available Memory';
+			input2.type = 'text';
+			input2.tabIndex = '2';
+			input2.required = true;
+			input2.autofocus = true;
+			textarea.placeholder = 'Storage description....';
+			textarea.tabIndex = '3';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+			submitButton.onclick = submitStorageCreation;
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
+			}
+
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(input2);
+			fieldset3.appendChild(textarea);
+			fieldset4.appendChild(submitButton);
+			fieldset4.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			form.appendChild(fieldset4);
+			container.appendChild(form);
+
+			return container;
+		}
+
+		function submitStorageCreation(event) {
+			// Avoids the reloading of the page
+			event.preventDefault();
+			const container = document.getElementById('storage-creation-container');
+
+			// Check if the form is valid before removing it from the document
+			// TODO add custom validation for the values
+			if (container.querySelector('form').checkValidity()) {
+				// Form is valid, continue with the next line of code
+				// Get the values from the form
+				const storageName = container.querySelector('input[placeholder="Storage Name"]').value;
+				const availableMemory = container.querySelector('input[placeholder="Available Memory"]').value;
+				const description = container.querySelector('textarea').value;
+
+				createNewStorage(storageName, availableMemory, description);
+				// Remove the form
+				document.body.removeChild(container);
+			} else {
+				// Form is not valid, handle the error or show an error message
+				alert("Please fill in all fields.");
+			}
+		}
+
+		function createNewStorage(storageName, availableMemory, description) {
 			//
 			// Template for a new node.
 			//
 			var newNodeDataModel = {
-				name: nodeName,
+				name: storageName,
 				id: nextNodeID++,
 				type: "Storage",
 				availableMemory: availableMemory,
+				description: description,
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -502,22 +590,100 @@ angular.module('app', ['flowChart',])
 			};
 
 			$scope.chartViewModel.addNode(newNodeDataModel);
-		};
+		}
 
 		$scope.addCommunication = function () {
+			
+			const form = createCommunicationForm();
+			document.body.appendChild(form);
+		};
 
-			var nodeName = prompt("Enter a communication name:", "New Communication");
-			if (!nodeName) {
-				return;
+		function createCommunicationForm() {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'communication-creation-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-communication-form';
+			form.action = '';
+			h3.textContent = 'Create Communication';
+			input1.placeholder = 'Communication Name';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			textarea.placeholder = 'Communication description....';
+			textarea.tabIndex = '2';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+			submitButton.onclick = submitCommunicationCreation;
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
 			}
 
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(textarea);
+			fieldset3.appendChild(submitButton);
+			fieldset3.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			container.appendChild(form);
+
+			return container;
+		}
+
+		function submitCommunicationCreation(event) {
+			// Avoids the reloading of the page
+			event.preventDefault();
+			const container = document.getElementById('communication-creation-container');
+
+			// Check if the form is valid before removing it from the document
+			// TODO add custom validation for the values
+			if (container.querySelector('form').checkValidity()) {
+				// Form is valid, continue with the next line of code
+				// Get the values from the form
+				const communicationName = container.querySelector('input[placeholder="Communication Name"]').value;
+				const description = container.querySelector('textarea').value;
+
+				createNewCommunication(communicationName, description);
+				// Remove the form
+				document.body.removeChild(container);
+			} else {
+				// Form is not valid, handle the error or show an error message
+				alert("Please fill in all fields.");
+			}
+		}
+
+		function createNewCommunication(communicationName, description) {
 			//
 			// Template for a new node.
 			//
 			var newNodeDataModel = {
-				name: nodeName,
+				name: communicationName,
 				id: nextNodeID++,
 				type: "Communication",
+				description: description,
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -533,7 +699,7 @@ angular.module('app', ['flowChart',])
 			};
 
 			$scope.chartViewModel.addNode(newNodeDataModel);
-		};
+		}
 
 		//
 		// Add an input connector to selected nodes.
@@ -621,6 +787,7 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
+		// Shows the json data on the left side of the screen
 		$scope.toggleJsonButton = function () {
 			const element = document.querySelector(".json-container");
 			const jsonButton = document.querySelector(".json-button");
