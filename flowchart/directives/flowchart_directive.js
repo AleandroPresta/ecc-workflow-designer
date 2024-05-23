@@ -452,15 +452,6 @@ angular.module('flowChart', ['dragging'])
 
 			// Definition of context menu options
 			// Define context menu options common for all node types
-			const changeNameOption = {
-				name: 'Change name',
-				action: function () {
-					const newNodeName = prompt("Enter the new name:", node.data.name);
-					if (newNodeName) {
-						node.data.name = newNodeName;
-					}
-				}
-			};
 			const addInputConnectorOption = {
 				name: 'Add input connector',
 				action: function () {
@@ -479,53 +470,52 @@ angular.module('flowChart', ['dragging'])
 					$scope.chart.deleteSelected();
 				}
 			};
-			// Define computation options
-			const computationChangeExecutionTime = {
-				name: 'Change execution time',
+			// Define device options
+			const modifyDeviceOption = {
+				name: 'Modify device',
 				action: function () {
-					const newExecutionTime = prompt("Enter the new execution time:", node.data.executionTime);
-					if (newExecutionTime) {
-						node.data.executionTime = newExecutionTime;
-					}
+					modifyDevice(node, node.data.name, node.data.description);
 				}
 			}
-			const computationChangeVolumeOfData = {
-				name: 'Change volume of data',
+			// Define computation options
+			const modifyComputationOption = {
+				name: 'Modify computation',
 				action: function () {
-					const newVolumeOfData = prompt("Enter the volume of data:", node.data.volumeOfData);
-					if (newVolumeOfData) {
-						node.data.volumeOfData = newVolumeOfData;
-					}
+
 				}
 			}
 			// Define storage options
-			const storageChangeAvailableMemory = {
-				name: 'Change available memory',
+			const modifyStorageOption = {
+				name: 'Modify storage',
 				action: function () {
-					const newAvailableMemory = prompt("Enter the new available memory:", node.data.availableMemory);
-					if (newAvailableMemory) {
-						node.data.availableMemory = newAvailableMemory;
-					}
+
+				}
+			}
+			// Define communication options
+			const modifyCommunicationOption = {
+				name: 'Modify communication',
+				action: function () {
+
 				}
 			}
 
-			let contextMenuOptions = [changeNameOption, addInputConnectorOption, addOutputConnectorOption];
+			let contextMenuOptions = [];
 
 			// Adding contextMenuOptions based on the type of node selected
 			if (node.data.type == "Device") {
-				//Nothing for the moment 
+				contextMenuOptions.push(modifyDeviceOption);
 			} else if (node.data.type == "Computation") {
-				contextMenuOptions.push(computationChangeExecutionTime);
-				contextMenuOptions.push(computationChangeVolumeOfData);
+				contextMenuOptions.push(modifyComputationOption);
 			} else if (node.data.type == "Storage") {
-				contextMenuOptions.push(storageChangeAvailableMemory);
+				contextMenuOptions.push(modifyStorageOption);
 			} else if (node.data.type == "Communication") {
-				// Nothing for the moment
+				contextMenuOptions.push(modifyCommunicationOption);
 			}
 
 			// Adding common functionalities at the end
+			contextMenuOptions.push(addInputConnectorOption);
+			contextMenuOptions.push(addOutputConnectorOption);
 			contextMenuOptions.push(deleteNodeOption);
-
 
 			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {
@@ -727,5 +717,88 @@ angular.module('flowChart', ['dragging'])
 				}
 			}, { once: true });
 		};
+
+		// Opens the form for the modification of a device
+		function modifyDevice(node, deviceName, deviceDescription) {
+			const form = createDeviceForm(node, deviceName, deviceDescription);
+			document.body.appendChild(form);
+		}
+
+		// Creates the HTML form for the modification of a device
+		function createDeviceForm(node, deviceName, deviceDescription) {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'device-creation-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-device-form';
+			form.action = '';
+			h3.textContent = 'Modify Device';
+			input1.placeholder = deviceName;
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			textarea.placeholder = deviceDescription;
+			textarea.tabIndex = '2';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+			submitButton.onclick = function() {
+				submitDeviceModification(node);
+			};
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
+			}
+
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(textarea);
+			fieldset3.appendChild(submitButton);
+			fieldset3.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			container.appendChild(form);
+
+			return container;
+		}
+
+		// Submits the modification of a device
+		function submitDeviceModification(node, event) {
+			event.preventDefault();
+			/*const form = document.getElementById('create-device-form');
+			if (form.checkValidity()) {
+				const deviceName = form.querySelector('input').value;
+				const deviceDescription = form.querySelector('textarea').value;
+				node.data.name = deviceName;
+				node.data.description = deviceDescription;
+			} else {
+				// Display error message
+				alert('Please fill out all fields');
+			} */
+
+			//TODO continue from here
+			console.log(node);
+			console.log(event);
+		}
 	}])
 	;
