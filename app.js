@@ -225,18 +225,98 @@ angular.module('app', ['flowChart',])
 		//
 		$scope.addDevice = function () {
 
-			var nodeName = prompt("Enter a device name:", "New Device");
-			if (!nodeName) {
-				return;
+			const form = createDeviceForm();
+			document.body.appendChild(form);
+
+		};
+
+		function createDeviceForm() {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'device-creation-container';
+			const form = document.createElement('form');
+			
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-device-form';
+			form.action = '';
+			h3.textContent = 'Create Device';
+			input1.placeholder = 'Device Name';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			textarea.placeholder = 'Computation description....';
+			textarea.tabIndex = '2';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+			submitButton.onclick = submitDeviceCreation;
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
 			}
 
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(textarea);
+			fieldset3.appendChild(submitButton);
+			fieldset3.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			container.appendChild(form);
+
+			return container; 
+		}
+
+		function submitDeviceCreation(event) {
+			// Avoids the reloading of the page
+			event.preventDefault();
+			const container = document.getElementById('device-creation-container');
+
+			// Check if the form is valid before removing it from the document
+			// TODO add custom validation for the values
+			if (container.querySelector('form').checkValidity()) {
+				// Form is valid, continue with the next line of code
+				// Get the values from the form
+				const computationName = container.querySelector('input[placeholder="Device Name"]').value;
+				const description = container.querySelector('textarea').value;
+
+				createNewDevice(computationName, description);
+				// Remove the form
+				document.body.removeChild(container);
+			} else {
+				// Form is not valid, handle the error or show an error message
+				alert("Please fill in all fields.");
+			}
+		}
+
+		function createNewDevice(deviceName, description) {
+			console.log("Creating new device");
 			//
 			// Template for a new device.
 			//
-			var newNodeDataModel = {
-				name: nodeName,
+			let newNodeDataModel = {
+				name: deviceName,
 				id: nextNodeID++,
 				type: "Device",
+				description: description,
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -252,7 +332,8 @@ angular.module('app', ['flowChart',])
 			};
 
 			$scope.chartViewModel.addNode(newNodeDataModel);
-		};
+		}
+
 		//
 		// Add a new Computation to the chart.
 		//
@@ -262,7 +343,7 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(form);
 		};
 
-		/* UTILITY FUNCTIONS FOR CREATION OF HTML ELEMENTS */
+		// Create a form to add a new computation
 		function createComputationForm() {
 			// Create elements
 			const container = document.createElement('div');
@@ -350,7 +431,7 @@ angular.module('app', ['flowChart',])
 				const executionTime = container.querySelector('input[placeholder="Computation execution time"]').value;
 				const volumeOfData = container.querySelector('input[placeholder="Computation volume of data"]').value;
 				const description = container.querySelector('textarea').value;
-				
+
 				createNewComputation(computationName, executionTime, volumeOfData, description);
 				// Remove the form
 				document.body.removeChild(container);
