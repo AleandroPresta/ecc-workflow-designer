@@ -62,6 +62,7 @@ angular.module('app', ['flowChart',])
 					name: "Device",
 					id: 0,
 					type: "Device",
+					description: "This is a device",
 					x: 26,
 					y: 27,
 					width: 350,
@@ -82,6 +83,7 @@ angular.module('app', ['flowChart',])
 					type: "Computation",
 					executionTime: "10ms",
 					volumeOfData: "25mb",
+					description: "This is a computation",
 					x: 418,
 					y: 138,
 					inputConnectors: [
@@ -101,6 +103,7 @@ angular.module('app', ['flowChart',])
 					id: 2,
 					type: "Storage",
 					availableMemory: '20TB',
+					description: "This is a storage",
 					x: 687,
 					y: 296,
 					inputConnectors: [
@@ -119,6 +122,7 @@ angular.module('app', ['flowChart',])
 					name: "Communication",
 					id: 3,
 					type: "Communication",
+					description: "This is a communication",
 					x: 985,
 					y: 423,
 					inputConnectors: [
@@ -280,7 +284,7 @@ angular.module('app', ['flowChart',])
 
 			// Set attributes and content
 			container.className = 'container';
-			form.id = 'create';
+			form.id = 'create-computation-form';
 			form.action = '';
 			h3.textContent = 'Create Computation';
 			input1.placeholder = 'Computation Name';
@@ -345,7 +349,9 @@ angular.module('app', ['flowChart',])
 				const computationName = container.querySelector('input[placeholder="Computation Name"]').value;
 				const executionTime = container.querySelector('input[placeholder="Computation execution time"]').value;
 				const volumeOfData = container.querySelector('input[placeholder="Computation volume of data"]').value;
-				createNewComputation(computationName, executionTime, volumeOfData);
+				const description = container.querySelector('textarea').value;
+				
+				createNewComputation(computationName, executionTime, volumeOfData, description);
 				// Remove the form
 				document.body.removeChild(container);
 			} else {
@@ -357,7 +363,7 @@ angular.module('app', ['flowChart',])
 
 		function createNewComputation(computationName, executionTime, volumeOfData, description) {
 			//
-			// Template for a new node.
+			// Template for a new computation.
 			//
 			let newNodeDataModel = {
 				name: computationName,
@@ -365,6 +371,7 @@ angular.module('app', ['flowChart',])
 				type: "Computation",
 				executionTime: executionTime,
 				volumeOfData: volumeOfData,
+				description: description,
 				x: 0,
 				y: 0,
 				inputConnectors: [
