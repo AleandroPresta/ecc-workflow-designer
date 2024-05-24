@@ -474,7 +474,21 @@ angular.module('flowChart', ['dragging'])
 			const modifyDeviceOption = {
 				name: 'Modify device',
 				action: function () {
-					modifyDevice(node, node.data.name, node.data.description);
+					const form = createDeviceForm(node.data.name, node.data.description);
+					document.body.appendChild(form);
+
+					form.addEventListener('submit', function (event) {
+						event.preventDefault(); // prevent the form from submitting and reloading the page
+						console.log('Form submitted!')
+
+						const newName = document.getElementById('device-name-input').value;
+						const newDescription = document.getElementById('device-description-input').value;
+
+						node.data.name = newName;
+						node.data.description = newDescription;
+
+						document.body.removeChild(form); // remove the form from the DOM
+					});
 				}
 			}
 			// Define computation options
@@ -718,14 +732,8 @@ angular.module('flowChart', ['dragging'])
 			}, { once: true });
 		};
 
-		// Opens the form for the modification of a device
-		function modifyDevice(node, deviceName, deviceDescription) {
-			const form = createDeviceForm(node, deviceName, deviceDescription);
-			document.body.appendChild(form);
-		}
-
 		// Creates the HTML form for the modification of a device
-		function createDeviceForm(node, deviceName, deviceDescription) {
+		function createDeviceForm(deviceName, deviceDescription) {
 			// Create elements
 			const container = document.createElement('div');
 			container.id = 'device-creation-container';
@@ -746,20 +754,19 @@ angular.module('flowChart', ['dragging'])
 			form.action = '';
 			h3.textContent = 'Modify Device';
 			input1.placeholder = deviceName;
+			input1.id = 'device-name-input';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
 			textarea.placeholder = deviceDescription;
+			textarea.id = 'device-description-input';
 			textarea.tabIndex = '2';
 			textarea.required = true;
 			submitButton.name = 'submit';
 			submitButton.type = 'submit';
 			submitButton.id = 'submit-button';
 			submitButton.textContent = 'Submit';
-			submitButton.onclick = function() {
-				submitDeviceModification(node);
-			};
 
 			cancelButton.type = 'submit';
 			cancelButton.formNoValidate = true;
@@ -783,22 +790,23 @@ angular.module('flowChart', ['dragging'])
 		}
 
 		// Submits the modification of a device
-		function submitDeviceModification(node, event) {
+		function submitDeviceModification(event) {
 			event.preventDefault();
-			/*const form = document.getElementById('create-device-form');
+			const container = document.getElementById('device-creation-container');
+			const form = container.querySelector('form');
+
 			if (form.checkValidity()) {
-				const deviceName = form.querySelector('input').value;
-				const deviceDescription = form.querySelector('textarea').value;
-				node.data.name = deviceName;
-				node.data.description = deviceDescription;
+				const newDeviceName = form.querySelector('input').value;
+				const newDeviceDescription = form.querySelector('textarea').value;
+				
+				// Modify the device name and description
+				
+				
+				document.body.removeChild(container);
 			} else {
 				// Display error message
 				alert('Please fill out all fields');
-			} */
-
-			//TODO continue from here
-			console.log(node);
-			console.log(event);
+			}
 		}
 	}])
 	;
