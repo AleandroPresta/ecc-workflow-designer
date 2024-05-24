@@ -479,7 +479,6 @@ angular.module('flowChart', ['dragging'])
 
 					form.addEventListener('submit', function (event) {
 						event.preventDefault(); // prevent the form from submitting and reloading the page
-						console.log('Form submitted!')
 
 						const newName = document.getElementById('device-name-input').value;
 						const newDescription = document.getElementById('device-description-input').value;
@@ -495,21 +494,66 @@ angular.module('flowChart', ['dragging'])
 			const modifyComputationOption = {
 				name: 'Modify computation',
 				action: function () {
+					const form = createComputationForm(node.data.name, node.data.executionTime, node.data.volumeOfData, node.data.description);
+					document.body.appendChild(form);
 
+					form.addEventListener('submit', function (event) {
+						event.preventDefault(); // prevent the form from submitting and reloading the page
+
+						const newName = document.getElementById('computation-name-input').value;
+						const newExecutionTime = document.getElementById('computation-extime-input').value;
+						const newVolumeOfData = document.getElementById('computation-voldata-input').value;
+						const newDescription = document.getElementById('computation-description-input').value;
+
+						node.data.name = newName;
+						node.data.executionTime = newExecutionTime;
+						node.data.volumeOfData = newVolumeOfData;
+						node.data.description = newDescription;
+
+						document.body.removeChild(form); // remove the form from the DOM
+					});
 				}
 			}
 			// Define storage options
 			const modifyStorageOption = {
 				name: 'Modify storage',
 				action: function () {
+					const form = createStorageForm(node.data.name, node.data.availableMemory, node.data.description);
+					document.body.appendChild(form);
 
+					form.addEventListener('submit', function(event) {
+						event.preventDefault();
+
+						const newName = document.getElementById('storage-name-input').value;
+						const newAvailableMemory = document.getElementById('storage-avmemory-input').value;
+						const newDescription = document.getElementById('storage-description-input').value;
+
+						node.data.name = newName;
+						node.data.availableMemory = newAvailableMemory;
+						node.data.description = newDescription;
+
+						document.body.removeChild(form);
+					});
 				}
 			}
 			// Define communication options
 			const modifyCommunicationOption = {
 				name: 'Modify communication',
 				action: function () {
+					const form = createCommunicationForm(node.data.name, node.data.description);
+					document.body.appendChild(form);
 
+					form.addEventListener('submit', function (event) {
+						event.preventDefault(); // prevent the form from submitting and reloading the page
+
+						const newName = document.getElementById('communication-name-input').value;
+						const newDescription = document.getElementById('communication-description-input').value;
+
+						node.data.name = newName;
+						node.data.description = newDescription;
+
+						document.body.removeChild(form); // remove the form from the DOM
+					});
 				}
 			}
 
@@ -789,24 +833,199 @@ angular.module('flowChart', ['dragging'])
 			return container;
 		}
 
-		// Submits the modification of a device
-		function submitDeviceModification(event) {
-			event.preventDefault();
-			const container = document.getElementById('device-creation-container');
-			const form = container.querySelector('form');
+		// Create a form to modify a new computation
+		function createComputationForm(computationName, computationExecutionTime, computationVolumeOfData, computationDescription) {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'computation-creation-container';
+			const form = document.createElement('form');
 
-			if (form.checkValidity()) {
-				const newDeviceName = form.querySelector('input').value;
-				const newDeviceDescription = form.querySelector('textarea').value;
-				
-				// Modify the device name and description
-				
-				
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const fieldset4 = document.createElement('fieldset');
+			const fieldset5 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const input2 = document.createElement('input');
+			const input3 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-computation-form';
+			form.action = '';
+			h3.textContent = 'Modify Computation';
+			input1.placeholder = computationName;
+			input1.id = 'computation-name-input';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			input2.placeholder = computationExecutionTime;
+			input2.id = 'computation-extime-input';
+			input2.type = 'text';
+			input2.tabIndex = '2';
+			input2.required = true;
+			input3.placeholder = computationVolumeOfData;
+			input3.id = 'computation-voldata-input';
+			input3.type = 'text';
+			input3.tabIndex = '3';
+			input3.required = true;
+			textarea.placeholder = computationDescription;
+			textarea.id = 'computation-description-input';
+			textarea.tabIndex = '4';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
 				document.body.removeChild(container);
-			} else {
-				// Display error message
-				alert('Please fill out all fields');
 			}
+
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(input2);
+			fieldset3.appendChild(input3);
+			fieldset4.appendChild(textarea);
+			fieldset5.appendChild(submitButton);
+			fieldset5.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			form.appendChild(fieldset4);
+			form.appendChild(fieldset5);
+			container.appendChild(form);
+
+			return container;
+		}
+
+		function createStorageForm(storageName, storageAvailableMemory, storageDescription){
+			const container = document.createElement('div');
+			container.id = 'storage-creation-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const fieldset4 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const input2 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-storage-form';
+			form.action = '';
+			h3.textContent = 'Modify Storage';
+			input1.placeholder = storageName;
+			input1.id = 'storage-name-input';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			input2.placeholder = storageAvailableMemory;
+			input2.id = 'storage-avmemory-input';
+			input2.type = 'text';
+			input2.tabIndex = '2';
+			input2.required = true;
+			textarea.placeholder = storageDescription;
+			textarea.id = 'storage-description-input';
+			textarea.tabIndex = '4';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
+			}
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(input2);
+			fieldset3.appendChild(textarea);
+			fieldset4.appendChild(submitButton);
+			fieldset4.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			form.appendChild(fieldset4);
+			container.appendChild(form);
+
+			return container;
+
+		}
+
+		function createCommunicationForm(communicationName, communicationDescription) {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'communication-creation-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const fieldset3 = document.createElement('fieldset');
+			const input1 = document.createElement('input');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'create-communication-form';
+			form.action = '';
+			h3.textContent = 'Modify Communication';
+			input1.placeholder = communicationName;
+			input1.id = 'communication-name-input';
+			input1.type = 'text';
+			input1.tabIndex = '1';
+			input1.required = true;
+			input1.autofocus = true;
+			textarea.placeholder = communicationDescription;
+			textarea.id = 'communication-description-input';
+			textarea.tabIndex = '2';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
+			}
+
+			// Append elements
+			fieldset1.appendChild(input1);
+			fieldset2.appendChild(textarea);
+			fieldset3.appendChild(submitButton);
+			fieldset3.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			form.appendChild(fieldset3);
+			container.appendChild(form);
+
+			return container;
 		}
 	}])
 	;
