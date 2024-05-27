@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="css/device-form.css">
 		<link rel="stylesheet" href="css/storage-form.css">
 		<link rel="stylesheet" href="css/communication-form.css">
-
+		<link rel="stylesheet" href="css/catalog-form.css">
 	</head>	
 	<body 
 		ng-app="app" 
@@ -43,46 +43,23 @@
 					 Hide JSON
 					</button> 
 					<button
-    				ng-click="addDevice()"
-    				title="Add a new device to the chart"
+    				ng-click="uploadCatalog()"
+    				title="Upload AWS catalog and then send to server"
     				>
-    				Add Device
-				</button>
-				<button
-					ng-click="addComputation()"
-					title="Add a new computation to the chart"
-				>
-					Add Computation
-				</button>
-				<button
-					ng-click="addStorage()">
-					Add Storage
-				</button>
-				<button
-					ng-click="addCommunication()">
-					Add Communication
-				</button>
-    			<button
-    				ng-click="addNewInputConnector()"
-    				ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-    				title="Add a new input connector to the selected node"
-    				>
-    				Add Input Connector
-				</button>
-    			<button
-    				ng-click="addNewOutputConnector()"
-    				ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-    				title="Add a new output connector to the selected node"
-    				>
-    				Add Output Connector
-				</button>
-    			<button
-    				ng-click="deleteSelected()"
-    				ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
-    				title="Delete selected nodes and connections"
-    				>
-    				Delete Selected
-				</button>
+    				Upload Catalog
+					</button>
+					<button
+					ng-click="save()"
+					title="Save the current workflow"
+					>
+					Save
+					</button>
+					<button
+					ng-click="load()"
+					title="Load a workflow"
+					>
+					Load
+					</button>
 				</div>
 				
 				<!--

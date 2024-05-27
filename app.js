@@ -175,6 +175,8 @@ angular.module('app', ['flowChart',])
 			]
 		};
 
+		const awsCatalog = {};
+
 		//
 		// Event handler for key-down on the flowchart.
 		//
@@ -593,7 +595,7 @@ angular.module('app', ['flowChart',])
 		}
 
 		$scope.addCommunication = function () {
-			
+
 			const form = createCommunicationForm();
 			document.body.appendChild(form);
 		};
@@ -803,5 +805,105 @@ angular.module('app', ['flowChart',])
 				flowchartContainer.style.flexBasis = "100%";
 			}
 		}
+
+		$scope.uploadCatalog = function() {
+
+			const catalogForm = createCatalogForm();
+			document.body.appendChild(catalogForm);
+		}
+
+		function createCatalogForm() {
+			// Create elements
+			const container = document.createElement('div');
+			container.id = 'catalog-container';
+			const form = document.createElement('form');
+
+			const h3 = document.createElement('h3');
+			const fieldset1 = document.createElement('fieldset');
+			const fieldset2 = document.createElement('fieldset');
+			const textarea = document.createElement('textarea');
+			const submitButton = document.createElement('button');
+			const cancelButton = document.createElement('button');
+
+			// Set attributes and content
+			container.className = 'container';
+			form.id = 'catalog-form';
+			form.action = '';
+			fieldset1.className = 'catalog-fieldset-textarea';
+			h3.textContent = 'Insert Catalog';
+			textarea.placeholder = 'AWS Catalog...';
+			textarea.tabIndex = '1';
+			textarea.required = true;
+			submitButton.name = 'submit';
+			submitButton.type = 'submit';
+			submitButton.id = 'submit-button';
+			submitButton.textContent = 'Submit';
+			submitButton.onclick = submitCatalog;
+
+			cancelButton.type = 'submit';
+			cancelButton.formNoValidate = true;
+			cancelButton.textContent = 'Cancel';
+			cancelButton.onclick = function () {
+				document.body.removeChild(container);
+			}
+
+			// Append elements
+			fieldset1.appendChild(textarea);
+			fieldset2.appendChild(submitButton);
+			fieldset2.appendChild(cancelButton);
+			form.appendChild(h3);
+			form.appendChild(fieldset1);
+			form.appendChild(fieldset2);
+			container.appendChild(form);
+
+			return container;
+		}
+
+		function submitCatalog(event) {
+			// Avoids the reloading of the page
+			event.preventDefault();
+			const container = document.getElementById('catalog-container');
+
+			// Check if the form is valid before removing it from the document
+			// TODO add custom validation for the values
+			if (container.querySelector('form').checkValidity()) {
+				// Form is valid, continue with the next line of code
+				// Get the values from the form
+				const catalog = container.querySelector('textarea').value;
+
+				// Define the URL of the server
+				const url = 'http://127.0.0.1:8000/';
+				// Get the data from the chart
+				const data = [$scope.chartViewModel.data, catalog];
+				postToServer(url, data);
+
+
+				// Remove the form
+				document.body.removeChild(container);
+			} else {
+				// Form is not valid, handle the error or show an error message
+				alert("Please fill in all fields.");
+			}
+		}
+
+		// Sends the data to the server
+		function postToServer(url, data) {
+			// Send the POST request using fetch
+			fetch(url, {
+				method: 'POST', // Specify the HTTP method
+				headers: {
+					'Content-Type': 'application/json', // Specify the content type
+				},
+				body: JSON.stringify(data) // Convert the JSON object to a string
+			})
+				.then(response => response.json()) // Parse the response JSON
+				.then(data => {
+					console.log('Success:', data); // Handle the response data
+				})
+				.catch((error) => {
+					console.error('Error:', error); // Handle any errors
+				});
+		}
+
 	}])
 	;
