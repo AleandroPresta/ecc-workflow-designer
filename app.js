@@ -874,7 +874,7 @@ angular.module('app', ['flowChart',])
 				// Define the URL of the server
 				const url = 'http://127.0.0.1:8000/';
 				// Get the data from the chart
-				const data = [$scope.chartViewModel.data, catalog];
+				const data = [$scope.chartViewModel.data, formatText(catalog)];
 				postToServer(url, data);
 
 
@@ -903,6 +903,22 @@ angular.module('app', ['flowChart',])
 				.catch((error) => {
 					console.error('Error:', error); // Handle any errors
 				});
+		}
+
+		// Formats a string into a json object
+		function formatText(text) {
+			// Remove newline characters (\n)
+			text = text.replace(/\\n/g, '');
+			// Remove extra spaces and tabs
+			text = text.replace(/\s{2,}/g, '');
+			// Parse the string into a JSON object
+			try {
+				var jsonObject = JSON.parse(text);
+				return jsonObject;
+			} catch (error) {
+				console.error("Error parsing JSON:", error);
+				return null;
+			}
 		}
 
 	}])
