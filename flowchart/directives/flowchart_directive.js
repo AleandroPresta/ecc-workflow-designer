@@ -476,6 +476,7 @@ angular.module('flowChart', ['dragging'])
 				action: function () {
 					const form = createDeviceForm(node.data.name, node.data.description);
 					document.body.appendChild(form);
+					form.showModal();
 
 					form.addEventListener('submit', function (event) {
 						event.preventDefault(); // prevent the form from submitting and reloading the page
@@ -486,7 +487,9 @@ angular.module('flowChart', ['dragging'])
 						node.data.name = newName;
 						node.data.description = newDescription;
 
-						document.body.removeChild(form); // remove the form from the DOM
+						// Close the dialog and remove it from the DOM
+						form.close();
+						document.body.removeChild(form);
 					});
 				}
 			}
@@ -496,6 +499,7 @@ angular.module('flowChart', ['dragging'])
 				action: function () {
 					const form = createComputationForm(node.data.name, node.data.executionTime, node.data.volumeOfData, node.data.description);
 					document.body.appendChild(form);
+					form.showModal();
 
 					form.addEventListener('submit', function (event) {
 						event.preventDefault(); // prevent the form from submitting and reloading the page
@@ -510,6 +514,8 @@ angular.module('flowChart', ['dragging'])
 						node.data.volumeOfData = newVolumeOfData;
 						node.data.description = newDescription;
 
+						// Close the dialog and remove it from the DOM
+						form.close();
 						document.body.removeChild(form); // remove the form from the DOM
 					});
 				}
@@ -520,6 +526,7 @@ angular.module('flowChart', ['dragging'])
 				action: function () {
 					const form = createStorageForm(node.data.name, node.data.availableMemory, node.data.description);
 					document.body.appendChild(form);
+					form.showModal();
 
 					form.addEventListener('submit', function(event) {
 						event.preventDefault();
@@ -532,6 +539,7 @@ angular.module('flowChart', ['dragging'])
 						node.data.availableMemory = newAvailableMemory;
 						node.data.description = newDescription;
 
+						form.close();
 						document.body.removeChild(form);
 					});
 				}
@@ -542,6 +550,7 @@ angular.module('flowChart', ['dragging'])
 				action: function () {
 					const form = createCommunicationForm(node.data.name, node.data.description);
 					document.body.appendChild(form);
+					form.showModal();
 
 					form.addEventListener('submit', function (event) {
 						event.preventDefault(); // prevent the form from submitting and reloading the page
@@ -552,6 +561,8 @@ angular.module('flowChart', ['dragging'])
 						node.data.name = newName;
 						node.data.description = newDescription;
 
+						// Close the dialog and remove it from the DOM
+						form.close();
 						document.body.removeChild(form); // remove the form from the DOM
 					});
 				}
@@ -779,7 +790,7 @@ angular.module('flowChart', ['dragging'])
 		// Creates the HTML form for the modification of a device
 		function createDeviceForm(deviceName, deviceDescription) {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'device-creation-container';
 			const form = document.createElement('form');
 
@@ -816,6 +827,7 @@ angular.module('flowChart', ['dragging'])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -836,7 +848,7 @@ angular.module('flowChart', ['dragging'])
 		// Create a form to modify a new computation
 		function createComputationForm(computationName, computationExecutionTime, computationVolumeOfData, computationDescription) {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'computation-creation-container';
 			const form = document.createElement('form');
 
@@ -887,6 +899,7 @@ angular.module('flowChart', ['dragging'])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -909,7 +922,7 @@ angular.module('flowChart', ['dragging'])
 		}
 
 		function createStorageForm(storageName, storageAvailableMemory, storageDescription){
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'storage-creation-container';
 			const form = document.createElement('form');
 
@@ -953,6 +966,7 @@ angular.module('flowChart', ['dragging'])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 			// Append elements
@@ -974,7 +988,7 @@ angular.module('flowChart', ['dragging'])
 
 		function createCommunicationForm(communicationName, communicationDescription) {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'communication-creation-container';
 			const form = document.createElement('form');
 
@@ -1011,6 +1025,7 @@ angular.module('flowChart', ['dragging'])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 

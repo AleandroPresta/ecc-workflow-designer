@@ -229,12 +229,13 @@ angular.module('app', ['flowChart',])
 
 			const form = createDeviceForm();
 			document.body.appendChild(form);
+			form.showModal();
 
 		};
 
 		function createDeviceForm() {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'device-creation-container';
 			const form = document.createElement('form');
 
@@ -270,6 +271,7 @@ angular.module('app', ['flowChart',])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -302,6 +304,7 @@ angular.module('app', ['flowChart',])
 
 				createNewDevice(computationName, description);
 				// Remove the form
+				container.close();
 				document.body.removeChild(container);
 			} else {
 				// Form is not valid, handle the error or show an error message
@@ -310,7 +313,6 @@ angular.module('app', ['flowChart',])
 		}
 
 		function createNewDevice(deviceName, description) {
-			console.log("Creating new device");
 			//
 			// Template for a new device.
 			//
@@ -343,12 +345,13 @@ angular.module('app', ['flowChart',])
 
 			const form = createComputationForm();
 			document.body.appendChild(form);
+			form.showModal();
 		};
 
 		// Create a form to add a new computation
 		function createComputationForm() {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'computation-creation-container';
 			const form = document.createElement('form');
 
@@ -396,6 +399,7 @@ angular.module('app', ['flowChart',])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -436,6 +440,7 @@ angular.module('app', ['flowChart',])
 
 				createNewComputation(computationName, executionTime, volumeOfData, description);
 				// Remove the form
+				container.close();
 				document.body.removeChild(container);
 			} else {
 				// Form is not valid, handle the error or show an error message
@@ -477,12 +482,13 @@ angular.module('app', ['flowChart',])
 
 			const form = createStorageForm();
 			document.body.appendChild(form);
+			form.showModal();
 
 		};
 
 		function createStorageForm() {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'storage-creation-container';
 			const form = document.createElement('form');
 
@@ -525,6 +531,7 @@ angular.module('app', ['flowChart',])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -560,6 +567,7 @@ angular.module('app', ['flowChart',])
 
 				createNewStorage(storageName, availableMemory, description);
 				// Remove the form
+				container.close();
 				document.body.removeChild(container);
 			} else {
 				// Form is not valid, handle the error or show an error message
@@ -598,11 +606,12 @@ angular.module('app', ['flowChart',])
 
 			const form = createCommunicationForm();
 			document.body.appendChild(form);
+			form.showModal();
 		};
 
 		function createCommunicationForm() {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'communication-creation-container';
 			const form = document.createElement('form');
 
@@ -638,6 +647,7 @@ angular.module('app', ['flowChart',])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -670,6 +680,7 @@ angular.module('app', ['flowChart',])
 
 				createNewCommunication(communicationName, description);
 				// Remove the form
+				container.close();
 				document.body.removeChild(container);
 			} else {
 				// Form is not valid, handle the error or show an error message
@@ -810,11 +821,12 @@ angular.module('app', ['flowChart',])
 
 			const catalogForm = createCatalogForm();
 			document.body.appendChild(catalogForm);
+			catalogForm.showModal();
 		}
 
 		function createCatalogForm() {
 			// Create elements
-			const container = document.createElement('div');
+			const container = document.createElement('dialog');
 			container.id = 'catalog-container';
 			const form = document.createElement('form');
 
@@ -844,6 +856,7 @@ angular.module('app', ['flowChart',])
 			cancelButton.formNoValidate = true;
 			cancelButton.textContent = 'Cancel';
 			cancelButton.onclick = function () {
+				container.close();
 				document.body.removeChild(container);
 			}
 
@@ -872,13 +885,14 @@ angular.module('app', ['flowChart',])
 				const catalog = container.querySelector('textarea').value;
 
 				// Define the URL of the server
-				const url = 'http://127.0.0.1:8000/';
+				const url = 'http://127.0.0.1:8000/api/compare';
 				// Get the data from the chart
 				const data = [$scope.chartViewModel.data, formatText(catalog)];
 				postToServer(url, data);
 
 
 				// Remove the form
+				container.close();
 				document.body.removeChild(container);
 			} else {
 				// Form is not valid, handle the error or show an error message
