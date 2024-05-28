@@ -175,8 +175,6 @@ angular.module('app', ['flowChart',])
 			]
 		};
 
-		const awsCatalog = {};
-
 		//
 		// Event handler for key-down on the flowchart.
 		//
@@ -960,6 +958,45 @@ angular.module('app', ['flowChart',])
 
 			// Remove the link from the document
 			document.body.removeChild(link);
+		}
+
+		$scope.loadFile = function() {
+			// Create the file input element
+			const fileInput = document.createElement('input');
+			fileInput.type = 'file';
+			fileInput.accept = '.json'; // Restrict file selection to JSON files
+			fileInput.style.display = 'block'; // Hide the input element
+
+			// Append the file input to the body
+			document.body.appendChild(fileInput);
+
+			// Add an event listener for the change event
+			fileInput.addEventListener('change', function (event) {
+				const file = event.target.files[0];
+				if (file) {
+					const reader = new FileReader();
+
+					reader.onload = function (e) {
+						try {
+							const jsonData = JSON.parse(e.target.result);
+							// You can now use jsonData in your app
+							// Add the data to the chart
+							$scope.chartViewModel = jsonData;
+							// Update the view model
+							$scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel);
+
+						} catch (error) {
+							console.error('Error parsing JSON:', error);
+						}
+					};
+
+					reader.onerror = function (e) {
+						console.error('Error reading file:', e);
+					};
+
+					reader.readAsText(file);
+				}
+			});
 		}
 
 	}])
