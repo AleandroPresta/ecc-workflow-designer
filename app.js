@@ -961,14 +961,27 @@ angular.module('app', ['flowChart',])
 		}
 
 		$scope.loadFile = function() {
+			const container = document.createElement('dialog');
+			container.id = 'file-container';
 			// Create the file input element
 			const fileInput = document.createElement('input');
 			fileInput.type = 'file';
 			fileInput.accept = '.json'; // Restrict file selection to JSON files
 			fileInput.style.display = 'block'; // Hide the input element
+			container.appendChild(fileInput);
 
 			// Append the file input to the body
-			document.body.appendChild(fileInput);
+			document.body.appendChild(container);
+			// Open the menu
+			container.showModal();
+
+			// Add an event listener for the esc key of the keyboard that closes the modal
+			document.addEventListener('keydown', function (event) {
+				if (event.keyCode === escKeyCode) {
+					container.close();
+					document.body.removeChild(container);
+				}
+			});
 
 			// Add an event listener for the change event
 			fileInput.addEventListener('change', function (event) {
@@ -995,6 +1008,8 @@ angular.module('app', ['flowChart',])
 					};
 
 					reader.readAsText(file);
+					// Close the dialog
+					container.close();
 				}
 			});
 		}
