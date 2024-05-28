@@ -1032,14 +1032,14 @@ angular.module('app', ['flowChart',])
 		$scope.zoomIn = function () {
 			if ($scope.scale < maxScale) {
 				console.log('Zooming in')
-				$scope.scale += 0.1;
+				$scope.scale += 0.07;
 			}
 		};
 
 		$scope.zoomOut = function () {
 			if ($scope.scale > minScale) {
 				console.log('Zooming out')
-				$scope.scale -= 0.1;
+				$scope.scale -= 0.07;
 			}
 		};
 
