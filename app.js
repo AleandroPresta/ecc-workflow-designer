@@ -935,5 +935,32 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
+		$scope.saveFile = function() {
+			data = $scope.chartViewModel.data;
+			// Convert JSON object to string
+			const jsonString = JSON.stringify(data);
+
+			// Create a Blob from the JSON string
+			const blob = new Blob([jsonString], { type: "application/json" });
+
+			// Create a link element
+			const link = document.createElement("a");
+
+			// Create a URL for the Blob and set it as the href attribute
+			link.href = URL.createObjectURL(blob);
+
+			// Set the download attribute to specify the filename
+			link.download = "data.json";
+
+			// Append the link to the document body (required for Firefox)
+			document.body.appendChild(link);
+
+			// Programmatically click the link to trigger the download
+			link.click();
+
+			// Remove the link from the document
+			document.body.removeChild(link);
+		}
+
 	}])
 	;
