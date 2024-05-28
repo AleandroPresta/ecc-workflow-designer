@@ -1043,4 +1043,14 @@ angular.module('flowChart', ['dragging'])
 			return container;
 		}
 	}])
+
+	.directive('onWheel', function () {
+		return function (scope, element, attrs) {
+			element.bind('wheel', function (event) {
+				scope.$apply(function () {
+					scope.$eval(attrs.onWheel, { $event: event });
+				});
+			});
+		};
+	});
 	;

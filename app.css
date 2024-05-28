@@ -67,7 +67,6 @@ Styles for nodes and connectors.
 Style for connections.
 */
 
-
 .connection-line {
     stroke: gray;
     stroke-width: 4;
@@ -135,6 +134,10 @@ The element (in this case the SVG element) that contains the draggable elements.
     border: solid 1px blue;
 }
 
+rect {
+    cursor: move;
+}
+
 /*
 Drag selection rectangle.
 */
@@ -154,11 +157,25 @@ Drag selection rectangle.
 
 .json-container {
     flex-basis: 30%;
+    flex-grow: 1;
 }
 
 .flowchart-container {
     flex-basis: 70%;
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
 }
+
+.zoom-element {
+    width: 300%;
+    height: 300%;
+    transform-origin: top left; /* Ensure scaling is from the top left corner */
+    transition: transform 0.2s ease;
+    overflow: hidden;
+}
+
+
 
 .json-content {
     position: relative;
@@ -228,30 +245,30 @@ Drag selection rectangle.
     font-weight: 600;
     height: 45px;
     width: 160px;
-	cursor:pointer;
-	border:none;
-	background:#005180;
-	color:#FFF;
-	font-size:15px;
+    cursor: pointer;
+    border: none;
+    background: #005180;
+    color: #fff;
+    font-size: 15px;
     margin-top: 3px;
     border-radius: 10px;
 }
 
 .top-menu > button:hover {
-    border: 1px solid #0CF;
-    background: #0CF;
+    border: 1px solid #0cf;
+    background: #0cf;
     transition: 0.5s;
 }
 
 .background-board {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     z-index: -1;
     background-color: white;
 }
 
 .background-board > rect {
-    width: 100%; 
+    width: 100%;
     height: 100%;
     fill: white;
 }

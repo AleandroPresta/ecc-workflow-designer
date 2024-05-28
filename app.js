@@ -1014,5 +1014,34 @@ angular.module('app', ['flowChart',])
 			});
 		}
 
+		$scope.scale = 1;
+		const minScale = 0.5; // Minimum scale limit
+		const maxScale = 1; // Maximum scale limit (can't zoom more then the default scale)
+
+		$scope.handleWheel = function (event) {
+			event.preventDefault(); // Prevent the default scroll behavior
+			if (event.originalEvent.deltaY < 0) {
+				$scope.zoomIn();
+			} else {
+				$scope.zoomOut();
+			}
+			// Manually trigger digest cycle to apply changes
+			$scope.$apply();
+		};
+
+		$scope.zoomIn = function () {
+			if ($scope.scale < maxScale) {
+				console.log('Zooming in')
+				$scope.scale += 0.1;
+			}
+		};
+
+		$scope.zoomOut = function () {
+			if ($scope.scale > minScale) {
+				console.log('Zooming out')
+				$scope.scale -= 0.1;
+			}
+		};
+
 	}])
 	;
