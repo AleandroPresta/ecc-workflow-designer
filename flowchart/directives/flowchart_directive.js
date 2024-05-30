@@ -509,6 +509,12 @@ angular.module('flowChart', ['dragging'])
 						const newVolumeOfData = document.getElementById('computation-voldata-input').value;
 						const newDescription = document.getElementById('computation-description-input').value;
 
+						// Check if values are integers
+						if (isNaN(newExecutionTime) || isNaN(newVolumeOfData)) {
+							alert('Execution time and volume of data must be integers');
+							return;
+						}
+
 						node.data.name = newName;
 						node.data.description = newDescription;
 						node.data.parameters.executionTime = newExecutionTime;
@@ -534,6 +540,12 @@ angular.module('flowChart', ['dragging'])
 						const newName = document.getElementById('storage-name-input').value;
 						const newAvailableMemory = document.getElementById('storage-avmemory-input').value;
 						const newDescription = document.getElementById('storage-description-input').value;
+
+						// Check if value is integer
+						if (isNaN(newAvailableMemory)) {
+							alert('Available memory must be an integer');
+							return;
+						}
 
 						node.data.name = newName;
 						node.data.parameters.availableMemory = newAvailableMemory;

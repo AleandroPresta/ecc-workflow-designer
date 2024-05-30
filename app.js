@@ -82,8 +82,8 @@ angular.module('app', ['flowChart',])
 					id: 1,
 					type: "Computation",
 					parameters: {
-						executionTime: "10ms",
-						volumeOfData: "25mb"
+						executionTime: 10,
+						volumeOfData: 25
 					},
 					description: "This is a computation",
 					x: 418,
@@ -105,7 +105,7 @@ angular.module('app', ['flowChart',])
 					id: 2,
 					type: "Storage",
 					parameters: {
-						availableMemory: '20TB',
+						availableMemory: 20,
 					},
 					description: "This is a storage",
 					x: 687,
@@ -127,7 +127,7 @@ angular.module('app', ['flowChart',])
 					id: 3,
 					type: "Communication",
 					parameters: {
-						
+
 					},
 					description: "This is a communication",
 					x: 985,
@@ -304,10 +304,10 @@ angular.module('app', ['flowChart',])
 			if (container.querySelector('form').checkValidity()) {
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
-				const computationName = container.querySelector('input[placeholder="Device Name"]').value;
+				const deviceName = container.querySelector('input[placeholder="Device Name"]').value;
 				const description = container.querySelector('textarea').value;
 
-				createNewDevice(computationName, description);
+				createNewDevice(deviceName, description);
 				// Remove the form
 				container.close();
 				document.body.removeChild(container);
@@ -439,8 +439,14 @@ angular.module('app', ['flowChart',])
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
 				const computationName = container.querySelector('input[placeholder="Computation Name"]').value;
-				const executionTime = container.querySelector('input[placeholder="Computation execution time"]').value;
-				const volumeOfData = container.querySelector('input[placeholder="Computation volume of data"]').value;
+				const executionTime = parseInt(container.querySelector('input[placeholder="Computation execution time"]').value);
+				const volumeOfData = parseInt(container.querySelector('input[placeholder="Computation volume of data"]').value);
+
+				// Check if the values are valid integers
+				if (isNaN(executionTime) || isNaN(volumeOfData)) {
+					alert("Please enter valid integers for execution time and volume of data.");
+					return;
+				}
 				const description = container.querySelector('textarea').value;
 
 				createNewComputation(computationName, executionTime, volumeOfData, description);
@@ -572,6 +578,12 @@ angular.module('app', ['flowChart',])
 				const availableMemory = container.querySelector('input[placeholder="Available Memory"]').value;
 				const description = container.querySelector('textarea').value;
 
+				// Check if the values are valid integers
+				if (isNaN(availableMemory)) {
+					alert("Please enter a valid integer for available memory.");
+					return;
+				}
+
 				createNewStorage(storageName, availableMemory, description);
 				// Remove the form
 				container.close();
@@ -592,7 +604,7 @@ angular.module('app', ['flowChart',])
 				type: "Storage",
 				parameters: {
 					availableMemory: availableMemory
-				},				
+				},
 				description: description,
 				x: 0,
 				y: 0,
@@ -829,87 +841,67 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
-		$scope.uploadCatalog = function() {
-
-			const catalogForm = createCatalogForm();
-			document.body.appendChild(catalogForm);
-			catalogForm.showModal();
+		$scope.findMatch = function () {
+			sendCatalogAndWorkflowToServer();
 		}
 
-		function createCatalogForm() {
-			// Create elements
-			const container = document.createElement('dialog');
-			container.id = 'catalog-container';
-			const form = document.createElement('form');
+		function sendCatalogAndWorkflowToServer() {;
+			const catalog = loadDefaultCatalog();
 
-			const h3 = document.createElement('h3');
-			const fieldset1 = document.createElement('fieldset');
-			const fieldset2 = document.createElement('fieldset');
-			const textarea = document.createElement('textarea');
-			const submitButton = document.createElement('button');
-			const cancelButton = document.createElement('button');
-
-			// Set attributes and content
-			container.className = 'container';
-			form.id = 'catalog-form';
-			form.action = '';
-			fieldset1.className = 'catalog-fieldset-textarea';
-			h3.textContent = 'Insert Catalog';
-			textarea.placeholder = 'AWS Catalog...';
-			textarea.tabIndex = '1';
-			textarea.required = true;
-			submitButton.name = 'submit';
-			submitButton.type = 'submit';
-			submitButton.id = 'submit-button';
-			submitButton.textContent = 'Submit';
-			submitButton.onclick = submitCatalog;
-
-			cancelButton.type = 'submit';
-			cancelButton.formNoValidate = true;
-			cancelButton.textContent = 'Cancel';
-			cancelButton.onclick = function () {
-				container.close();
-				document.body.removeChild(container);
-			}
-
-			// Append elements
-			fieldset1.appendChild(textarea);
-			fieldset2.appendChild(submitButton);
-			fieldset2.appendChild(cancelButton);
-			form.appendChild(h3);
-			form.appendChild(fieldset1);
-			form.appendChild(fieldset2);
-			container.appendChild(form);
-
-			return container;
+			// Define the URL of the server
+			const url = 'http://127.0.0.1:8000/api/compare';
+			// Get the data from the chart
+			const data = [$scope.chartViewModel.data, catalog];
+			// Send the data to the server
+			postToServer(url, data);
 		}
 
-		function submitCatalog(event) {
-			// Avoids the reloading of the page
-			event.preventDefault();
-			const container = document.getElementById('catalog-container');
+		// Loads the default catalog of services
+		function loadDefaultCatalog(){
+			const defaultCatalog = {
+				services: [
+					{
+						name: "Service 1",
+						id: 0,
+						type: "Computation",
+						parameters: {
+							executionTime: "500",
+							volumeOfData: "25"
+						},
+						description: "This is a computation service",
+					},
+					{
+						name: "Service 2",
+						id: 1,
+						type: "Computation",
+						parameters: {
+							executionTime: "600",
+							volumeOfData: "20"
+						},
+						description: "This is a computation service",
+					},
+					{
+						name: "Service 3",
+						id: 2,
+						type: "Storage",
+						parameters: {
+							availableMemory: '20',
+						},
+						description: "This is a storage service",
+					},
+					{
+						name: "Service 4",
+						id: 3,
+						type: "Communication",
+						parameters: {
 
-			// Check if the form is valid before removing it from the document
-			// TODO add custom validation for the values
-			if (container.querySelector('form').checkValidity()) {
-				// Form is valid, continue with the next line of code
-				// Get the values from the form
-				const catalog = container.querySelector('textarea').value;
+						},
+						description: "This is a communication service",
+					}
+				]
+			};
 
-				// Define the URL of the server
-				const url = 'http://127.0.0.1:8000/api/compare';
-				// Get the data from the chart
-				const data = [$scope.chartViewModel.data, formatText(catalog)];
-				postToServer(url, data);
-
-
-				// Remove the form
-				container.close();
-				document.body.removeChild(container);
-			} else {
-				// Form is not valid, handle the error or show an error message
-				alert("Please fill in all fields.");
-			}
+			return defaultCatalog;
 		}
 
 		// Sends the data to the server
@@ -931,23 +923,7 @@ angular.module('app', ['flowChart',])
 				});
 		}
 
-		// Formats a string into a json object
-		function formatText(text) {
-			// Remove newline characters (\n)
-			text = text.replace(/\\n/g, '');
-			// Remove extra spaces and tabs
-			text = text.replace(/\s{2,}/g, '');
-			// Parse the string into a JSON object
-			try {
-				var jsonObject = JSON.parse(text);
-				return jsonObject;
-			} catch (error) {
-				console.error("Error parsing JSON:", error);
-				return null;
-			}
-		}
-
-		$scope.saveFile = function() {
+		$scope.saveFile = function () {
 			data = $scope.chartViewModel.data;
 			// Convert JSON object to string
 			const jsonString = JSON.stringify(data);
@@ -974,7 +950,7 @@ angular.module('app', ['flowChart',])
 			document.body.removeChild(link);
 		}
 
-		$scope.loadFile = function() {
+		$scope.loadFile = function () {
 			const container = document.createElement('dialog');
 			container.id = 'file-container';
 			// Create the file input element
