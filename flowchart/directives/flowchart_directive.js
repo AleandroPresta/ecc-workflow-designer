@@ -497,7 +497,7 @@ angular.module('flowChart', ['dragging'])
 			const modifyComputationOption = {
 				name: 'Modify computation',
 				action: function () {
-					const form = createComputationForm(node.data.name, node.data.executionTime, node.data.volumeOfData, node.data.description);
+					const form = createComputationForm(node.data.name, node.data.parameters.executionTime, node.data.parameters.volumeOfData, node.data.description);
 					document.body.appendChild(form);
 					form.showModal();
 
@@ -510,9 +510,9 @@ angular.module('flowChart', ['dragging'])
 						const newDescription = document.getElementById('computation-description-input').value;
 
 						node.data.name = newName;
-						node.data.executionTime = newExecutionTime;
-						node.data.volumeOfData = newVolumeOfData;
 						node.data.description = newDescription;
+						node.data.parameters.executionTime = newExecutionTime;
+						node.data.parameters.volumeOfData = newVolumeOfData;
 
 						// Close the dialog and remove it from the DOM
 						form.close();
@@ -524,7 +524,7 @@ angular.module('flowChart', ['dragging'])
 			const modifyStorageOption = {
 				name: 'Modify storage',
 				action: function () {
-					const form = createStorageForm(node.data.name, node.data.availableMemory, node.data.description);
+					const form = createStorageForm(node.data.name, node.data.parameters.availableMemory, node.data.description);
 					document.body.appendChild(form);
 					form.showModal();
 
@@ -536,7 +536,7 @@ angular.module('flowChart', ['dragging'])
 						const newDescription = document.getElementById('storage-description-input').value;
 
 						node.data.name = newName;
-						node.data.availableMemory = newAvailableMemory;
+						node.data.parameters.availableMemory = newAvailableMemory;
 						node.data.description = newDescription;
 
 						form.close();

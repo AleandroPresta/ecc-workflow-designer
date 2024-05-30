@@ -81,8 +81,10 @@ angular.module('app', ['flowChart',])
 					name: "Computation",
 					id: 1,
 					type: "Computation",
-					executionTime: "10ms",
-					volumeOfData: "25mb",
+					parameters: {
+						executionTime: "10ms",
+						volumeOfData: "25mb"
+					},
 					description: "This is a computation",
 					x: 418,
 					y: 138,
@@ -102,7 +104,9 @@ angular.module('app', ['flowChart',])
 					name: "Storage",
 					id: 2,
 					type: "Storage",
-					availableMemory: '20TB',
+					parameters: {
+						availableMemory: '20TB',
+					},
 					description: "This is a storage",
 					x: 687,
 					y: 296,
@@ -122,6 +126,9 @@ angular.module('app', ['flowChart',])
 					name: "Communication",
 					id: 3,
 					type: "Communication",
+					parameters: {
+						
+					},
 					description: "This is a communication",
 					x: 985,
 					y: 423,
@@ -455,8 +462,10 @@ angular.module('app', ['flowChart',])
 				name: computationName,
 				id: nextNodeID++,
 				type: "Computation",
-				executionTime: executionTime,
-				volumeOfData: volumeOfData,
+				parameters: {
+					executionTime: executionTime,
+					volumeOfData: volumeOfData
+				},
 				description: description,
 				x: 0,
 				y: 0,
@@ -581,7 +590,9 @@ angular.module('app', ['flowChart',])
 				name: storageName,
 				id: nextNodeID++,
 				type: "Storage",
-				availableMemory: availableMemory,
+				parameters: {
+					availableMemory: availableMemory
+				},				
 				description: description,
 				x: 0,
 				y: 0,
@@ -694,6 +705,9 @@ angular.module('app', ['flowChart',])
 				name: communicationName,
 				id: nextNodeID++,
 				type: "Communication",
+				parameters: {
+
+				},
 				description: description,
 				x: 0,
 				y: 0,
