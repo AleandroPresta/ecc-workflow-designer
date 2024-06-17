@@ -160,6 +160,10 @@ Drag selection rectangle.
     flex-grow: 1;
 }
 
+#json-textarea {
+    resize: horizontal;
+}
+
 .flowchart-container {
     flex-basis: 70%;
     flex-grow: 1;
