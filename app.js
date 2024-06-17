@@ -405,17 +405,17 @@ angular.module('app', ['flowChart',])
 			const fieldset4 = document.createElement('fieldset');
 			const fieldset5 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
-			input1.className = 'form-control'
+			input1.className = 'form-control';
 			const input2 = document.createElement('input');
-			input2.className = 'form-control'
+			input2.className = 'form-control';
 			const input3 = document.createElement('input');
-			input3.className = 'form-control'
+			input3.className = 'form-control';
 			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control'
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary'
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary'
+			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content	
 			form.id = 'create-computation-form';
@@ -720,7 +720,6 @@ angular.module('app', ['flowChart',])
 			const form = document.createElement('form');
 
 			// Create 4 rows
-			// Create 4 rows
 			const row1 = document.createElement('div');
 			row1.className = 'row m-3';
 			const row2 = document.createElement('div');
@@ -735,13 +734,13 @@ angular.module('app', ['flowChart',])
 			const fieldset2 = document.createElement('fieldset');
 			const fieldset3 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
-			input1.className = 'form-control'
+			input1.className = 'form-control';
 			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control'
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary'
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary'
+			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content
 			container.className = 'container';
