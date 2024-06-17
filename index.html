@@ -42,30 +42,35 @@
 				</div>
 			</div>
 		    <div class="flowchart-container">
-				<div class="top-menu">
-					<button
-					ng-click="toggleJsonButton()"
-					class="json-button">
-					 Hide JSON
-					</button> 
-					<button
-    				ng-click="findMatch()"
-    				title="Finds match between default catalog and workflow"
-    				>
-    				Find Match
-					</button>
-					<button
-					ng-click="saveFile()"
-					title="Save the current workflow"
-					>
-					Save
-					</button>
-					<button
-					ng-click="loadFile()"
-					title="Load a workflow"
-					>
-					Load
-					</button>
+				<div class="container d-flex justify-content-center align-items-center">
+					<div class="btn-group">
+						<button
+						ng-click="toggleJsonButton()"
+						class="btn btn-primary">
+						Hide JSON
+						</button> 
+						<button
+						ng-click="findMatch()"
+						class="btn btn-primary"
+						title="Finds match between default catalog and workflow"
+						>
+						Find Match
+						</button>
+						<button
+						ng-click="saveFile()"
+						class="btn btn-primary"
+						title="Save the current workflow"
+						>
+						Save
+						</button>
+						<button
+						ng-click="loadFile()"
+						class="btn btn-primary"
+						title="Load a workflow"
+						>
+						Load
+						</button>
+					</div>	
 				</div>
 				
 				<!--
