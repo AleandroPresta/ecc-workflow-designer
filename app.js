@@ -242,6 +242,7 @@ angular.module('app', ['flowChart',])
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'device-creation-container';
+			container.className = 'container';
 			const form = document.createElement('form');
 
 			const h3 = document.createElement('h3');
