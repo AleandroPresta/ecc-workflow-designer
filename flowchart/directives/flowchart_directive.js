@@ -447,7 +447,7 @@ angular.module('flowChart', ['dragging'])
 
 			// Create the <ul> element
 			let ulElement = document.createElement('ul');
-			ulElement.setAttribute('class', 'menu-list');
+			ulElement.setAttribute('class', 'menu-list-custom');
 			ulElement.setAttribute('style', 'list-style-type: none; margin: 0;');
 
 			// Definition of context menu options
@@ -601,11 +601,11 @@ angular.module('flowChart', ['dragging'])
 			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {
 				let liElement = document.createElement('li');
-				liElement.setAttribute('class', 'menu-item');
+				liElement.setAttribute('class', 'menu-item-custom');
 
 				// Create button element for the option
 				let buttonElement = document.createElement('button');
-				buttonElement.setAttribute('class', 'menu-button');
+				buttonElement.setAttribute('class', 'menu-button-custom');
 				buttonElement.textContent = option.name;
 
 				// Add click event listener to execute the action
@@ -651,7 +651,7 @@ angular.module('flowChart', ['dragging'])
 
 			// Create the <ul> element
 			let ulElement = document.createElement('ul');
-			ulElement.setAttribute('class', 'menu-list');
+			ulElement.setAttribute('class', 'menu-list-custom');
 			ulElement.setAttribute('style', 'list-style-type: none; margin: 0;');
 
 			// Definition of context menu options
@@ -677,11 +677,11 @@ angular.module('flowChart', ['dragging'])
 			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {
 				let liElement = document.createElement('li');
-				liElement.setAttribute('class', 'menu-item');
+				liElement.setAttribute('class', 'menu-item-custom');
 
 				// Create button element for the option
 				let buttonElement = document.createElement('button');
-				buttonElement.setAttribute('class', 'menu-button');
+				buttonElement.setAttribute('class', 'menu-button-custom');
 				buttonElement.textContent = option.name;
 
 				// Add click event listener to execute the action
@@ -727,7 +727,7 @@ angular.module('flowChart', ['dragging'])
 
 			// Create the <ul> element
 			let ulElement = document.createElement('ul');
-			ulElement.setAttribute('class', 'menu-list');
+			ulElement.setAttribute('class', 'menu-list-custom');
 			ulElement.setAttribute('style', 'list-style-type: none; margin: 0;');
 
 			// Definition of context menu options
@@ -766,11 +766,11 @@ angular.module('flowChart', ['dragging'])
 			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {
 				let liElement = document.createElement('li');
-				liElement.setAttribute('class', 'menu-item');
+				liElement.setAttribute('class', 'menu-item-custom');
 
 				// Create button element for the option
 				let buttonElement = document.createElement('button');
-				buttonElement.setAttribute('class', 'menu-button');
+				buttonElement.setAttribute('class', 'menu-button-custom');
 				buttonElement.textContent = option.name;
 
 				// Add click event listener to execute the action
