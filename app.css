@@ -192,7 +192,6 @@ Drag selection rectangle.
 #context-menu {
     display: flex;
     flex-direction: column;
-    background-color: var(--color-bg-secondary);
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(#404040, 0.15);
 }
@@ -200,6 +199,7 @@ Drag selection rectangle.
 .menu-list-custom {
     list-style-type: none;
     margin: 0;
+    padding-left: 0px; /* Overriding Bootstrap's left padding */
     display: block;
     width: 100%;
     & + .menu-list {
