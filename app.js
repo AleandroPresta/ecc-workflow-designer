@@ -578,15 +578,15 @@ angular.module('app', ['flowChart',])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
-			input1.className = 'form-control'
+			input1.className = 'form-control';
 			const input2 = document.createElement('input');
-			input2.className = 'form-control'
+			input2.className = 'form-control';
 			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control'
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary'
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary'
+			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content
 			
