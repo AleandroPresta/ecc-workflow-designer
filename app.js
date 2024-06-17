@@ -1061,6 +1061,8 @@ angular.module('app', ['flowChart',])
 			container.id = 'file-container';
 			// Create the file input element
 			const fileInput = document.createElement('input');
+			// Use Bootstrap's styling
+			fileInput.className = 'form-control';
 			fileInput.type = 'file';
 			fileInput.accept = '.json'; // Restrict file selection to JSON files
 			fileInput.style.display = 'block'; // Hide the input element
