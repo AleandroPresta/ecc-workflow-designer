@@ -195,10 +195,9 @@ Drag selection rectangle.
     background-color: var(--color-bg-secondary);
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(#404040, 0.15);
-    border: 1px solid black;
 }
 
-.menu-list {
+.menu-list-custom {
     list-style-type: none;
     margin: 0;
     display: block;
@@ -208,11 +207,11 @@ Drag selection rectangle.
     }
 }
 
-.menu-item {
+.menu-item-custom {
     position: relative;
 }
 
-.menu-button {
+.menu-button-custom {
     font: inherit;
     border: 0;
     padding: 8px 8px;
@@ -235,7 +234,6 @@ Drag selection rectangle.
         }
     }
 }
-
 
 .background-board {
     height: 100vh;
