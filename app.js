@@ -557,7 +557,20 @@ angular.module('app', ['flowChart',])
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'storage-creation-container';
+			container.className = 'container';
 			const form = document.createElement('form');
+
+			// Create 5 rows
+			const row1 = document.createElement('div');
+			row1.className = 'row m-3';
+			const row2 = document.createElement('div');
+			row2.className = 'row mb-3';
+			const row3 = document.createElement('div');
+			row3.className = 'row mb-3';
+			const row4 = document.createElement('div');
+			row4.className = 'row mb-3';
+			const row5 = document.createElement('div');
+			row5.className = 'row mb-3';
 
 			const h3 = document.createElement('h3');
 			const fieldset1 = document.createElement('fieldset');
@@ -565,13 +578,18 @@ angular.module('app', ['flowChart',])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
+			input1.className = 'form-control'
 			const input2 = document.createElement('input');
+			input2.className = 'form-control'
 			const textarea = document.createElement('textarea');
+			textarea.className = 'form-control'
 			const submitButton = document.createElement('button');
+			submitButton.className = 'btn btn-primary'
 			const cancelButton = document.createElement('button');
+			cancelButton.className = 'btn btn-secondary'
 
 			// Set attributes and content
-			container.className = 'container';
+			
 			form.id = 'create-storage-form';
 			form.action = '';
 			h3.textContent = 'Create Storage';
@@ -602,17 +620,27 @@ angular.module('app', ['flowChart',])
 				document.body.removeChild(container);
 			}
 
+			fieldset4.className = 'd-flex align-items-center justify-content-around';
+
 			// Append elements
 			fieldset1.appendChild(input1);
 			fieldset2.appendChild(input2);
 			fieldset3.appendChild(textarea);
 			fieldset4.appendChild(submitButton);
 			fieldset4.appendChild(cancelButton);
-			form.appendChild(h3);
-			form.appendChild(fieldset1);
-			form.appendChild(fieldset2);
-			form.appendChild(fieldset3);
-			form.appendChild(fieldset4);
+			
+			row1.appendChild(h3);
+			row2.appendChild(fieldset1);
+			row3.appendChild(fieldset2);
+			row4.appendChild(fieldset3);
+			row5.appendChild(fieldset4);
+
+			form.appendChild(row1);
+			form.appendChild(row2);
+			form.appendChild(row3);
+			form.appendChild(row4);	
+			form.appendChild(row5);
+
 			container.appendChild(form);
 
 			return container;
