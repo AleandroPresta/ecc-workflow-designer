@@ -804,19 +804,33 @@ angular.module('flowChart', ['dragging'])
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'device-creation-container';
+			container.className = 'container';
 			const form = document.createElement('form');
+
+			// Create 4 rows
+			const row1 = document.createElement('div');
+			row1.className = 'row m-3';
+			const row2 = document.createElement('div');
+			row2.className = 'row mb-3';
+			const row3 = document.createElement('div');
+			row3.className = 'row mb-3';
+			const row4 = document.createElement('div');
+			row4.className = 'row mb-3';
 
 			const h3 = document.createElement('h3');
 			const fieldset1 = document.createElement('fieldset');
 			const fieldset2 = document.createElement('fieldset');
 			const fieldset3 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
+			input1.className = 'form-control';
 			const textarea = document.createElement('textarea');
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
+			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content
-			container.className = 'container';
 			form.id = 'create-device-form';
 			form.action = '';
 			h3.textContent = 'Modify Device';
@@ -843,15 +857,24 @@ angular.module('flowChart', ['dragging'])
 				document.body.removeChild(container);
 			}
 
+			fieldset3.className = 'd-flex align-items-center justify-content-around';
+
 			// Append elements
 			fieldset1.appendChild(input1);
 			fieldset2.appendChild(textarea);
 			fieldset3.appendChild(submitButton);
 			fieldset3.appendChild(cancelButton);
-			form.appendChild(h3);
-			form.appendChild(fieldset1);
-			form.appendChild(fieldset2);
-			form.appendChild(fieldset3);
+			
+			row1.appendChild(h3);
+			row2.appendChild(fieldset1);
+			row3.appendChild(fieldset2);
+			row4.appendChild(fieldset3);
+
+			form.appendChild(row1);
+			form.appendChild(row2);
+			form.appendChild(row3);
+			form.appendChild(row4);	
+
 			container.appendChild(form);
 
 			return container;
@@ -862,7 +885,22 @@ angular.module('flowChart', ['dragging'])
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'computation-creation-container';
+			container.className = 'container';
 			const form = document.createElement('form');
+
+			// Create 6 rows
+			const row1 = document.createElement('div');
+			row1.className = 'row m-3';
+			const row2 = document.createElement('div');
+			row2.className = 'row mb-3';
+			const row3 = document.createElement('div');
+			row3.className = 'row mb-3';
+			const row4 = document.createElement('div');
+			row4.className = 'row mb-3';
+			const row5 = document.createElement('div');
+			row5.className = 'row mb-3';
+			const row6 = document.createElement('div');
+			row6.className = 'row mb-3';
 
 			const h3 = document.createElement('h3');
 			const fieldset1 = document.createElement('fieldset');
@@ -871,14 +909,19 @@ angular.module('flowChart', ['dragging'])
 			const fieldset4 = document.createElement('fieldset');
 			const fieldset5 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
+			input1.className = 'form-control';
 			const input2 = document.createElement('input');
+			input2.className = 'form-control';
 			const input3 = document.createElement('input');
+			input3.className = 'form-control';
 			const textarea = document.createElement('textarea');
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
+			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content
-			container.className = 'container';
 			form.id = 'create-computation-form';
 			form.action = '';
 			h3.textContent = 'Modify Computation';
@@ -915,6 +958,8 @@ angular.module('flowChart', ['dragging'])
 				document.body.removeChild(container);
 			}
 
+			fieldset5.className = 'd-flex align-items-center justify-content-around';
+
 			// Append elements
 			fieldset1.appendChild(input1);
 			fieldset2.appendChild(input2);
@@ -922,12 +967,21 @@ angular.module('flowChart', ['dragging'])
 			fieldset4.appendChild(textarea);
 			fieldset5.appendChild(submitButton);
 			fieldset5.appendChild(cancelButton);
-			form.appendChild(h3);
-			form.appendChild(fieldset1);
-			form.appendChild(fieldset2);
-			form.appendChild(fieldset3);
-			form.appendChild(fieldset4);
-			form.appendChild(fieldset5);
+			
+			row1.appendChild(h3);
+			row2.appendChild(fieldset1);
+			row3.appendChild(fieldset2);
+			row4.appendChild(fieldset3);
+			row5.appendChild(fieldset4);
+			row6.appendChild(fieldset5);
+
+			form.appendChild(row1);
+			form.appendChild(row2);
+			form.appendChild(row3);
+			form.appendChild(row4);
+			form.appendChild(row5);
+			form.appendChild(row6);
+
 			container.appendChild(form);
 
 			return container;
@@ -936,7 +990,20 @@ angular.module('flowChart', ['dragging'])
 		function createStorageForm(storageName, storageAvailableMemory, storageDescription){
 			const container = document.createElement('dialog');
 			container.id = 'storage-creation-container';
+			container.className = 'container';
 			const form = document.createElement('form');
+
+			// Create 5 rows
+			const row1 = document.createElement('div');
+			row1.className = 'row m-3';
+			const row2 = document.createElement('div');
+			row2.className = 'row mb-3';
+			const row3 = document.createElement('div');
+			row3.className = 'row mb-3';
+			const row4 = document.createElement('div');
+			row4.className = 'row mb-3';
+			const row5 = document.createElement('div');
+			row5.className = 'row mb-3';
 
 			const h3 = document.createElement('h3');
 			const fieldset1 = document.createElement('fieldset');
@@ -944,13 +1011,17 @@ angular.module('flowChart', ['dragging'])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
+			input1.className = 'form-control'
 			const input2 = document.createElement('input');
+			input2.className = 'form-control';
 			const textarea = document.createElement('textarea');
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
+			cancelButton.className = 'btn btn-secondary';	
 
 			// Set attributes and content
-			container.className = 'container';
 			form.id = 'create-storage-form';
 			form.action = '';
 			h3.textContent = 'Modify Storage';
@@ -981,17 +1052,28 @@ angular.module('flowChart', ['dragging'])
 				container.close();
 				document.body.removeChild(container);
 			}
+
+			fieldset4.className = 'd-flex align-items-center justify-content-around';
+
 			// Append elements
 			fieldset1.appendChild(input1);
 			fieldset2.appendChild(input2);
 			fieldset3.appendChild(textarea);
 			fieldset4.appendChild(submitButton);
 			fieldset4.appendChild(cancelButton);
-			form.appendChild(h3);
-			form.appendChild(fieldset1);
-			form.appendChild(fieldset2);
-			form.appendChild(fieldset3);
-			form.appendChild(fieldset4);
+			
+			row1.appendChild(h3);
+			row2.appendChild(fieldset1);
+			row3.appendChild(fieldset2);
+			row4.appendChild(fieldset3);
+			row5.appendChild(fieldset4);
+
+			form.appendChild(row1);
+			form.appendChild(row2);
+			form.appendChild(row3);
+			form.appendChild(row4);
+			form.appendChild(row5);
+
 			container.appendChild(form);
 
 			return container;
@@ -1002,19 +1084,33 @@ angular.module('flowChart', ['dragging'])
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'communication-creation-container';
+			container.className = 'container';
 			const form = document.createElement('form');
+
+			// Create 4 rows
+			const row1 = document.createElement('div');
+			row1.className = 'row m-3';
+			const row2 = document.createElement('div');
+			row2.className = 'row mb-3';
+			const row3 = document.createElement('div');
+			row3.className = 'row mb-3';
+			const row4 = document.createElement('div');
+			row4.className = 'row mb-3';
 
 			const h3 = document.createElement('h3');
 			const fieldset1 = document.createElement('fieldset');
 			const fieldset2 = document.createElement('fieldset');
 			const fieldset3 = document.createElement('fieldset');
 			const input1 = document.createElement('input');
+			input1.className = 'form-control';
 			const textarea = document.createElement('textarea');
+			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
+			submitButton.className = 'btn btn-primary';
 			const cancelButton = document.createElement('button');
+			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content
-			container.className = 'container';
 			form.id = 'create-communication-form';
 			form.action = '';
 			h3.textContent = 'Modify Communication';
@@ -1041,15 +1137,24 @@ angular.module('flowChart', ['dragging'])
 				document.body.removeChild(container);
 			}
 
+			fieldset3.className = 'd-flex align-items-center justify-content-around';
+
 			// Append elements
 			fieldset1.appendChild(input1);
 			fieldset2.appendChild(textarea);
 			fieldset3.appendChild(submitButton);
 			fieldset3.appendChild(cancelButton);
-			form.appendChild(h3);
-			form.appendChild(fieldset1);
-			form.appendChild(fieldset2);
-			form.appendChild(fieldset3);
+			
+			row1.appendChild(h3);
+			row2.appendChild(fieldset1);
+			row3.appendChild(fieldset2);
+			row4.appendChild(fieldset3);
+
+			form.appendChild(row1);
+			form.appendChild(row2);
+			form.appendChild(row3);
+			form.appendChild(row4);	
+
 			container.appendChild(form);
 
 			return container;
