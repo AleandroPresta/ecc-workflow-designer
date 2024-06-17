@@ -232,33 +232,6 @@ Drag selection rectangle.
     }
 }
 
-.top-menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.top-menu > button {
-    color: #ffffff;
-    border: 1px solid white;
-    font-weight: 600;
-    height: 45px;
-    width: 160px;
-    cursor: pointer;
-    border: none;
-    background: #005180;
-    color: #fff;
-    font-size: 15px;
-    margin-top: 3px;
-    border-radius: 10px;
-}
-
-.top-menu > button:hover {
-    border: 1px solid #0cf;
-    background: #0cf;
-    transition: 0.5s;
-}
 
 .background-board {
     height: 100vh;
