@@ -717,6 +717,7 @@ angular.module('app', ['flowChart',])
 			console.log('Creating new computation:')
 			console.log(newNodeDataModel)
 
+			// TODO remove comment and test
 			//$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -753,10 +754,78 @@ angular.module('app', ['flowChart',])
 			const fieldset2 = document.createElement('fieldset');
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
+
+
 			const input1 = document.createElement('input');
 			input1.className = 'form-control';
+
+			// Available Memory
+			/*
+				Create:
+				<div class="input-group mb-3">
+					<div class="col-9">
+						<input class='form-control' ...> ... </input>
+					</div>
+					<div class="col-3">
+						<select class="form-select" id="inputGroupSelect02">
+							<option selected> == </option>
+							<option value="1"> > </option>
+							<option value="2"> >= </option>
+							<option value="3"> < </option>
+							<option value="4"> <= </option>
+						</select>
+					</div>			
+				</div>
+			*/
+
+			const inputGroup1 = document.createElement('div');
+			inputGroup1.className = 'input-group mb-3';
+
+			const col11 = document.createElement('div');
+			col11.className = 'col-9';
+			inputGroup1.appendChild(col11);
+
 			const input2 = document.createElement('input');
 			input2.className = 'form-control';
+			col11.appendChild(input2);
+
+			const col12 = document.createElement('div');
+			col12.className = 'col-3';
+			inputGroup1.appendChild(col12);
+
+			const select1 = document.createElement('select');
+			select1.className = 'form-select';
+			select1.id = 'storage-available-memory-select';
+
+			const option1 = document.createElement('option');
+			option1.selected = true;
+			option1.textContent = '==';
+			select1.appendChild(option1);
+
+			const option2 = document.createElement('option');
+			option2.value = '1';
+			option2.textContent = '>';
+			select1.appendChild(option2);
+			
+			const option3 = document.createElement('option');
+			option3.value = '2';
+			option3.textContent = '>=';
+			select1.appendChild(option3);
+
+			const option4 = document.createElement('option');
+			option4.value = '3';
+			option4.textContent = '<';
+			select1.appendChild(option4);
+
+			const option5 = document.createElement('option');
+			option5.value = '4';
+			option5.textContent = '<=';
+			select1.appendChild(option5);
+	
+			col12.appendChild(select1);
+
+			fieldset2.appendChild(inputGroup1);
+
 			const textarea = document.createElement('textarea');
 			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
@@ -769,19 +838,26 @@ angular.module('app', ['flowChart',])
 			form.id = 'create-storage-form';
 			form.action = '';
 			h3.textContent = 'Create Storage';
+
 			input1.placeholder = 'Storage Name';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
+			input1.id = 'storage-name-input';
+
 			input2.placeholder = 'Available Memory';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
 			input2.autofocus = true;
+			input2.id = 'storage-available-memory-input';
+
 			textarea.placeholder = 'Storage description....';
 			textarea.tabIndex = '3';
 			textarea.required = true;
+			textarea.id = 'storage-description-textarea';
+
 			submitButton.name = 'submit';
 			submitButton.type = 'submit';
 			submitButton.id = 'submit-button';
@@ -800,7 +876,6 @@ angular.module('app', ['flowChart',])
 
 			// Append elements
 			fieldset1.appendChild(input1);
-			fieldset2.appendChild(input2);
 			fieldset3.appendChild(textarea);
 			fieldset4.appendChild(submitButton);
 			fieldset4.appendChild(cancelButton);
@@ -832,9 +907,11 @@ angular.module('app', ['flowChart',])
 			if (container.querySelector('form').checkValidity()) {
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
-				const storageName = container.querySelector('input[placeholder="Storage Name"]').value;
-				const availableMemory = container.querySelector('input[placeholder="Available Memory"]').value;
-				const description = container.querySelector('textarea').value;
+				const storageName = document.getElementById('storage-name-input').value;
+				
+				const availableMemory = parseInt(document.getElementById('storage-available-memory-input').value);
+				const availableMemoryOperatorValue = document.getElementById('storage-available-memory-select').value;
+				const availableMemoryOperator = valueToOperator(availableMemoryOperatorValue);
 
 				// Check if the values are valid integers
 				if (isNaN(availableMemory)) {
@@ -842,7 +919,7 @@ angular.module('app', ['flowChart',])
 					return;
 				}
 
-				createNewStorage(storageName, availableMemory, description);
+				createNewStorage(storageName, availableMemory, availableMemoryOperator, description);
 				// Remove the form
 				container.close();
 				document.body.removeChild(container);
@@ -852,7 +929,7 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
-		function createNewStorage(storageName, availableMemory, description) {
+		function createNewStorage(storageName, availableMemory, availableMemoryOperator, description) {
 			//
 			// Template for a new node.
 			//
@@ -860,9 +937,13 @@ angular.module('app', ['flowChart',])
 				name: storageName,
 				id: nextNodeID++,
 				type: "Storage",
-				parameters: {
-					availableMemory: availableMemory
-				},
+				parameters: [
+					{
+						name: 'availableMemory',
+						value: availableMemory,
+						type: availableMemoryOperator
+					}
+				],
 				description: description,
 				x: 0,
 				y: 0,
@@ -878,7 +959,11 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
-			$scope.chartViewModel.addNode(newNodeDataModel);
+			console.log('Creating new storage:')
+			console.log(newNodeDataModel)
+
+			// TODO remove comment and test 
+			//$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
 		$scope.addCommunication = function () {
