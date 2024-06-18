@@ -375,6 +375,22 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(form);
 			form.showModal();
 		};
+		
+		// Convert the value of the select element to the corresponding operator
+		function valueToOperator(value) {
+			switch (value) {
+				case '1':
+					return '>';
+				case '2':
+					return '>=';
+				case '3':
+					return '<';
+				case '4':
+					return '<=';
+				default:
+					return '==';
+			}
+		}
 
 		// Create a form to add a new computation
 		function createComputationForm() {
@@ -447,6 +463,7 @@ angular.module('app', ['flowChart',])
 
 			const select1 = document.createElement('select');
 			select1.className = 'form-select';
+			select1.id = 'computation-execution-time-select';
 
 			const option1 = document.createElement('option');
 			option1.selected = true;
@@ -513,6 +530,7 @@ angular.module('app', ['flowChart',])
 
 			const select2 = document.createElement('select');
 			select2.className = 'form-select';
+			select2.id = 'computation-volume-of-data-select';
 
 			const option6 = document.createElement('option');
 			option6.selected = true;
@@ -554,22 +572,31 @@ angular.module('app', ['flowChart',])
 			form.id = 'create-computation-form';
 			form.action = '';
 			h3.textContent = 'Create Computation';
+
 			input1.placeholder = 'Computation Name';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
+			input1.id = 'computation-name-input';
+		
 			input2.placeholder = 'Computation execution time';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
+			input2.id = 'computation-execution-time-input';
+
 			input3.placeholder = 'Computation volume of data';
 			input3.type = 'text';
 			input3.tabIndex = '3';
 			input3.required = true;
+			input3.id = 'computation-volume-of-data-input';
+
 			textarea.placeholder = 'Computation description....';
 			textarea.tabIndex = '4';
 			textarea.required = true;
+			textarea.id = 'computation-description-textarea';
+
 			submitButton.name = 'submit';
 			submitButton.type = 'submit';
 			submitButton.id = 'submit-button';
@@ -623,18 +650,25 @@ angular.module('app', ['flowChart',])
 			if (container.querySelector('form').checkValidity()) {
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
-				const computationName = container.querySelector('input[placeholder="Computation Name"]').value;
-				const executionTime = parseInt(container.querySelector('input[placeholder="Computation execution time"]').value);
-				const volumeOfData = parseInt(container.querySelector('input[placeholder="Computation volume of data"]').value);
+				const computationName = document.getElementById('computation-name-input').value;
+
+				const executionTime = parseInt(document.getElementById('computation-execution-time-input').value);
+				const executionTimeOperatorValue = document.getElementById('computation-execution-time-select').value;
+				const executionTimeOperator = valueToOperator(executionTimeOperatorValue);
+
+				const volumeOfData = parseInt(document.getElementById('computation-volume-of-data-input').value);
+				const volumeOfDataOperatorValue = document.getElementById('computation-volume-of-data-select').value;
+				const volumeOfDataOperator = valueToOperator(volumeOfDataOperatorValue);
 
 				// Check if the values are valid integers
 				if (isNaN(executionTime) || isNaN(volumeOfData)) {
 					alert("Please enter valid integers for execution time and volume of data.");
 					return;
 				}
+
 				const description = container.querySelector('textarea').value;
 
-				createNewComputation(computationName, executionTime, volumeOfData, description);
+				createNewComputation(computationName, executionTime, executionTimeOperator, volumeOfData, volumeOfDataOperator, description);
 				// Remove the form
 				container.close();
 				document.body.removeChild(container);
@@ -645,7 +679,7 @@ angular.module('app', ['flowChart',])
 
 		}
 
-		function createNewComputation(computationName, executionTime, volumeOfData, description) {
+		function createNewComputation(computationName, executionTime, executionTimeOperator, volumeOfData, volumeOfDataOperator, description) {
 			//
 			// Template for a new computation.
 			//
@@ -653,10 +687,18 @@ angular.module('app', ['flowChart',])
 				name: computationName,
 				id: nextNodeID++,
 				type: "Computation",
-				parameters: {
-					executionTime: executionTime,
-					volumeOfData: volumeOfData
-				},
+				parameters: [
+					{
+						name: 'executionTime',
+						value: executionTime,
+						type: executionTimeOperator
+					},
+					{
+						name: 'volumeOfData',
+						value: volumeOfData,
+						type: volumeOfDataOperator
+					}
+				],
 				description: description,
 				x: 0,
 				y: 0,
@@ -672,7 +714,10 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
-			$scope.chartViewModel.addNode(newNodeDataModel);
+			console.log('Creating new computation:')
+			console.log(newNodeDataModel)
+
+			//$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
 
