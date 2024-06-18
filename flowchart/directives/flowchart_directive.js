@@ -497,7 +497,7 @@ angular.module('flowChart', ['dragging'])
 			const modifyComputationOption = {
 				name: 'Modify computation',
 				action: function () {
-					const form = createComputationForm(node.data.name, node.data.parameters.executionTime, node.data.parameters.volumeOfData, node.data.description);
+					const form = createComputationForm(node.data.name, node.data.parameters[0].value, node.data.parameters[0].type, node.data.parameters[1].value, node.data.parameters[1].type, node.data.description);
 					document.body.appendChild(form);
 					form.showModal();
 
@@ -881,7 +881,9 @@ angular.module('flowChart', ['dragging'])
 		}
 
 		// Create a form to modify a new computation
-		function createComputationForm(computationName, computationExecutionTime, computationVolumeOfData, computationDescription) {
+		function createComputationForm(computationName, computationExecutionTime, computationExecutionTimeOperator, computationVolumeOfData, computationVolumeOfDataOperator,computationDescription) {
+			console.log(`createComputationForm({computationName: ${computationName}, computationExecutionTime: ${computationExecutionTime}, computationExecutionTimeOperator: ${computationExecutionTimeOperator}, computationVolumeOfData: ${computationVolumeOfData}, computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}, computationDescription: ${computationDescription}})`);
+			
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'computation-creation-container';
@@ -908,12 +910,145 @@ angular.module('flowChart', ['dragging'])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 			const fieldset5 = document.createElement('fieldset');
+
 			const input1 = document.createElement('input');
 			input1.className = 'form-control';
+
+			// executionTime			
+			/*
+				Create:
+				<div class="input-group mb-3">
+					<div class="col-9">
+						<input class='form-control' ...> ... </input>
+					</div>
+					<div class="col-3">
+						<select class="form-select" id="inputGroupSelect02">
+							<option selected> == </option>
+							<option value="1"> > </option>
+							<option value="2"> >= </option>
+							<option value="3"> < </option>
+							<option value="4"> <= </option>
+						</select>
+					</div>			
+				</div>
+
+			*/
+			const inputGroup1 = document.createElement('div');
+			inputGroup1.className = 'input-group mb-3';
+
+			const col11 = document.createElement('div');
+			col11.className = 'col-9';
+			inputGroup1.appendChild(col11);
+
 			const input2 = document.createElement('input');
 			input2.className = 'form-control';
+			col11.appendChild(input2);
+
+			const col12 = document.createElement('div');
+			col12.className = 'col-3';
+			inputGroup1.appendChild(col12);
+
+			const select1 = document.createElement('select');
+			select1.className = 'form-select';
+			select1.id = 'computation-modify-execution-time-select';
+			
+			const option1 = document.createElement('option');
+			option1.selected = true; // TODO modify based on the input operator
+			option1.textContent = '==';
+			select1.appendChild(option1);
+
+			const option2 = document.createElement('option');
+			option2.value = '1';
+			option2.textContent = '>';
+			select1.appendChild(option2);
+
+			const option3 = document.createElement('option');
+			option3.value = '2';
+			option3.textContent = '>=';
+			select1.appendChild(option3);
+
+			const option4 = document.createElement('option');
+			option4.value = '3';
+			option4.textContent = '<';
+			select1.appendChild(option4);
+
+			const option5 = document.createElement('option');
+			option5.value = '4';
+			option5.textContent = '<=';
+			select1.appendChild(option5);
+
+			col12.appendChild(select1);
+
+			fieldset2.appendChild(inputGroup1);
+
+			// Volume of Data
+			/*
+				Create:
+				<div class="input-group mb-3">
+					<div class="col-9">
+						<input class='form-control' ...> ... </input>
+					</div>
+					<div class="col-3">
+						<select class="form-select" id="inputGroupSelect02">
+							<option selected> == </option>
+							<option value="1"> > </option>
+							<option value="2"> >= </option>
+							<option value="3"> < </option>
+							<option value="4"> <= </option>
+						</select>
+					</div>			
+				</div>
+
+			*/
+
+			const inputGroup2 = document.createElement('div');
+			inputGroup2.className = 'input-group mb-3';
+
+			const col21 = document.createElement('div');
+			col21.className = 'col-9';
+			inputGroup2.appendChild(col21);
+
 			const input3 = document.createElement('input');
 			input3.className = 'form-control';
+			col21.appendChild(input3);
+
+			const col22 = document.createElement('div');
+			col22.className = 'col-3';
+			inputGroup2.appendChild(col22);
+
+			const select2 = document.createElement('select');
+			select2.className = 'form-select';
+			select2.id = 'computation-modify-volume-of-data-select';
+
+			const option6 = document.createElement('option');
+			option6.selected = true; // TODO modify based on the input operator
+			option6.textContent = '==';
+			select2.appendChild(option6);
+
+			const option7 = document.createElement('option');
+			option7.value = '1';
+			option7.textContent = '>';
+			select2.appendChild(option7);
+
+			const option8 = document.createElement('option');
+			option8.value = '2';
+			option8.textContent = '>=';
+			select2.appendChild(option8);
+
+			const option9 = document.createElement('option');
+			option9.value = '3';
+			option9.textContent = '<';
+			select2.appendChild(option9);
+
+			const option10 = document.createElement('option');
+			option10.value = '4';
+			option10.textContent = '<=';
+			select2.appendChild(option10);
+
+			col22.appendChild(select2);
+
+			fieldset3.appendChild(inputGroup2);
+
 			const textarea = document.createElement('textarea');
 			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
@@ -925,26 +1060,32 @@ angular.module('flowChart', ['dragging'])
 			form.id = 'create-computation-form';
 			form.action = '';
 			h3.textContent = 'Modify Computation';
+
 			input1.placeholder = computationName;
-			input1.id = 'computation-name-input';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
+			input1.id = 'computation-name-input';
+
 			input2.placeholder = computationExecutionTime;
 			input2.id = 'computation-extime-input';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
+			input2.id = 'computation-extime-input';
+
 			input3.placeholder = computationVolumeOfData;
-			input3.id = 'computation-voldata-input';
 			input3.type = 'text';
 			input3.tabIndex = '3';
 			input3.required = true;
+			input3.id = 'computation-voldata-input';
+
 			textarea.placeholder = computationDescription;
 			textarea.id = 'computation-description-input';
 			textarea.tabIndex = '4';
 			textarea.required = true;
+
 			submitButton.name = 'submit';
 			submitButton.type = 'submit';
 			submitButton.id = 'submit-button';
@@ -962,8 +1103,6 @@ angular.module('flowChart', ['dragging'])
 
 			// Append elements
 			fieldset1.appendChild(input1);
-			fieldset2.appendChild(input2);
-			fieldset3.appendChild(input3);
 			fieldset4.appendChild(textarea);
 			fieldset5.appendChild(submitButton);
 			fieldset5.appendChild(cancelButton);

@@ -930,6 +930,8 @@ angular.module('app', ['flowChart',])
 					return;
 				}
 
+				const description = container.querySelector('textarea').value;
+
 				createNewStorage(storageName, availableMemory, availableMemoryOperator, description);
 				// Remove the form
 				container.close();
@@ -970,11 +972,7 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
-			console.log('Creating new storage:')
-			console.log(newNodeDataModel)
-
-			// TODO remove comment and test 
-			//$scope.chartViewModel.addNode(newNodeDataModel);
+			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
 		$scope.addCommunication = function () {
