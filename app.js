@@ -81,10 +81,18 @@ angular.module('app', ['flowChart',])
 					name: "Computation",
 					id: 1,
 					type: "Computation",
-					parameters: {
-						executionTime: 10,
-						volumeOfData: 25
-					},
+					parameters: [
+						{
+							name: 'executionTime',
+							value: 10,
+							type: '>'
+						},
+						{
+							name: 'volumeOfData',
+							value: 100,
+							type: '>'
+						}
+					],
 					description: "This is a computation",
 					x: 418,
 					y: 138,
@@ -104,9 +112,13 @@ angular.module('app', ['flowChart',])
 					name: "Storage",
 					id: 2,
 					type: "Storage",
-					parameters: {
-						availableMemory: 20,
-					},
+					parameters: [
+						{
+							name: 'availableMemory',
+							value: 1000,
+							type: '>'
+						}
+					],
 					description: "This is a storage",
 					x: 687,
 					y: 296,
@@ -717,8 +729,7 @@ angular.module('app', ['flowChart',])
 			console.log('Creating new computation:')
 			console.log(newNodeDataModel)
 
-			// TODO remove comment and test
-			//$scope.chartViewModel.addNode(newNodeDataModel);
+			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
 
