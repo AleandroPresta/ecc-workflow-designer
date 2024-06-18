@@ -766,7 +766,6 @@ angular.module('app', ['flowChart',])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 
-
 			const input1 = document.createElement('input');
 			input1.className = 'form-control';
 
