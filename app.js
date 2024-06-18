@@ -90,7 +90,7 @@ angular.module('app', ['flowChart',])
 						{
 							name: 'volumeOfData',
 							value: 100,
-							type: '>'
+							type: '<='
 						}
 					],
 					description: "This is a computation",

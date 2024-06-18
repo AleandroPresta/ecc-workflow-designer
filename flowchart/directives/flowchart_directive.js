@@ -882,7 +882,7 @@ angular.module('flowChart', ['dragging'])
 
 		// Create a form to modify a new computation
 		function createComputationForm(computationName, computationExecutionTime, computationExecutionTimeOperator, computationVolumeOfData, computationVolumeOfDataOperator,computationDescription) {
-			console.log(`createComputationForm({computationName: ${computationName}, computationExecutionTime: ${computationExecutionTime}, computationExecutionTimeOperator: ${computationExecutionTimeOperator}, computationVolumeOfData: ${computationVolumeOfData}, computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}, computationDescription: ${computationDescription}})`);
+			console.log(`createComputationForm(\n {computationName: ${computationName}, \n computationExecutionTime: ${computationExecutionTime}, \n computationExecutionTimeOperator: ${computationExecutionTimeOperator}, \n computationVolumeOfData: ${computationVolumeOfData}, \n computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}, \n computationDescription: ${computationDescription}}\n)`);
 			
 			// Create elements
 			const container = document.createElement('dialog');
@@ -953,7 +953,6 @@ angular.module('flowChart', ['dragging'])
 			select1.id = 'computation-modify-execution-time-select';
 			
 			const option1 = document.createElement('option');
-			option1.selected = true; // TODO modify based on the input operator
 			option1.textContent = '==';
 			select1.appendChild(option1);
 
@@ -976,6 +975,20 @@ angular.module('flowChart', ['dragging'])
 			option5.value = '4';
 			option5.textContent = '<=';
 			select1.appendChild(option5);
+
+			console.log(`computationExecutionTimeOperator: ${computationExecutionTimeOperator}`)
+			// Make the right option selected
+			if (computationExecutionTimeOperator == "==") {
+				option1.selected = true;
+			} else if (computationExecutionTimeOperator == ">") {
+				option2.selected = true;
+			} else if (computationExecutionTimeOperator == ">=") {
+				option3.selected = true;
+			} else if (computationExecutionTimeOperator == "<") {
+				option4.selected = true;
+			} else if (computationExecutionTimeOperator == "<=") {
+				option5.selected = true;
+			}
 
 			col12.appendChild(select1);
 
@@ -1021,7 +1034,6 @@ angular.module('flowChart', ['dragging'])
 			select2.id = 'computation-modify-volume-of-data-select';
 
 			const option6 = document.createElement('option');
-			option6.selected = true; // TODO modify based on the input operator
 			option6.textContent = '==';
 			select2.appendChild(option6);
 
@@ -1044,6 +1056,19 @@ angular.module('flowChart', ['dragging'])
 			option10.value = '4';
 			option10.textContent = '<=';
 			select2.appendChild(option10);
+
+			console.log(`computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}`)
+			if (computationVolumeOfDataOperator == "==") {
+				option6.selected = true;
+			} else if (computationVolumeOfDataOperator == ">") {
+				option7.selected = true;
+			} else if (computationVolumeOfDataOperator == ">=") {
+				option8.selected = true;
+			} else if (computationVolumeOfDataOperator == "<") {
+				option9.selected = true;
+			} else if (computationVolumeOfDataOperator == "<=") {
+				option10.selected = true;
+			}
 
 			col22.appendChild(select2);
 
