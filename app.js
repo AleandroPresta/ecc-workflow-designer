@@ -81,10 +81,18 @@ angular.module('app', ['flowChart',])
 					name: "Computation",
 					id: 1,
 					type: "Computation",
-					parameters: {
-						executionTime: 10,
-						volumeOfData: 25
-					},
+					parameters: [
+						{
+							name: 'executionTime',
+							value: 10,
+							type: '>'
+						},
+						{
+							name: 'volumeOfData',
+							value: 100,
+							type: '<='
+						}
+					],
 					description: "This is a computation",
 					x: 418,
 					y: 138,
@@ -104,9 +112,13 @@ angular.module('app', ['flowChart',])
 					name: "Storage",
 					id: 2,
 					type: "Storage",
-					parameters: {
-						availableMemory: 20,
-					},
+					parameters: [
+						{
+							name: 'availableMemory',
+							value: 1000,
+							type: '>'
+						}
+					],
 					description: "This is a storage",
 					x: 687,
 					y: 296,
@@ -375,6 +387,22 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(form);
 			form.showModal();
 		};
+		
+		// Convert the value of the select element to the corresponding operator
+		function valueToOperator(value) {
+			switch (value) {
+				case '1':
+					return '>';
+				case '2':
+					return '>=';
+				case '3':
+					return '<';
+				case '4':
+					return '<=';
+				default:
+					return '==';
+			}
+		}
 
 		// Create a form to add a new computation
 		function createComputationForm() {
@@ -404,12 +432,147 @@ angular.module('app', ['flowChart',])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 			const fieldset5 = document.createElement('fieldset');
+			
+			// Name
+			// Create: <input class='form-control' ...> ... </input>
 			const input1 = document.createElement('input');
 			input1.className = 'form-control';
+
+			// executionTime			
+			/*
+				Create:
+				<div class="input-group mb-3">
+					<div class="col-9">
+						<input class='form-control' ...> ... </input>
+					</div>
+					<div class="col-3">
+						<select class="form-select" id="inputGroupSelect02">
+							<option selected> == </option>
+							<option value="1"> > </option>
+							<option value="2"> >= </option>
+							<option value="3"> < </option>
+							<option value="4"> <= </option>
+						</select>
+					</div>			
+				</div>
+
+			*/
+
+			const inputGroup1 = document.createElement('div');
+			inputGroup1.className = 'input-group mb-3';
+
+			const col11 = document.createElement('div');
+			col11.className = 'col-9';
+			inputGroup1.appendChild(col11);
+
 			const input2 = document.createElement('input');
 			input2.className = 'form-control';
+			col11.appendChild(input2);
+
+			const col12 = document.createElement('div');
+			col12.className = 'col-3';
+			inputGroup1.appendChild(col12);
+
+			const select1 = document.createElement('select');
+			select1.className = 'form-select';
+			select1.id = 'computation-execution-time-select';
+
+			const option1 = document.createElement('option');
+			option1.selected = true;
+			option1.textContent = '==';
+			select1.appendChild(option1);
+
+			const option2 = document.createElement('option');
+			option2.value = '1';
+			option2.textContent = '>';
+			select1.appendChild(option2);
+
+			const option3 = document.createElement('option');
+			option3.value = '2';
+			option3.textContent = '>=';
+			select1.appendChild(option3);
+
+			const option4 = document.createElement('option');
+			option4.value = '3';
+			option4.textContent = '<';
+			select1.appendChild(option4);
+
+			const option5 = document.createElement('option');
+			option5.value = '4';
+			option5.textContent = '<=';
+			select1.appendChild(option5);
+
+			col12.appendChild(select1);
+
+			fieldset2.appendChild(inputGroup1);
+
+			// Volume of Data
+			/*
+				Create:
+				<div class="input-group mb-3">
+					<div class="col-9">
+						<input class='form-control' ...> ... </input>
+					</div>
+					<div class="col-3">
+						<select class="form-select" id="inputGroupSelect02">
+							<option selected> == </option>
+							<option value="1"> > </option>
+							<option value="2"> >= </option>
+							<option value="3"> < </option>
+							<option value="4"> <= </option>
+						</select>
+					</div>			
+				</div>
+
+			*/
+			const inputGroup2 = document.createElement('div');
+			inputGroup2.className = 'input-group mb-3';
+
+			const col21 = document.createElement('div');
+			col21.className = 'col-9';
+			inputGroup2.appendChild(col21);
+
 			const input3 = document.createElement('input');
 			input3.className = 'form-control';
+			col21.appendChild(input3);
+
+			const col22 = document.createElement('div');
+			col22.className = 'col-3';
+			inputGroup2.appendChild(col22);
+
+			const select2 = document.createElement('select');
+			select2.className = 'form-select';
+			select2.id = 'computation-volume-of-data-select';
+
+			const option6 = document.createElement('option');
+			option6.selected = true;
+			option6.textContent = '==';
+			select2.appendChild(option6);
+
+			const option7 = document.createElement('option');
+			option7.value = '1';
+			option7.textContent = '>';
+			select2.appendChild(option7);
+
+			const option8 = document.createElement('option');
+			option8.value = '2';
+			option8.textContent = '>=';
+			select2.appendChild(option8);
+
+			const option9 = document.createElement('option');
+			option9.value = '3';
+			option9.textContent = '<';
+			select2.appendChild(option9);
+
+			const option10 = document.createElement('option');
+			option10.value = '4';
+			option10.textContent = '<=';
+			select2.appendChild(option10);
+			
+			col22.appendChild(select2);
+
+			fieldset3.appendChild(inputGroup2);
+
 			const textarea = document.createElement('textarea');
 			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
@@ -421,22 +584,31 @@ angular.module('app', ['flowChart',])
 			form.id = 'create-computation-form';
 			form.action = '';
 			h3.textContent = 'Create Computation';
+
 			input1.placeholder = 'Computation Name';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
+			input1.id = 'computation-name-input';
+		
 			input2.placeholder = 'Computation execution time';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
+			input2.id = 'computation-execution-time-input';
+
 			input3.placeholder = 'Computation volume of data';
 			input3.type = 'text';
 			input3.tabIndex = '3';
 			input3.required = true;
+			input3.id = 'computation-volume-of-data-input';
+
 			textarea.placeholder = 'Computation description....';
 			textarea.tabIndex = '4';
 			textarea.required = true;
+			textarea.id = 'computation-description-textarea';
+
 			submitButton.name = 'submit';
 			submitButton.type = 'submit';
 			submitButton.id = 'submit-button';
@@ -455,8 +627,6 @@ angular.module('app', ['flowChart',])
 
 			// Append elements
 			fieldset1.appendChild(input1);
-			fieldset2.appendChild(input2);
-			fieldset3.appendChild(input3);
 			fieldset4.appendChild(textarea);
 			fieldset5.appendChild(submitButton);
 			fieldset5.appendChild(cancelButton);
@@ -492,18 +662,25 @@ angular.module('app', ['flowChart',])
 			if (container.querySelector('form').checkValidity()) {
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
-				const computationName = container.querySelector('input[placeholder="Computation Name"]').value;
-				const executionTime = parseInt(container.querySelector('input[placeholder="Computation execution time"]').value);
-				const volumeOfData = parseInt(container.querySelector('input[placeholder="Computation volume of data"]').value);
+				const computationName = document.getElementById('computation-name-input').value;
+
+				const executionTime = parseInt(document.getElementById('computation-execution-time-input').value);
+				const executionTimeOperatorValue = document.getElementById('computation-execution-time-select').value;
+				const executionTimeOperator = valueToOperator(executionTimeOperatorValue);
+
+				const volumeOfData = parseInt(document.getElementById('computation-volume-of-data-input').value);
+				const volumeOfDataOperatorValue = document.getElementById('computation-volume-of-data-select').value;
+				const volumeOfDataOperator = valueToOperator(volumeOfDataOperatorValue);
 
 				// Check if the values are valid integers
 				if (isNaN(executionTime) || isNaN(volumeOfData)) {
 					alert("Please enter valid integers for execution time and volume of data.");
 					return;
 				}
+
 				const description = container.querySelector('textarea').value;
 
-				createNewComputation(computationName, executionTime, volumeOfData, description);
+				createNewComputation(computationName, executionTime, executionTimeOperator, volumeOfData, volumeOfDataOperator, description);
 				// Remove the form
 				container.close();
 				document.body.removeChild(container);
@@ -514,7 +691,7 @@ angular.module('app', ['flowChart',])
 
 		}
 
-		function createNewComputation(computationName, executionTime, volumeOfData, description) {
+		function createNewComputation(computationName, executionTime, executionTimeOperator, volumeOfData, volumeOfDataOperator, description) {
 			//
 			// Template for a new computation.
 			//
@@ -522,10 +699,18 @@ angular.module('app', ['flowChart',])
 				name: computationName,
 				id: nextNodeID++,
 				type: "Computation",
-				parameters: {
-					executionTime: executionTime,
-					volumeOfData: volumeOfData
-				},
+				parameters: [
+					{
+						name: 'executionTime',
+						value: executionTime,
+						type: executionTimeOperator
+					},
+					{
+						name: 'volumeOfData',
+						value: volumeOfData,
+						type: volumeOfDataOperator
+					}
+				],
 				description: description,
 				x: 0,
 				y: 0,
@@ -540,6 +725,9 @@ angular.module('app', ['flowChart',])
 					},
 				],
 			};
+
+			console.log('Creating new computation:')
+			console.log(newNodeDataModel)
 
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
@@ -577,10 +765,77 @@ angular.module('app', ['flowChart',])
 			const fieldset2 = document.createElement('fieldset');
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
+
 			const input1 = document.createElement('input');
 			input1.className = 'form-control';
+
+			// Available Memory
+			/*
+				Create:
+				<div class="input-group mb-3">
+					<div class="col-9">
+						<input class='form-control' ...> ... </input>
+					</div>
+					<div class="col-3">
+						<select class="form-select" id="inputGroupSelect02">
+							<option selected> == </option>
+							<option value="1"> > </option>
+							<option value="2"> >= </option>
+							<option value="3"> < </option>
+							<option value="4"> <= </option>
+						</select>
+					</div>			
+				</div>
+			*/
+
+			const inputGroup1 = document.createElement('div');
+			inputGroup1.className = 'input-group mb-3';
+
+			const col11 = document.createElement('div');
+			col11.className = 'col-9';
+			inputGroup1.appendChild(col11);
+
 			const input2 = document.createElement('input');
 			input2.className = 'form-control';
+			col11.appendChild(input2);
+
+			const col12 = document.createElement('div');
+			col12.className = 'col-3';
+			inputGroup1.appendChild(col12);
+
+			const select1 = document.createElement('select');
+			select1.className = 'form-select';
+			select1.id = 'storage-available-memory-select';
+
+			const option1 = document.createElement('option');
+			option1.selected = true;
+			option1.textContent = '==';
+			select1.appendChild(option1);
+
+			const option2 = document.createElement('option');
+			option2.value = '1';
+			option2.textContent = '>';
+			select1.appendChild(option2);
+			
+			const option3 = document.createElement('option');
+			option3.value = '2';
+			option3.textContent = '>=';
+			select1.appendChild(option3);
+
+			const option4 = document.createElement('option');
+			option4.value = '3';
+			option4.textContent = '<';
+			select1.appendChild(option4);
+
+			const option5 = document.createElement('option');
+			option5.value = '4';
+			option5.textContent = '<=';
+			select1.appendChild(option5);
+	
+			col12.appendChild(select1);
+
+			fieldset2.appendChild(inputGroup1);
+
 			const textarea = document.createElement('textarea');
 			textarea.className = 'form-control';
 			const submitButton = document.createElement('button');
@@ -593,19 +848,26 @@ angular.module('app', ['flowChart',])
 			form.id = 'create-storage-form';
 			form.action = '';
 			h3.textContent = 'Create Storage';
+
 			input1.placeholder = 'Storage Name';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
+			input1.id = 'storage-name-input';
+
 			input2.placeholder = 'Available Memory';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
 			input2.autofocus = true;
+			input2.id = 'storage-available-memory-input';
+
 			textarea.placeholder = 'Storage description....';
 			textarea.tabIndex = '3';
 			textarea.required = true;
+			textarea.id = 'storage-description-textarea';
+
 			submitButton.name = 'submit';
 			submitButton.type = 'submit';
 			submitButton.id = 'submit-button';
@@ -624,7 +886,6 @@ angular.module('app', ['flowChart',])
 
 			// Append elements
 			fieldset1.appendChild(input1);
-			fieldset2.appendChild(input2);
 			fieldset3.appendChild(textarea);
 			fieldset4.appendChild(submitButton);
 			fieldset4.appendChild(cancelButton);
@@ -656,9 +917,11 @@ angular.module('app', ['flowChart',])
 			if (container.querySelector('form').checkValidity()) {
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
-				const storageName = container.querySelector('input[placeholder="Storage Name"]').value;
-				const availableMemory = container.querySelector('input[placeholder="Available Memory"]').value;
-				const description = container.querySelector('textarea').value;
+				const storageName = document.getElementById('storage-name-input').value;
+				
+				const availableMemory = parseInt(document.getElementById('storage-available-memory-input').value);
+				const availableMemoryOperatorValue = document.getElementById('storage-available-memory-select').value;
+				const availableMemoryOperator = valueToOperator(availableMemoryOperatorValue);
 
 				// Check if the values are valid integers
 				if (isNaN(availableMemory)) {
@@ -666,7 +929,9 @@ angular.module('app', ['flowChart',])
 					return;
 				}
 
-				createNewStorage(storageName, availableMemory, description);
+				const description = container.querySelector('textarea').value;
+
+				createNewStorage(storageName, availableMemory, availableMemoryOperator, description);
 				// Remove the form
 				container.close();
 				document.body.removeChild(container);
@@ -676,7 +941,7 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
-		function createNewStorage(storageName, availableMemory, description) {
+		function createNewStorage(storageName, availableMemory, availableMemoryOperator, description) {
 			//
 			// Template for a new node.
 			//
@@ -684,9 +949,13 @@ angular.module('app', ['flowChart',])
 				name: storageName,
 				id: nextNodeID++,
 				type: "Storage",
-				parameters: {
-					availableMemory: availableMemory
-				},
+				parameters: [
+					{
+						name: 'availableMemory',
+						value: availableMemory,
+						type: availableMemoryOperator
+					}
+				],
 				description: description,
 				x: 0,
 				y: 0,
