@@ -256,3 +256,8 @@ Drag selection rectangle.
     border: none;
     border-radius: 5px;
 }
+
+/* Make cursor inside the dropdown menu of the group button to pointer */
+a {
+    cursor: pointer;
+}

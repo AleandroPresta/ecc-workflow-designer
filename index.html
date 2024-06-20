@@ -52,6 +52,17 @@
 						>
 						Find Match
 						</button>
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+							Add node
+							</button>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" ng-click="addDevice()">Add Device</a></li>
+								<li><a class="dropdown-item" ng-click="addComputation()">Add Computation</a></li>
+								<li><a class="dropdown-item" ng-click="addStorage()">Add Storage</a></li>
+								<li><a class="dropdown-item" ng-click="addCommunication()">Add Communication</a></li>
+							</ul>
+						</div>
 						<button
 						ng-click="saveFile()"
 						class="btn btn-primary"
