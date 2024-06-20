@@ -61,6 +61,17 @@
         stop-color="rgb(102, 255, 255)"
         />
     </linearGradient>
+    <marker
+      id="arrow"
+      viewBox="0 0 10 10"
+      refX="2.5"
+      refY="5"
+      markerUnits="strokeWidth"
+      markerWidth="4"
+      markerHeight="4"
+      orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
   </defs>
 
   <g class="background-board">
@@ -157,6 +168,8 @@
                      C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
                        {{connection.destTangentX()}}, {{connection.destTangentY()}}
                        {{connection.destCoordX()}}, {{connection.destCoordY()}}"
+          marker-end="url(#arrow)"
+          style="stroke: black;"
           >
         </path>
 
@@ -167,22 +180,6 @@
         text-anchor="middle"
         alignment-baseline="middle"
         >{{connection.name()}}</text>
-
-        <circle
-            ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="5" 
-            ng-attr-cx="{{connection.sourceCoordX()}}" 
-            ng-attr-cy="{{connection.sourceCoordY()}}" 
-            >
-        </circle>
-
-        <circle
-            ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="5" 
-            ng-attr-cx="{{connection.destCoordX()}}" 
-            ng-attr-cy="{{connection.destCoordY()}}" 
-            >
-        </circle>
     </g>
   </g>
 
@@ -195,6 +192,7 @@
                  C {{dragTangent1.x}}, {{dragTangent1.y}}
                    {{dragTangent2.x}}, {{dragTangent2.y}}
                    {{dragPoint2.x}}, {{dragPoint2.y}}"
+      marker-end="url(#arrow)"
       >
     </path>
 
