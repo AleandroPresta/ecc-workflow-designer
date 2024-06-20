@@ -25,6 +25,21 @@
 		ng-click="hideContextMenu()"
 		>
 
+		<!-- Modal for error connecting to the server -->
+		<div class="modal" id="connectionErrorModal" tabindex="-1">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Server Offline</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>The server is currently offline.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class='app-container' style="width: 100%; overflow: hidden;">
 		    <div class="json-container" style="float: left;">
 				<div class="json-content">

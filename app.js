@@ -1294,7 +1294,9 @@ angular.module('app', ['flowChart',])
 					console.log('Success:', data); // Handle the response data
 				})
 				.catch((error) => {
-					console.error('Error:', error); // Handle any errors
+					// Show the error modal
+					const errorModal = new bootstrap.Modal(document.getElementById('connectionErrorModal'));
+					errorModal.show();
 				});
 		}
 
