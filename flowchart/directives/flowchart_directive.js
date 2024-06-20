@@ -840,13 +840,13 @@ angular.module('flowChart', ['dragging'])
 			form.id = 'create-device-form';
 			form.action = '';
 			h3.textContent = 'Modify Device';
-			input1.placeholder = deviceName;
+			input1.value = deviceName;
 			input1.id = 'device-name-input';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
-			textarea.placeholder = deviceDescription;
+			textarea.value = deviceDescription;
 			textarea.id = 'device-description-input';
 			textarea.tabIndex = '2';
 			textarea.required = true;
@@ -1092,27 +1092,27 @@ angular.module('flowChart', ['dragging'])
 			form.action = '';
 			h3.textContent = 'Modify Computation';
 
-			input1.placeholder = computationName;
+			input1.value = computationName;
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
 			input1.id = 'computation-name-input';
 
-			input2.placeholder = computationExecutionTime;
+			input2.value = computationExecutionTime;
 			input2.id = 'computation-extime-input';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
 			input2.id = 'computation-extime-input';
 
-			input3.placeholder = computationVolumeOfData;
+			input3.value = computationVolumeOfData;
 			input3.type = 'text';
 			input3.tabIndex = '3';
 			input3.required = true;
 			input3.id = 'computation-voldata-input';
 
-			textarea.placeholder = computationDescription;
+			textarea.value = computationDescription;
 			textarea.id = 'computation-description-input';
 			textarea.tabIndex = '4';
 			textarea.required = true;
@@ -1275,21 +1275,21 @@ angular.module('flowChart', ['dragging'])
 			form.action = '';
 			h3.textContent = 'Modify Storage';
 
-			input1.placeholder = storageName;
+			input1.value = storageName;
 			input1.id = 'storage-name-input';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
 
-			input2.placeholder = storageAvailableMemory;
+			input2.value = storageAvailableMemory;
 			input2.type = 'text';
 			input2.id = 'storage-avmemory-input';
 			input2.type = 'text';
 			input2.tabIndex = '2';
 			input2.required = true;
 
-			textarea.placeholder = storageDescription;
+			textarea.value = storageDescription;
 			textarea.id = 'storage-description-input';
 			textarea.tabIndex = '4';
 			textarea.required = true;
@@ -1383,13 +1383,13 @@ angular.module('flowChart', ['dragging'])
 			form.id = 'create-communication-form';
 			form.action = '';
 			h3.textContent = 'Modify Communication';
-			input1.placeholder = communicationName;
+			input1.value = communicationName;
 			input1.id = 'communication-name-input';
 			input1.type = 'text';
 			input1.tabIndex = '1';
 			input1.required = true;
 			input1.autofocus = true;
-			textarea.placeholder = communicationDescription;
+			textarea.value = communicationDescription;
 			textarea.id = 'communication-description-input';
 			textarea.tabIndex = '2';
 			textarea.required = true;
