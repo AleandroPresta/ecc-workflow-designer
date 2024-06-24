@@ -350,6 +350,13 @@ angular.module('flowChart', ['dragging'])
 			});
 		};
 
+		$scope.startDragging = function($event, $connection) {
+			console.log('startDragging');
+		}
+
+		$scope.stopDragging = function($event, $connection) {
+			console.log('stopDragging');
+		}
 		//
 		// Handle mousedown on a connection.
 		//
