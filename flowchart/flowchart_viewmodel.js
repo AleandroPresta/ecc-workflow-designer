@@ -23,13 +23,27 @@ var flowchart = {
 	// Height of a connector in a node.
 	//
 	flowchart.connectorHeight = 35;
+	flowchart.connectorWidth = 35;
 
 	//
 	// Compute the Y coordinate of a connector, given its index. 
-	// The position depends in case it is an X connector or an Y connector.
+	// Direction: x
 	//
 	flowchart.computeConnectorY = function (connectorIndex) {
 		const result = flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
+		console.log('---------x----------')
+		console.log(`flowchart.nodeNameHeight: ${flowchart.connectorHeight}`)
+		console.log(`result: ${result}`)
+		return result
+	}
+
+	//
+	// Compute the Y coordinate of a connector, given its index. 
+	// Direction: y
+	// Because we plan to use only one connector in the y direction, we will use 0 as the connectorIndex
+	//
+	flowchart.computeConnectorYReverse = function (connectorIndex) {
+		const result = 350 / 2; // 350 is the width of the node (real, different from defaultNodeWidth)
 		return result
 	}
 
@@ -91,12 +105,12 @@ var flowchart = {
 		if (connectorDataModels) {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
 				const direction = connectorDataModels[i]['direction']
-				if(direction === 'x') {
+				if(direction === 'y') {
 					var connectorViewModel =
-						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
+						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorYReverse(i), x, parentNode);
 				} else {
 					var connectorViewModel =
-						new flowchart.ConnectorViewModel(connectorDataModels[i], 10, x, parentNode);
+						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);					
 				}
 				viewModels.push(connectorViewModel);
 			}

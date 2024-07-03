@@ -72,7 +72,7 @@ angular.module('app', ['flowChart',])
 							direction: "x"
 						},
 						{
-							name: "in_0_1",
+							name: "",
 							direction: "y"
 						}
 					],
