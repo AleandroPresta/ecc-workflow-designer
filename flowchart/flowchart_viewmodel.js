@@ -13,12 +13,12 @@ var flowchart = {
 	// Width of a node.
 	//
 	flowchart.defaultNodeWidth = 250;
-	flowchart.realNodeWidth = 350;
 
 	//
 	// Amount of space reserved for displaying the node's name.
 	//
 	flowchart.nodeNameHeight = 60;
+	flowchart.nodeNameWidth = 120;
 
 	//
 	// Height of a connector in a node.
@@ -40,8 +40,8 @@ var flowchart = {
 	// Direction: y
 	// Because we plan to use only one connector in the y direction, we will use 0 as the connectorIndex
 	//
-	flowchart.computeConnectorYReverse = function (connectorIndex) {
-		const result = flowchart.realNodeWidth / 2; // 350 is the width of the node (real, different from defaultNodeWidth)
+	flowchart.computeConnectorX = function (connectorIndex) {
+		const result = flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
 		return result
 	}
 
@@ -56,7 +56,6 @@ var flowchart = {
 			y: node.y() + flowchart.computeConnectorY(connectorIndex),
 		};
 
-		console.log(`(x, y) = (${result.x}, ${result.y})`)
 		
 		return result;
 	};
@@ -64,11 +63,9 @@ var flowchart = {
 	flowchart.computeConnectorPosReverse = function (node, connectorIndex, inputConnector) {
 
 		result = {
-			x: node.x() + flowchart.computeConnectorYReverse(connectorIndex),
+			x: node.x() + flowchart.computeConnectorX(connectorIndex),
 			y: node.y() + (inputConnector ? 0 : node.height ? node.height() : flowchart.nodeNameHeight),
 		};
-
-		console.log(`reverse\n(x, y) = (${result.x}, ${result.y})`)
 
 		return result;
 	};
@@ -115,7 +112,7 @@ var flowchart = {
 	//
 	// Create view model for a list of data models.
 	//
-	var createConnectorsViewModel = function (connectorDataModels, x, parentNode) {
+	var createConnectorsViewModel = function (connectorDataModels, x, y, parentNode) {
 		var viewModels = [];
 
 		if (connectorDataModels) {
@@ -123,7 +120,7 @@ var flowchart = {
 				const direction = connectorDataModels[i]['direction']
 				if(direction === 'y') {
 					var connectorViewModel =
-						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorYReverse(i), x, parentNode);
+						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(i), y, parentNode);
 				} else {
 					var connectorViewModel =
 						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);					
@@ -146,8 +143,16 @@ var flowchart = {
 		if (!this.data.width || this.data.width < 0) {
 			this.data.width = flowchart.defaultNodeWidth;
 		}
-		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
-		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, this.data.width, this);
+
+		// Define coordinates of the input and output connectors
+		const inputConnectorsX = 0;
+		const inputConnectorsY = 0;
+
+		const outputConnectorsX = this.data.width;
+		const outputConnectorsY = this.data.width;
+
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, inputConnectorsX, inputConnectorsY, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, outputConnectorsX, outputConnectorsY, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;

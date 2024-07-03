@@ -463,7 +463,7 @@ angular.module('flowChart', ['dragging'])
 
 			// Definition of context menu options
 			// Define context menu options common for all node types
-			const addInputConnectorOption = {
+			/*const addInputConnectorOption = {
 				name: 'Add input connector',
 				action: function () {
 					$scope.$parent.addNewInputConnector();
@@ -474,7 +474,7 @@ angular.module('flowChart', ['dragging'])
 				action: function () {
 					$scope.$parent.addNewOutputConnector();
 				}
-			};
+			}; */
 			const deleteNodeOption = {
 				name: 'Delete',
 				action: function () {
@@ -611,8 +611,8 @@ angular.module('flowChart', ['dragging'])
 			}
 
 			// Adding common functionalities at the end
-			contextMenuOptions.push(addInputConnectorOption);
-			contextMenuOptions.push(addOutputConnectorOption);
+			/*contextMenuOptions.push(addInputConnectorOption);
+			contextMenuOptions.push(addOutputConnectorOption); */
 			contextMenuOptions.push(deleteNodeOption);
 
 			// Create and append <li> elements for each context menu option
