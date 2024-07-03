@@ -68,7 +68,12 @@ angular.module('app', ['flowChart',])
 					width: 350,
 					inputConnectors: [
 						{
-							name: "in_0_0"
+							name: "in_0_0",
+							direction: "x"
+						},
+						{
+							name: "in_0_1",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
@@ -77,7 +82,7 @@ angular.module('app', ['flowChart',])
 						}
 					]
 				},
-				{
+				/*{
 					name: "Computation",
 					id: 1,
 					type: "Computation",
@@ -155,9 +160,9 @@ angular.module('app', ['flowChart',])
 						}
 					],
 					width: 250
-				}
+				} */
 			],
-			connections: [
+			connections: [ /*
 				{
 					name: "Connection 1",
 					source: {
@@ -191,7 +196,7 @@ angular.module('app', ['flowChart',])
 						"connectorIndex": 0
 					}
 				}
-			]
+			*/]
 		};
 
 		//
@@ -725,9 +730,6 @@ angular.module('app', ['flowChart',])
 					},
 				],
 			};
-
-			console.log('Creating new computation:')
-			console.log(newNodeDataModel)
 
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}

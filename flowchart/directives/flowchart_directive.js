@@ -888,8 +888,6 @@ angular.module('flowChart', ['dragging'])
 
 		// Create a form to modify a new computation
 		function createComputationForm(computationName, computationExecutionTime, computationExecutionTimeOperator, computationVolumeOfData, computationVolumeOfDataOperator,computationDescription) {
-			console.log(`createComputationForm(\n {computationName: ${computationName}, \n computationExecutionTime: ${computationExecutionTime}, \n computationExecutionTimeOperator: ${computationExecutionTimeOperator}, \n computationVolumeOfData: ${computationVolumeOfData}, \n computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}, \n computationDescription: ${computationDescription}}\n)`);
-			
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'computation-creation-container';
@@ -982,7 +980,6 @@ angular.module('flowChart', ['dragging'])
 			option5.textContent = '<=';
 			select1.appendChild(option5);
 
-			console.log(`computationExecutionTimeOperator: ${computationExecutionTimeOperator}`)
 			// Make the right option selected
 			if (computationExecutionTimeOperator == "==") {
 				option1.selected = true;
@@ -1063,7 +1060,6 @@ angular.module('flowChart', ['dragging'])
 			option10.textContent = '<=';
 			select2.appendChild(option10);
 
-			console.log(`computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}`)
 			if (computationVolumeOfDataOperator == "==") {
 				option6.selected = true;
 			} else if (computationVolumeOfDataOperator == ">") {

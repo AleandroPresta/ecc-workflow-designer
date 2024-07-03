@@ -25,10 +25,12 @@ var flowchart = {
 	flowchart.connectorHeight = 35;
 
 	//
-	// Compute the Y coordinate of a connector, given its index.
+	// Compute the Y coordinate of a connector, given its index. 
+	// The position depends in case it is an X connector or an Y connector.
 	//
 	flowchart.computeConnectorY = function (connectorIndex) {
-		return flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
+		const result = flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
+		return result
 	}
 
 	//
@@ -88,8 +90,14 @@ var flowchart = {
 
 		if (connectorDataModels) {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
-				var connectorViewModel =
-					new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
+				const direction = connectorDataModels[i]['direction']
+				if(direction === 'x') {
+					var connectorViewModel =
+						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
+				} else {
+					var connectorViewModel =
+						new flowchart.ConnectorViewModel(connectorDataModels[i], 10, x, parentNode);
+				}
 				viewModels.push(connectorViewModel);
 			}
 		}
@@ -720,7 +728,6 @@ var flowchart = {
 		};
 
 		this.modifyName = function() {
-			console.log('Modify name');
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
 				let connection = this.connections[connectionIndex];
