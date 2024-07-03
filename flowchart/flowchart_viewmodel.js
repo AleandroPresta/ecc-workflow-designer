@@ -13,12 +13,7 @@ var flowchart = {
 	// Width of a node.
 	//
 	flowchart.defaultNodeWidth = 250;
-
-	//
-	// Amount of space reserved for displaying the node's name.
-	//
-	flowchart.nodeNameHeight = 60;
-	flowchart.nodeNameWidth = 120;
+	flowchart.defaultNodeHeight = 90;
 
 	//
 	// Height of a connector in a node.
@@ -53,7 +48,7 @@ var flowchart = {
 
 		result = {
 			x: node.x() + (inputConnector ? 0 : node.width ? node.width() : flowchart.defaultNodeWidth),
-			y: node.y() + flowchart.computeConnectorY(connectorIndex),
+			y: node.y() + flowchart.computeConnectorY(node.height()),
 		};
 
 		
@@ -63,8 +58,8 @@ var flowchart = {
 	flowchart.computeConnectorPosReverse = function (node, connectorIndex, inputConnector) {
 
 		result = {
-			x: node.x() + flowchart.computeConnectorX(connectorIndex),
-			y: node.y() + (inputConnector ? 0 : node.height ? node.height() : flowchart.nodeNameHeight),
+			x: node.x() + flowchart.computeConnectorX(node.width()),
+			y: node.y() + (inputConnector ? 0 : node.height ? node.height() : flowchart.defaultNodeHeight),
 		};
 
 		return result;
@@ -146,6 +141,10 @@ var flowchart = {
 			this.data.width = flowchart.defaultNodeWidth;
 		}
 
+		if (!this.data.height || this.data.height < 0) {
+			this.data.height = flowchart.defaultNodeHeight;
+		}
+
 		// Define coordinates of the input and output connectors
 		const inputConnectorsX = 0;
 		const inputConnectorsY = 0;
@@ -195,11 +194,7 @@ var flowchart = {
 		// Height of the node.
 		//
 		this.height = function () {
-			var numConnectors =
-				Math.max(
-					this.inputConnectors.length,
-					this.outputConnectors.length);
-			return flowchart.computeConnectorY(numConnectors);
+			return this.data.height;
 		}
 
 		//

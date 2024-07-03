@@ -66,6 +66,7 @@ angular.module('app', ['flowChart',])
 					x: 26,
 					y: 27,
 					width: 350,
+					height: 90,
 					inputConnectors: [
 						{
 							name: "",
@@ -126,7 +127,8 @@ angular.module('app', ['flowChart',])
 							direction: "y"
 						}
 					],
-					width: 250
+					width: 250,
+					height: 90,
 				},
 				/*{
 					name: "Storage",
@@ -152,7 +154,8 @@ angular.module('app', ['flowChart',])
 							name: "out_2_0"
 						}
 					],
-					width: 250
+					width: 250,
+					height: 90,
 				},
 				{
 					name: "Communication",
@@ -174,7 +177,8 @@ angular.module('app', ['flowChart',])
 							name: "out_3_0"
 						}
 					],
-					width: 250
+					width: 250,
+					height: 90,
 				} */
 			],
 			connections: [
