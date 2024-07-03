@@ -66,7 +66,7 @@ angular.module('app', ['flowChart',])
 					x: 26,
 					y: 27,
 					width: 350,
-					inputConnectors: [
+					inputConnectorsX: [
 						{
 							name: "in_0_0"
 						}
@@ -96,7 +96,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a computation",
 					x: 418,
 					y: 138,
-					inputConnectors: [
+					inputConnectorsX: [
 						{
 							name: "in_1_0"
 						}
@@ -122,7 +122,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a storage",
 					x: 687,
 					y: 296,
-					inputConnectors: [
+					inputConnectorsX: [
 						{
 							name: "in_2_0"
 						}
@@ -144,7 +144,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a communication",
 					x: 985,
 					y: 423,
-					inputConnectors: [
+					inputConnectorsX: [
 						{
 							name: "in_3_0"
 						}
@@ -363,7 +363,7 @@ angular.module('app', ['flowChart',])
 				description: description,
 				x: 0,
 				y: 0,
-				inputConnectors: [
+				inputConnectorsX: [
 					{
 						name: `in_${nextNodeID - 1}_0`
 					},
@@ -714,7 +714,7 @@ angular.module('app', ['flowChart',])
 				description: description,
 				x: 0,
 				y: 0,
-				inputConnectors: [
+				inputConnectorsX: [
 					{
 						name: `in_${nextNodeID - 1}_0`
 					},
@@ -959,7 +959,7 @@ angular.module('app', ['flowChart',])
 				description: description,
 				x: 0,
 				y: 0,
-				inputConnectors: [
+				inputConnectorsX: [
 					{
 						name: `in_${nextNodeID - 1}_0`
 					},
@@ -1098,7 +1098,7 @@ angular.module('app', ['flowChart',])
 				description: description,
 				x: 0,
 				y: 0,
-				inputConnectors: [
+				inputConnectorsX: [
 					{
 						name: `in_${nextNodeID - 1}_0`
 					},
@@ -1126,7 +1126,7 @@ angular.module('app', ['flowChart',])
 			// in_<id>_<id_port>
 			if (selectedNodes.length === 1) {
 				const nodeId = selectedNodes[0].data.id
-				const connectorId = selectedNodes[0].data.inputConnectors.length;
+				const connectorId = selectedNodes[0].data.inputConnectorsX.length;
 				suggestedConnectorName = `in_${nodeId}_${connectorId}`;
 			}
 
