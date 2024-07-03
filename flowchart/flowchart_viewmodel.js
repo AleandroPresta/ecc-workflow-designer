@@ -30,8 +30,8 @@ var flowchart = {
 	// Compute the Y coordinate of a connector, given its index. 
 	// Direction: x
 	//
-	flowchart.computeConnectorY = function (connectorIndex) {
-		const result = flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
+	flowchart.computeConnectorY = function (nodeHeight) {
+		const result = nodeHeight / 2;
 		return result
 	}
 
@@ -40,8 +40,8 @@ var flowchart = {
 	// Direction: y
 	// Because we plan to use only one connector in the y direction, we will use 0 as the connectorIndex
 	//
-	flowchart.computeConnectorX = function (connectorIndex) {
-		const result = flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
+	flowchart.computeConnectorX = function (nodeWidth) {
+		const result = nodeWidth / 2;
 		return result
 	}
 
@@ -113,6 +113,8 @@ var flowchart = {
 	// Create view model for a list of data models.
 	//
 	var createConnectorsViewModel = function (connectorDataModels, x, y, parentNode) {
+		const nodeWidth = parentNode['data']['width'];
+		const nodeHeight = parentNode['data']['height'];
 		var viewModels = [];
 
 		if (connectorDataModels) {
@@ -120,10 +122,10 @@ var flowchart = {
 				const direction = connectorDataModels[i]['direction']
 				if(direction === 'y') {
 					var connectorViewModel =
-						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(i), y, parentNode);
+						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(nodeWidth), y, parentNode);
 				} else {
 					var connectorViewModel =
-						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);					
+						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(nodeHeight), parentNode);					
 				}
 				viewModels.push(connectorViewModel);
 			}
