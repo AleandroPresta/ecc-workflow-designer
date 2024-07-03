@@ -31,9 +31,6 @@ var flowchart = {
 	//
 	flowchart.computeConnectorY = function (connectorIndex) {
 		const result = flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
-		console.log('---------x----------')
-		console.log(`flowchart.nodeNameHeight: ${flowchart.connectorHeight}`)
-		console.log(`result: ${result}`)
 		return result
 	}
 
