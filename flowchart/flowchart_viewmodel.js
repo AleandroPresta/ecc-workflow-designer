@@ -13,6 +13,7 @@ var flowchart = {
 	// Width of a node.
 	//
 	flowchart.defaultNodeWidth = 250;
+	flowchart.realNodeWidth = 350;
 
 	//
 	// Amount of space reserved for displaying the node's name.
@@ -40,18 +41,36 @@ var flowchart = {
 	// Because we plan to use only one connector in the y direction, we will use 0 as the connectorIndex
 	//
 	flowchart.computeConnectorYReverse = function (connectorIndex) {
-		const result = 350 / 2; // 350 is the width of the node (real, different from defaultNodeWidth)
+		const result = flowchart.realNodeWidth / 2; // 350 is the width of the node (real, different from defaultNodeWidth)
 		return result
 	}
 
 	//
-	// Compute the position of a connector in the graph.
+	// Compute the position of a connector in the graph when pressing the
+	// connector to add a new connection.
 	//
 	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
-		return {
+
+		result = {
 			x: node.x() + (inputConnector ? 0 : node.width ? node.width() : flowchart.defaultNodeWidth),
 			y: node.y() + flowchart.computeConnectorY(connectorIndex),
 		};
+
+		console.log(`(x, y) = (${result.x}, ${result.y})`)
+		
+		return result;
+	};
+
+	flowchart.computeConnectorPosReverse = function (node, connectorIndex, inputConnector) {
+
+		result = {
+			x: node.x() + flowchart.computeConnectorYReverse(connectorIndex),
+			y: node.y() + (inputConnector ? 0 : node.height ? node.height() : flowchart.nodeNameHeight),
+		};
+
+		console.log(`reverse\n(x, y) = (${result.x}, ${result.y})`)
+
+		return result;
 	};
 
 	//

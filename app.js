@@ -78,7 +78,8 @@ angular.module('app', ['flowChart',])
 					],
 					outputConnectors: [
 						{
-							name: "out_0_0"
+							name: "out_0_0",
+							direction: "x"
 						}
 					]
 				},

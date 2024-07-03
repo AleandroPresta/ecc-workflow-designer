@@ -366,7 +366,6 @@ angular.module('flowChart', ['dragging'])
 		// Handle mousedown on an input connector.
 		//
 		$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
-
 			//
 			// Initiate dragging out of a connection.
 			//
@@ -381,7 +380,13 @@ angular.module('flowChart', ['dragging'])
 					var curCoords = controller.translateCoordinates(x, y, evt);
 
 					$scope.draggingConnection = true;
-					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					// Compute the starting point of the connection
+					if (connector.data.direction === 'x') {
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					}
+					else {
+						$scope.dragPoint1 = flowchart.computeConnectorPosReverse(node, connectorIndex, isInputConnector);
+					}
 					$scope.dragPoint2 = {
 						x: curCoords.x,
 						y: curCoords.y
@@ -395,7 +400,13 @@ angular.module('flowChart', ['dragging'])
 				//
 				dragging: function (x, y, evt) {
 					var startCoords = controller.translateCoordinates(x, y, evt);
-					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					// Compute the starting point of the connection
+					if (connector.data.direction === 'x') {
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					}
+					else {
+						$scope.dragPoint1 = flowchart.computeConnectorPosReverse(node, connectorIndex, isInputConnector);
+					}
 					$scope.dragPoint2 = {
 						x: startCoords.x,
 						y: startCoords.y
