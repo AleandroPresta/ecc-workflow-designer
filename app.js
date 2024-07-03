@@ -68,7 +68,7 @@ angular.module('app', ['flowChart',])
 					width: 350,
 					inputConnectors: [
 						{
-							name: "in_0_0",
+							name: "",
 							direction: "x"
 						},
 						{
@@ -78,12 +78,16 @@ angular.module('app', ['flowChart',])
 					],
 					outputConnectors: [
 						{
-							name: "out_0_0",
+							name: "",
 							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					]
 				},
-				/*{
+				{
 					name: "Computation",
 					id: 1,
 					type: "Computation",
@@ -104,17 +108,27 @@ angular.module('app', ['flowChart',])
 					y: 138,
 					inputConnectors: [
 						{
-							name: "in_1_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_1_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					width: 250
 				},
-				{
+				/*{
 					name: "Storage",
 					id: 2,
 					type: "Storage",
@@ -163,7 +177,7 @@ angular.module('app', ['flowChart',])
 					width: 250
 				} */
 			],
-			connections: [ /*
+			connections: [
 				{
 					name: "Connection 1",
 					source: {
@@ -175,7 +189,7 @@ angular.module('app', ['flowChart',])
 						"connectorIndex": 0
 					}
 				},
-				{
+				/*{
 					name: "Connection 2",
 					source: {
 						"nodeID": 1,
