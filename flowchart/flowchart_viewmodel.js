@@ -108,7 +108,7 @@ var flowchart = {
 		if (!this.data.width || this.data.width < 0) {
 			this.data.width = flowchart.defaultNodeWidth;
 		}
-		this.inputConnectorsX = createConnectorsViewModel(this.data.inputConnectorsX, 0, this);
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
 		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, this.data.width, this);
 
 		// Set to true when the node is selected.
@@ -152,7 +152,7 @@ var flowchart = {
 		this.height = function () {
 			var numConnectors =
 				Math.max(
-					this.inputConnectorsX.length,
+					this.inputConnectors.length,
 					this.outputConnectors.length);
 			return flowchart.computeConnectorY(numConnectors);
 		}
@@ -205,10 +205,10 @@ var flowchart = {
 		//
 		this.addInputConnector = function (connectorDataModel) {
 
-			if (!this.data.inputConnectorsX) {
-				this.data.inputConnectorsX = [];
+			if (!this.data.inputConnectors) {
+				this.data.inputConnectors = [];
 			}
-			this._addConnector(connectorDataModel, 0, this.data.inputConnectorsX, this.inputConnectorsX);
+			this._addConnector(connectorDataModel, 0, this.data.inputConnectors, this.inputConnectors);
 		};
 
 		//
@@ -429,11 +429,11 @@ var flowchart = {
 
 			var node = this.findNode(nodeID);
 
-			if (!node.inputConnectorsX || node.inputConnectorsX.length <= connectorIndex) {
+			if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
 				throw new Error("Node " + nodeID + " has invalid input connectors.");
 			}
 
-			return node.inputConnectorsX[connectorIndex];
+			return node.inputConnectors[connectorIndex];
 		};
 
 		//
@@ -504,7 +504,7 @@ var flowchart = {
 			var startConnectorIndex = startNode.outputConnectors.indexOf(startConnector);
 			var startConnectorType = 'output';
 			if (startConnectorIndex == -1) {
-				startConnectorIndex = startNode.inputConnectorsX.indexOf(startConnector);
+				startConnectorIndex = startNode.inputConnectors.indexOf(startConnector);
 				startConnectorType = 'input';
 				if (startConnectorIndex == -1) {
 					throw new Error("Failed to find source connector within either inputConnectors or outputConnectors of source node.");
@@ -512,7 +512,7 @@ var flowchart = {
 			}
 
 			var endNode = endConnector.parentNode();
-			var endConnectorIndex = endNode.inputConnectorsX.indexOf(endConnector);
+			var endConnectorIndex = endNode.inputConnectors.indexOf(endConnector);
 			var endConnectorType = 'input';
 			if (endConnectorIndex == -1) {
 				endConnectorIndex = endNode.outputConnectors.indexOf(endConnector);
