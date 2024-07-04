@@ -116,7 +116,6 @@ var flowchart = {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
 				const direction = connectorDataModels[i]['direction']
 				if(direction === 'y') {
-					console.log('y', y)
 					var connectorViewModel =
 						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(nodeWidth), y, parentNode);
 				} else {
