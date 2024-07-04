@@ -146,12 +146,22 @@ angular.module('app', ['flowChart',])
 					y: 296,
 					inputConnectors: [
 						{
-							name: "in_2_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_2_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					width: 250,
@@ -169,12 +179,22 @@ angular.module('app', ['flowChart',])
 					y: 423,
 					inputConnectors: [
 						{
-							name: "in_3_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_3_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					width: 250,
