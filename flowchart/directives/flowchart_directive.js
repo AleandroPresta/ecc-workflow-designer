@@ -382,10 +382,10 @@ angular.module('flowChart', ['dragging'])
 					$scope.draggingConnection = true;
 					// Compute the starting point of the connection
 					if (connector.data.direction === 'x') {
-						$scope.dragPoint1 = flowchart.computeConnectorPos(node, isInputConnector);
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
 					}
 					else {
-						$scope.dragPoint1 = flowchart.computeConnectorPosReverse(node, isInputConnector);
+						$scope.dragPoint1 = flowchart.computeConnectorPosReverse(node, connectorIndex, isInputConnector);
 					}
 					$scope.dragPoint2 = {
 						x: curCoords.x,
