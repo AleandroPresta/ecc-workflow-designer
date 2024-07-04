@@ -44,7 +44,7 @@ var flowchart = {
 	// Compute the position of a connector in the graph when pressing the
 	// connector to add a new connection.
 	//
-	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
+	flowchart.computeConnectorPos = function (node, inputConnector) {
 
 		result = {
 			x: node.x() + (inputConnector ? 0 : node.width ? node.width() : flowchart.defaultNodeWidth),
@@ -55,7 +55,7 @@ var flowchart = {
 		return result;
 	};
 
-	flowchart.computeConnectorPosReverse = function (node, connectorIndex, inputConnector) {
+	flowchart.computeConnectorPosReverse = function (node, inputConnector) {
 
 		result = {
 			x: node.x() + flowchart.computeConnectorX(node.width()),
@@ -116,6 +116,7 @@ var flowchart = {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
 				const direction = connectorDataModels[i]['direction']
 				if(direction === 'y') {
+					console.log('y', y)
 					var connectorViewModel =
 						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(nodeWidth), y, parentNode);
 				} else {

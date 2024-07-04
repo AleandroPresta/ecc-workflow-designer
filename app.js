@@ -88,7 +88,7 @@ angular.module('app', ['flowChart',])
 						}
 					]
 				},
-				{
+				/*{
 					name: "Computation",
 					id: 1,
 					type: "Computation",
@@ -130,7 +130,7 @@ angular.module('app', ['flowChart',])
 					width: 250,
 					height: 90,
 				},
-				/*{
+				{
 					name: "Storage",
 					id: 2,
 					type: "Storage",
@@ -182,7 +182,7 @@ angular.module('app', ['flowChart',])
 				} */
 			],
 			connections: [
-				{
+				/*{
 					name: "Connection 1",
 					source: {
 						"nodeID": 0,
@@ -193,7 +193,7 @@ angular.module('app', ['flowChart',])
 						"connectorIndex": 0
 					}
 				},
-				/*{
+				{
 					name: "Connection 2",
 					source: {
 						"nodeID": 1,
