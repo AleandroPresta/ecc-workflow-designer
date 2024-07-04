@@ -65,7 +65,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a device",
 					x: 26,
 					y: 27,
-					width: 350,
+					width: 300,
 					height: 90,
 					inputConnectors: [
 						{
@@ -88,7 +88,7 @@ angular.module('app', ['flowChart',])
 						}
 					]
 				},
-				/*{
+				{
 					name: "Computation",
 					id: 1,
 					type: "Computation",
@@ -179,10 +179,10 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
-				} */
+				}
 			],
 			connections: [
-				/*{
+				{
 					name: "Connection 1",
 					source: {
 						"nodeID": 0,
@@ -215,7 +215,7 @@ angular.module('app', ['flowChart',])
 						"connectorIndex": 0
 					}
 				}
-			*/]
+			]
 		};
 
 		//
