@@ -198,7 +198,7 @@ var flowchart = {
 		}
 
 		this.image = function () {
-			return '../assets/images/fallback.webp';
+			return '../assets/images/' + this.data.image;
 		}
 
 		this.id = function() {

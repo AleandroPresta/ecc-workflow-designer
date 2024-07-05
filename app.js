@@ -67,6 +67,7 @@ angular.module('app', ['flowChart',])
 					y: 27,
 					width: 300,
 					height: 90,
+					image: "fallback.webp",
 					inputConnectors: [
 						{
 							name: "",
@@ -129,6 +130,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					image: "fallback.webp",
 				},
 				{
 					name: "Storage",
@@ -166,6 +168,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					image: "fallback_storage.png",
 				},
 				{
 					name: "Communication",
@@ -199,6 +202,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					image: "fallback.webp",
 				}
 			],
 			connections: [
