@@ -773,7 +773,7 @@ var flowchart = {
 		};
 
 		this.changeIcon = function() {
-			console.log('change icon')
+			console.log('change icon') // TODO continue development from here
 		}
 
 		this.modifyName = function() {
