@@ -1,6 +1,3 @@
-/*
-Generic reset.
-*/
 :root {
     --color-bg-primary: #d0d6df;
     --color-bg-primary-offset: #f1f3f7;
@@ -14,6 +11,9 @@ Generic reset.
     --color-red: #d92027;
 }
 
+/*
+Generic reset.
+*/
 * {
     padding: 0;
     margin: 0;

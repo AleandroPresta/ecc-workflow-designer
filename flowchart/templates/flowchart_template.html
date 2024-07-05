@@ -99,6 +99,8 @@
       {{node.name()}}
     </text>
 
+    <image height="40" width="40" y="30" ng-attr-x="{{node.width()/2 - 20}}" href="{{node.image()}}" />
+
     <!-- Input connector -->
     <g
       ng-repeat="connector in node.inputConnectors"

@@ -197,6 +197,10 @@ var flowchart = {
 			return this.data.height;
 		}
 
+		this.image = function () {
+			return '../assets/images/fallback.webp';
+		}
+
 		//
 		// Select the node.
 		//
