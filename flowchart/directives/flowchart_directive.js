@@ -475,6 +475,13 @@ angular.module('flowChart', ['dragging'])
 					$scope.$parent.addNewOutputConnector();
 				}
 			}; */
+			// Option that allows the user to change the icon
+			const changeIconOption = {
+				name: 'Change Icon',
+				action: function() {
+					$scope.chart.changeIcon();
+				}
+			}
 			const deleteNodeOption = {
 				name: 'Delete',
 				action: function () {
@@ -613,6 +620,7 @@ angular.module('flowChart', ['dragging'])
 			// Adding common functionalities at the end
 			/*contextMenuOptions.push(addInputConnectorOption);
 			contextMenuOptions.push(addOutputConnectorOption); */
+			contextMenuOptions.push(changeIconOption);
 			contextMenuOptions.push(deleteNodeOption);
 
 			// Create and append <li> elements for each context menu option
@@ -689,7 +697,10 @@ angular.module('flowChart', ['dragging'])
 				}
 			};
 
-			let contextMenuOptions = [changeNameOption, deleteEdgeOption];
+			let contextMenuOptions = [
+				changeNameOption,
+				deleteEdgeOption
+			];
 
 			// Create and append <li> elements for each context menu option
 			contextMenuOptions.forEach(function (option) {

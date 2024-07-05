@@ -772,6 +772,10 @@ var flowchart = {
 			this.data.connections = newConnectionDataModels;
 		};
 
+		this.changeIcon = function() {
+			console.log('change icon')
+		}
+
 		this.modifyName = function() {
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
