@@ -400,9 +400,10 @@ angular.module('app', ['flowChart',])
 			//
 			// Template for a new device.
 			//
+			console.log(`Creating device with id=${nextNodeID}`);
 			let newNodeDataModel = {
 				name: deviceName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Device",
 				description: description,
 				x: 0,
@@ -428,7 +429,8 @@ angular.module('app', ['flowChart',])
 					}
 				],
 			};
-
+			nextNodeID = nextNodeID + 1;
+			console.log(`Next ID will be ${nextNodeID}`)
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -749,9 +751,10 @@ angular.module('app', ['flowChart',])
 			//
 			// Template for a new computation.
 			//
+			console.log(`Creating computation with id=${nextNodeID}`);
 			let newNodeDataModel = {
 				name: computationName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Computation",
 				parameters: [
 					{
@@ -790,6 +793,8 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
+			nextNodeID = nextNodeID + 1;
+			console.log(`Next ID will be ${nextNodeID}`)
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1006,9 +1011,10 @@ angular.module('app', ['flowChart',])
 			//
 			// Template for a new node.
 			//
+			console.log(`Creating storage with id=${nextNodeID}`);
 			var newNodeDataModel = {
 				name: storageName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Storage",
 				parameters: [
 					{
@@ -1042,6 +1048,8 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
+			nextNodeID = nextNodeID + 1;
+			console.log(`Next ID will be ${nextNodeID}`)
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1159,9 +1167,10 @@ angular.module('app', ['flowChart',])
 			//
 			// Template for a new node.
 			//
+			console.log(`Creating communication with id=${nextNodeID}`);
 			var newNodeDataModel = {
 				name: communicationName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Communication",
 				parameters: {
 
@@ -1190,7 +1199,8 @@ angular.module('app', ['flowChart',])
 					}
 				],
 			};
-
+			nextNodeID = nextNodeID + 1;
+			console.log(`Next ID will be ${nextNodeID}`)
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
