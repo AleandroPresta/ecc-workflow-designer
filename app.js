@@ -402,7 +402,7 @@ angular.module('app', ['flowChart',])
 			//
 			let newNodeDataModel = {
 				name: deviceName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Device",
 				description: description,
 				x: 0,
@@ -428,7 +428,7 @@ angular.module('app', ['flowChart',])
 					}
 				],
 			};
-
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -751,7 +751,7 @@ angular.module('app', ['flowChart',])
 			//
 			let newNodeDataModel = {
 				name: computationName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Computation",
 				parameters: [
 					{
@@ -790,6 +790,7 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1008,7 +1009,7 @@ angular.module('app', ['flowChart',])
 			//
 			var newNodeDataModel = {
 				name: storageName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Storage",
 				parameters: [
 					{
@@ -1042,6 +1043,7 @@ angular.module('app', ['flowChart',])
 				],
 			};
 
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1161,7 +1163,7 @@ angular.module('app', ['flowChart',])
 			//
 			var newNodeDataModel = {
 				name: communicationName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Communication",
 				parameters: {
 
@@ -1190,7 +1192,7 @@ angular.module('app', ['flowChart',])
 					}
 				],
 			};
-
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1383,6 +1385,7 @@ angular.module('app', ['flowChart',])
 
 		$scope.saveFile = function () {
 			data = $scope.chartViewModel.data;
+			data.nextNodeID = nextNodeID;
 			// Convert JSON object to string
 			const jsonString = JSON.stringify(data);
 
@@ -1442,9 +1445,16 @@ angular.module('app', ['flowChart',])
 					reader.onload = function (e) {
 						try {
 							const jsonData = JSON.parse(e.target.result);
+							// Extract only nodes and connections from the jsonData
+							const nodes = jsonData.nodes;
+							const connections = jsonData.connections;
+							// Put this into a new object
+							const newJsonData = { nodes, connections };
 							// You can now use jsonData in your app
 							// Add the data to the chart
-							$scope.chartViewModel = jsonData;
+							$scope.chartViewModel = newJsonData;
+							// Set the loaded nextNodeID
+							nextNodeID = jsonData.nextNodeID;
 							// Update the view model
 							$scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel);
 
