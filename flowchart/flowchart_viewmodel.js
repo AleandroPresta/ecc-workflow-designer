@@ -198,6 +198,9 @@ var flowchart = {
 		}
 
 		this.image = function () {
+			if (!this.data.image) {
+				return '../assets/images/blank.svg';
+			}
 			return '../assets/images/' + this.data.image;
 		}
 
@@ -211,8 +214,6 @@ var flowchart = {
 		this.select = function () {
 			this._selected = true;
 		};
-
-
 
 		//
 		// Deselect the node.
