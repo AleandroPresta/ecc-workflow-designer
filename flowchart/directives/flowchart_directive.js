@@ -114,7 +114,7 @@ angular.module('flowChart', ['dragging'])
 		// Init data-model variables.
 		//
 		$scope.draggingConnection = false;
-		$scope.connectorSize = 10;
+		$scope.connectorSize = 8;
 		$scope.dragSelecting = false;
 		/* Can use this to test the drag selection rect.
 		$scope.dragSelectionRect = {
@@ -366,7 +366,6 @@ angular.module('flowChart', ['dragging'])
 		// Handle mousedown on an input connector.
 		//
 		$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
-
 			//
 			// Initiate dragging out of a connection.
 			//
@@ -381,7 +380,13 @@ angular.module('flowChart', ['dragging'])
 					var curCoords = controller.translateCoordinates(x, y, evt);
 
 					$scope.draggingConnection = true;
-					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					// Compute the starting point of the connection
+					if (connector.data.direction === 'x') {
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					}
+					else {
+						$scope.dragPoint1 = flowchart.computeConnectorPosReverse(node, connectorIndex, isInputConnector);
+					}
 					$scope.dragPoint2 = {
 						x: curCoords.x,
 						y: curCoords.y
@@ -395,7 +400,13 @@ angular.module('flowChart', ['dragging'])
 				//
 				dragging: function (x, y, evt) {
 					var startCoords = controller.translateCoordinates(x, y, evt);
-					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					// Compute the starting point of the connection
+					if (connector.data.direction === 'x') {
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					}
+					else {
+						$scope.dragPoint1 = flowchart.computeConnectorPosReverse(node, connectorIndex, isInputConnector);
+					}
 					$scope.dragPoint2 = {
 						x: startCoords.x,
 						y: startCoords.y
@@ -452,7 +463,7 @@ angular.module('flowChart', ['dragging'])
 
 			// Definition of context menu options
 			// Define context menu options common for all node types
-			const addInputConnectorOption = {
+			/*const addInputConnectorOption = {
 				name: 'Add input connector',
 				action: function () {
 					$scope.$parent.addNewInputConnector();
@@ -463,7 +474,7 @@ angular.module('flowChart', ['dragging'])
 				action: function () {
 					$scope.$parent.addNewOutputConnector();
 				}
-			};
+			}; */
 			const deleteNodeOption = {
 				name: 'Delete',
 				action: function () {
@@ -600,8 +611,8 @@ angular.module('flowChart', ['dragging'])
 			}
 
 			// Adding common functionalities at the end
-			contextMenuOptions.push(addInputConnectorOption);
-			contextMenuOptions.push(addOutputConnectorOption);
+			/*contextMenuOptions.push(addInputConnectorOption);
+			contextMenuOptions.push(addOutputConnectorOption); */
 			contextMenuOptions.push(deleteNodeOption);
 
 			// Create and append <li> elements for each context menu option
@@ -888,8 +899,6 @@ angular.module('flowChart', ['dragging'])
 
 		// Create a form to modify a new computation
 		function createComputationForm(computationName, computationExecutionTime, computationExecutionTimeOperator, computationVolumeOfData, computationVolumeOfDataOperator,computationDescription) {
-			console.log(`createComputationForm(\n {computationName: ${computationName}, \n computationExecutionTime: ${computationExecutionTime}, \n computationExecutionTimeOperator: ${computationExecutionTimeOperator}, \n computationVolumeOfData: ${computationVolumeOfData}, \n computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}, \n computationDescription: ${computationDescription}}\n)`);
-			
 			// Create elements
 			const container = document.createElement('dialog');
 			container.id = 'computation-creation-container';
@@ -982,7 +991,6 @@ angular.module('flowChart', ['dragging'])
 			option5.textContent = '<=';
 			select1.appendChild(option5);
 
-			console.log(`computationExecutionTimeOperator: ${computationExecutionTimeOperator}`)
 			// Make the right option selected
 			if (computationExecutionTimeOperator == "==") {
 				option1.selected = true;
@@ -1063,7 +1071,6 @@ angular.module('flowChart', ['dragging'])
 			option10.textContent = '<=';
 			select2.appendChild(option10);
 
-			console.log(`computationVolumeOfDataOperator: ${computationVolumeOfDataOperator}`)
 			if (computationVolumeOfDataOperator == "==") {
 				option6.selected = true;
 			} else if (computationVolumeOfDataOperator == ">") {

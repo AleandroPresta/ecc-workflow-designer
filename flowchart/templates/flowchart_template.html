@@ -67,7 +67,7 @@
     <rect 
     class="background-board-rect"
     ng-right-click="openContextMenuBackground($event)">
-  </rect>
+    </rect>
   </g>
 
   <g
@@ -99,20 +99,25 @@
       {{node.name()}}
     </text>
 
+    <!-- Input connector -->
     <g
       ng-repeat="connector in node.inputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
       class="connector input-connector"
       >
+      
+      <!-- Input connector name -->
       <text
         ng-attr-x="{{connector.x() + 20}}"
         ng-attr-y="{{connector.y()}}"
         text-anchor="left"
         alignment-baseline="middle"
         >
-        {{connector.name()}}
+        {{connector.name()}} <!-- Output connector name (removable) -->
       </text>
       
+      <!-- Input connector x-axis -->
+
       <circle       
         ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
         ng-attr-r="{{connectorSize}}" 
@@ -121,6 +126,7 @@
         />
     </g>
 
+    <!-- Output connectors -->
     <g
       ng-repeat="connector in node.outputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
@@ -132,8 +138,10 @@
         text-anchor="end"
         alignment-baseline="middle"
         >
-        {{connector.name()}}
+        {{connector.name()}} <!-- Output connector name (removable) -->
       </text>
+
+      <!-- Output connector x-axis -->
 
       <circle             
         ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
@@ -184,6 +192,8 @@
       >
     </path>
 
+    <!-- Circle that appears when creating a new connection at the start of the path -->
+
     <circle
         class="dragging-connection dragging-connection-endpoint"
         r="4" 
@@ -192,6 +202,7 @@
         >
     </circle>
 
+    <!-- Circle that appears when creating a new connection at the end of the path -->
     <circle
         class="dragging-connection dragging-connection-endpoint"
         r="4" 

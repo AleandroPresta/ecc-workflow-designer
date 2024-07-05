@@ -65,15 +65,26 @@ angular.module('app', ['flowChart',])
 					description: "This is a device",
 					x: 26,
 					y: 27,
-					width: 350,
+					width: 300,
+					height: 90,
 					inputConnectors: [
 						{
-							name: "in_0_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_0_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					]
 				},
@@ -98,15 +109,26 @@ angular.module('app', ['flowChart',])
 					y: 138,
 					inputConnectors: [
 						{
-							name: "in_1_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_1_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
-					width: 250
+					width: 250,
+					height: 90,
 				},
 				{
 					name: "Storage",
@@ -124,15 +146,26 @@ angular.module('app', ['flowChart',])
 					y: 296,
 					inputConnectors: [
 						{
-							name: "in_2_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_2_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
-					width: 250
+					width: 250,
+					height: 90,
 				},
 				{
 					name: "Communication",
@@ -146,15 +179,26 @@ angular.module('app', ['flowChart',])
 					y: 423,
 					inputConnectors: [
 						{
-							name: "in_3_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
 					outputConnectors: [
 						{
-							name: "out_3_0"
+							name: "",
+							direction: "x"
+						},
+						{
+							name: "",
+							direction: "y"
 						}
 					],
-					width: 250
+					width: 250,
+					height: 90,
 				}
 			],
 			connections: [
@@ -358,23 +402,33 @@ angular.module('app', ['flowChart',])
 			//
 			let newNodeDataModel = {
 				name: deviceName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Device",
 				description: description,
 				x: 0,
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 				outputConnectors: [
 					{
-						name: `out_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 			};
-
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -697,7 +751,7 @@ angular.module('app', ['flowChart',])
 			//
 			let newNodeDataModel = {
 				name: computationName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Computation",
 				parameters: [
 					{
@@ -716,19 +770,27 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 				outputConnectors: [
 					{
-						name: `out_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 			};
 
-			console.log('Creating new computation:')
-			console.log(newNodeDataModel)
-
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -947,7 +1009,7 @@ angular.module('app', ['flowChart',])
 			//
 			var newNodeDataModel = {
 				name: storageName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Storage",
 				parameters: [
 					{
@@ -961,16 +1023,27 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 				outputConnectors: [
 					{
-						name: `out_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 			};
 
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1090,7 +1163,7 @@ angular.module('app', ['flowChart',])
 			//
 			var newNodeDataModel = {
 				name: communicationName,
-				id: nextNodeID++,
+				id: nextNodeID,
 				type: "Communication",
 				parameters: {
 
@@ -1100,16 +1173,26 @@ angular.module('app', ['flowChart',])
 				y: 0,
 				inputConnectors: [
 					{
-						name: `in_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 				outputConnectors: [
 					{
-						name: `out_${nextNodeID - 1}_0`
+						name: "",
+						direction: "x"
 					},
+					{
+						name: "",
+						direction: "y"
+					}
 				],
 			};
-
+			nextNodeID = nextNodeID + 1;
 			$scope.chartViewModel.addNode(newNodeDataModel);
 		}
 
@@ -1302,6 +1385,7 @@ angular.module('app', ['flowChart',])
 
 		$scope.saveFile = function () {
 			data = $scope.chartViewModel.data;
+			data.nextNodeID = nextNodeID;
 			// Convert JSON object to string
 			const jsonString = JSON.stringify(data);
 
@@ -1361,9 +1445,16 @@ angular.module('app', ['flowChart',])
 					reader.onload = function (e) {
 						try {
 							const jsonData = JSON.parse(e.target.result);
+							// Extract only nodes and connections from the jsonData
+							const nodes = jsonData.nodes;
+							const connections = jsonData.connections;
+							// Put this into a new object
+							const newJsonData = { nodes, connections };
 							// You can now use jsonData in your app
 							// Add the data to the chart
-							$scope.chartViewModel = jsonData;
+							$scope.chartViewModel = newJsonData;
+							// Set the loaded nextNodeID
+							nextNodeID = jsonData.nextNodeID;
 							// Update the view model
 							$scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel);
 

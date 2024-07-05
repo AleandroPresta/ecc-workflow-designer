@@ -13,32 +13,56 @@ var flowchart = {
 	// Width of a node.
 	//
 	flowchart.defaultNodeWidth = 250;
-
-	//
-	// Amount of space reserved for displaying the node's name.
-	//
-	flowchart.nodeNameHeight = 60;
+	flowchart.defaultNodeHeight = 90;
 
 	//
 	// Height of a connector in a node.
 	//
 	flowchart.connectorHeight = 35;
+	flowchart.connectorWidth = 35;
 
 	//
-	// Compute the Y coordinate of a connector, given its index.
+	// Compute the Y coordinate of a connector, given its index. 
+	// Direction: x
 	//
-	flowchart.computeConnectorY = function (connectorIndex) {
-		return flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
+	flowchart.computeConnectorY = function (nodeHeight) {
+		const result = nodeHeight / 2;
+		return result
 	}
 
 	//
-	// Compute the position of a connector in the graph.
+	// Compute the Y coordinate of a connector, given its index. 
+	// Direction: y
+	// Because we plan to use only one connector in the y direction, we will use 0 as the connectorIndex
+	//
+	flowchart.computeConnectorX = function (nodeWidth) {
+		const result = nodeWidth / 2;
+		return result
+	}
+
+	//
+	// Compute the position of a connector in the graph when pressing the
+	// connector to add a new connection.
 	//
 	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
-		return {
+
+		result = {
 			x: node.x() + (inputConnector ? 0 : node.width ? node.width() : flowchart.defaultNodeWidth),
-			y: node.y() + flowchart.computeConnectorY(connectorIndex),
+			y: node.y() + flowchart.computeConnectorY(node.height()),
 		};
+
+		
+		return result;
+	};
+
+	flowchart.computeConnectorPosReverse = function (node, connectorIndex, inputConnector) {
+
+		result = {
+			x: node.x() + flowchart.computeConnectorX(node.width()),
+			y: node.y() + (inputConnector ? 0 : node.height ? node.height() : flowchart.defaultNodeHeight),
+		};
+
+		return result;
 	};
 
 	//
@@ -83,13 +107,21 @@ var flowchart = {
 	//
 	// Create view model for a list of data models.
 	//
-	var createConnectorsViewModel = function (connectorDataModels, x, parentNode) {
+	var createConnectorsViewModel = function (connectorDataModels, x, y, parentNode) {
+		const nodeWidth = parentNode['data']['width'];
+		const nodeHeight = parentNode['data']['height'];
 		var viewModels = [];
 
 		if (connectorDataModels) {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
-				var connectorViewModel =
-					new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
+				const direction = connectorDataModels[i]['direction']
+				if(direction === 'y') {
+					var connectorViewModel =
+						new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(nodeWidth), y, parentNode);
+				} else {
+					var connectorViewModel =
+						new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(nodeHeight), parentNode);					
+				}
 				viewModels.push(connectorViewModel);
 			}
 		}
@@ -108,8 +140,20 @@ var flowchart = {
 		if (!this.data.width || this.data.width < 0) {
 			this.data.width = flowchart.defaultNodeWidth;
 		}
-		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
-		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, this.data.width, this);
+
+		if (!this.data.height || this.data.height < 0) {
+			this.data.height = flowchart.defaultNodeHeight;
+		}
+
+		// Define coordinates of the input and output connectors
+		const inputConnectorsX = 0;
+		const inputConnectorsY = 0;
+
+		const outputConnectorsX = this.data.width;
+		const outputConnectorsY = this.data.height;
+
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, inputConnectorsX, inputConnectorsY, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, outputConnectorsX, outputConnectorsY, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;
@@ -150,11 +194,7 @@ var flowchart = {
 		// Height of the node.
 		//
 		this.height = function () {
-			var numConnectors =
-				Math.max(
-					this.inputConnectors.length,
-					this.outputConnectors.length);
-			return flowchart.computeConnectorY(numConnectors);
+			return this.data.height;
 		}
 
 		//
@@ -720,7 +760,6 @@ var flowchart = {
 		};
 
 		this.modifyName = function() {
-			console.log('Modify name');
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
 				let connection = this.connections[connectionIndex];
