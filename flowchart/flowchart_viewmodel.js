@@ -201,6 +201,10 @@ var flowchart = {
 			return '../assets/images/fallback.webp';
 		}
 
+		this.id = function() {
+			return this.data.id;
+		}
+
 		//
 		// Select the node.
 		//
