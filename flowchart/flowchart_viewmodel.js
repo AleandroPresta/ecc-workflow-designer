@@ -204,6 +204,10 @@ var flowchart = {
 			return '../assets/images/' + this.data.image;
 		}
 
+		this.changeImage = function(newImageUrl) {
+			this.data.image = newImageUrl;
+		}
+
 		this.id = function() {
 			return this.data.id;
 		}
