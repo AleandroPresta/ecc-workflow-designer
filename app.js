@@ -1310,7 +1310,8 @@ angular.module('app', ['flowChart',])
 			// Define the URL of the server
 			const url = 'http://127.0.0.1:8000/api/compare';
 			// Get the data from the chart
-			const data = [$scope.chartViewModel.data, catalog];
+			const workflow = $scope.chartViewModel.data
+			const data = [workflow, catalog];
 			// Send the data to the server
 			postToServer(url, data);
 		}
@@ -1318,46 +1319,6 @@ angular.module('app', ['flowChart',])
 		// Loads the default catalog of services
 		function loadDefaultCatalog(){
 			const defaultCatalog = {
-				services: [
-					{
-						name: "Service 1",
-						id: 0,
-						type: "Computation",
-						parameters: {
-							executionTime: "500",
-							volumeOfData: "25"
-						},
-						description: "This is a computation service",
-					},
-					{
-						name: "Service 2",
-						id: 1,
-						type: "Computation",
-						parameters: {
-							executionTime: "600",
-							volumeOfData: "20"
-						},
-						description: "This is a computation service",
-					},
-					{
-						name: "Service 3",
-						id: 2,
-						type: "Storage",
-						parameters: {
-							availableMemory: '20',
-						},
-						description: "This is a storage service",
-					},
-					{
-						name: "Service 4",
-						id: 3,
-						type: "Communication",
-						parameters: {
-
-						},
-						description: "This is a communication service",
-					}
-				]
 			};
 
 			return defaultCatalog;
@@ -1365,14 +1326,17 @@ angular.module('app', ['flowChart',])
 
 		// Sends the data to the server
 		function postToServer(url, data) {
-			// Send the POST request using fetch
-			fetch(url, {
+			const request = {
+				mode: 'no-cors', // No CORS policy
 				method: 'POST', // Specify the HTTP method
 				headers: {
 					'Content-Type': 'application/json', // Specify the content type
 				},
 				body: JSON.stringify(data) // Convert the JSON object to a string
-			})
+			};
+			console.log(`Request:\n${JSON.stringify(request)}\n`);
+			// Send the POST request using fetch
+			fetch(url, request)
 				.then(response => response.json()) // Parse the response JSON
 				.then(data => {
 					console.log('Success:', data); // Handle the response data
