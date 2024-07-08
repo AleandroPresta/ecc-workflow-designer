@@ -942,11 +942,13 @@ var flowchart = {
 			input.onclick = function() {
 				node.changeImage(img.src);
 				modalInstance.hide();
+				document.body.removeChild(modal);
 			}
 
 			input2.onclick = function() {
 				node.changeImage(img2.src);
 				modalInstance.hide();
+				document.body.removeChild(modal);
 			}
 		}
 
