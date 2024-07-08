@@ -197,14 +197,17 @@ var flowchart = {
 			return this.data.height;
 		}
 
+		// Gives the node a default image if none was provided
 		this.image = function () {
 			if (!this.data.image) {
-				return '../assets/images/blank.svg';
+				return '/home/aleandro/Desktop/Research/ecc-workflow-designer/assets/images/blank.svg';
 			}
-			return '../assets/images/' + this.data.image;
+			return this.data.image;
 		}
 
+		// Changes the image of the node
 		this.changeImage = function(newImageUrl) {
+			console.log(`Changing image to: ${newImageUrl}`)
 			this.data.image = newImageUrl;
 		}
 
@@ -772,8 +775,163 @@ var flowchart = {
 			this.data.connections = newConnectionDataModels;
 		};
 
-		this.changeIcon = function() {
-			console.log('change icon') // TODO continue development from here
+		this.changeIcon = function(node) {
+			console.log('node:', node);
+
+			/*
+				Create:
+				<!-- Modal for changing the icon of a node -->
+				<div class="modal fade" id="changeIconModal" tabindex="-1" aria-labelledby="changeIconModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="changeIconModalLabel">Change Icon</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="modal-body">
+									<div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
+										<div class="card">
+											<div class="card-body d-flex flex-column">
+												<img src="../assets/images/blank.svg" alt="">
+												<input type="radio" class="btn-check" name="options-base" id="option1" autocomplete="off" checked>
+												<label class="btn my-1" for="option1">Choose</label>
+											</div>
+										</div>
+										for image in ../assets/images/icons:
+										<div class="card">
+											<div class="card-body d-flex flex-column">
+												<img src=image.url alt="">
+												<input type="radio" class="btn-check" name="options-base" id="option2" autocomplete="off">
+												<label class="btn my-1" for="option2">Choose</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" onclick="changeIcon()">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			*/
+
+			// <div class="modal fade" id="changeIconModal" tabindex="-1" aria-labelledby="changeIconModalLabel" aria-hidden="true">
+			const modal = document.createElement('div');
+			modal.className = 'modal fade';
+			modal.id = 'changeIconModal';
+			modal.tabIndex = '-1';
+			modal.setAttribute('aria-labelledby', 'changeIconModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
+
+			// <div class="modal-dialog">
+			const modalDialog = document.createElement('div');
+			modalDialog.className = 'modal-dialog';
+			modal.appendChild(modalDialog);
+
+			// <div class="modal-content">
+			const modalContent = document.createElement('div');
+			modalContent.className = 'modal-content';
+
+			// <div class="modal-header">
+			const modalHeader = document.createElement('div');
+			modalHeader.className = 'modal-header';
+
+			// <h1 class="modal-title fs-5" id="changeIconModalLabel">Change Icon</h1>
+			const h1 = document.createElement('h1');
+			h1.className = 'modal-title fs-5';
+			h1.id = 'changeIconModalLabel';
+			h1.textContent = 'Change Icon';
+			modalHeader.appendChild(h1);
+
+			// <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			const closeButton = document.createElement('button');
+			closeButton.type = 'button';
+			closeButton.className = 'btn-close';
+			closeButton.setAttribute('data-bs-dismiss', 'modal');
+			closeButton.setAttribute('aria-label', 'Close');
+			modalHeader.appendChild(closeButton);
+
+			// <div class="modal-body">
+			const modalBody = document.createElement('div');
+			modalBody.className = 'modal-body';
+
+			// <div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
+			const container = document.createElement('div');
+			container.className = 'container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start';
+			modalBody.appendChild(container);
+
+			// <div class="card">
+			const card = document.createElement('div');
+			card.className = 'card';
+			container.appendChild(card);
+
+			// <div class="card-body d-flex flex-column">
+			const cardBody = document.createElement('div');
+			cardBody.className = 'card-body d-flex flex-column';
+			card.appendChild(cardBody);
+
+			// <img src="../assets/images/blank.svg" alt="">
+			const img = document.createElement('img');
+			img.src = '../assets/images/blank.svg';
+			img.alt = '';
+			cardBody.appendChild(img);
+
+			// <input type="radio" class="btn-check" name="options-base" id="option1" autocomplete="off" checked>
+			const input = document.createElement('input');
+			input.type = 'radio';
+			input.className = 'btn-check';
+			input.name = 'options-base';
+			input.id = 'option1';
+			input.setAttribute('autocomplete', 'off');
+			input.checked = true;
+			cardBody.appendChild(input);
+
+			// <label class="btn my-1" for="option1">Choose</label>
+			const label = document.createElement('label');
+			label.className = 'btn my-1';
+			label.setAttribute('for', 'option1');
+			label.textContent = 'Choose';
+			cardBody.appendChild(label);
+
+			// for image in ../assets/images/icons:
+
+
+
+			// <div class="modal-footer">
+			const modalFooter = document.createElement('div');
+			modalFooter.className = 'modal-footer';
+
+			// <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			const closeButtonFooter = document.createElement('button');
+			closeButtonFooter.type = 'button';
+			closeButtonFooter.className = 'btn btn-secondary';
+			closeButtonFooter.setAttribute('data-bs-dismiss', 'modal');
+			closeButtonFooter.textContent = 'Close';
+			modalFooter.appendChild(closeButtonFooter);
+
+			// <button type="button" class="btn btn-primary" onclick="changeIcon()">Save changes</button>
+			const saveButton = document.createElement('button');
+			saveButton.type = 'button';
+			saveButton.className = 'btn btn-primary';
+			saveButton.textContent = 'Save changes';
+			saveButton.disabled = true;
+			// saveButton.onclick = 
+
+			modalFooter.appendChild(saveButton);
+
+			// Append elements
+			modalContent.appendChild(modalHeader);
+			modalContent.appendChild(modalBody);
+			modalContent.appendChild(modalFooter);
+			modalDialog.appendChild(modalContent);
+			modal.appendChild(modalDialog);
+
+			document.body.appendChild(modal);
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
 		}
 
 		this.modifyName = function() {

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Icon Modal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/icons_container.css">
+</head>
+<body>
+    <!-- Button trigger modal -->
+    <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeIconModal">
+        Change Icon
+    </a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="changeIconModal" tabindex="-1" aria-labelledby="changeIconModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="changeIconModalLabel">Change Icon</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
+                        <div class="card">
+                            <div class="card-body d-flex flex-column">
+                                <img src="../assets/images/blank.svg" alt="">
+                                <input type="radio" class="btn-check" name="options-base" id="option1" autocomplete="off" checked>
+                                <label class="btn my-1" for="option1">Choose</label>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body d-flex flex-column">
+                                <img src="../assets/images/icons/API-Gateway.svg" alt="">
+                                <input type="radio" class="btn-check" name="options-base" id="option2" autocomplete="off">
+                                <label class="btn my-1" for="option2">Choose</label>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body d-flex flex-column">
+                                <img src="../assets/images/icons/Aurora.svg" alt="">
+                                <input type="radio" class="btn-check" name="options-base" id="option3" autocomplete="off">
+                                <label class="btn my-1" for="option3">Choose</label>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body d-flex flex-column">
+                                <img src="../assets/images/icons/Compute-Optimizer.svg" alt="">
+                                <input type="radio" class="btn-check" name="options-base" id="option4" autocomplete="off">
+                                <label class="btn my-1" for="option4">Choose</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="changeIcon()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

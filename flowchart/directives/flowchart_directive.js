@@ -479,7 +479,7 @@ angular.module('flowChart', ['dragging'])
 			const changeIconOption = {
 				name: 'Change Icon',
 				action: function() {
-					$scope.chart.changeIcon();
+					$scope.chart.changeIcon(node);
 				}
 			}
 			const deleteNodeOption = {
