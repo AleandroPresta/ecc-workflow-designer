@@ -855,6 +855,10 @@ var flowchart = {
 			// <div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
 			const container = document.createElement('div');
 			container.className = 'container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start';
+			// Add styles: .icons-container { max - height: 600px; width: 100%; overflow-y: scroll;}
+			container.style.maxHeight = '600px';
+			container.style.width = '100%';
+			container.style.overflowY = 'scroll';
 			modalBody.appendChild(container);
 
 			// <div class="card">
@@ -893,7 +897,7 @@ var flowchart = {
 			/*
 			<div class="card">
 				<div class="card-body d-flex flex-column">
-					<img src="../assets/images/icons/API-Gateway.svg" alt="">
+					<img src="../assets/images/camera.svg" alt="">
 					<input type="radio" class="btn-check btn-primary" name="options-base" id="option2" autocomplete="off">
 					<label class="btn my-1" for="option2">Choose</label>
 				</div>
@@ -908,7 +912,7 @@ var flowchart = {
 			card2.appendChild(cardBody2);
 
 			const img2 = document.createElement('img');
-			img2.src = '../assets/images/icons/API-Gateway.svg';
+			img2.src = '../assets/images/camera.svg';
 			img2.alt = '';
 			cardBody2.appendChild(img2);
 
@@ -926,7 +930,145 @@ var flowchart = {
 			label2.textContent = 'Choose';
 			cardBody2.appendChild(label2);
 
-			// Card3 img.src=../assets/images/icons/Aurora.svg
+			// Card3 img.src=../assets/images/database.svg
+			const card3 = document.createElement('div');
+			card3.className = 'card';
+			container.appendChild(card3);
+
+			const cardBody3 = document.createElement('div');
+			cardBody3.className = 'card-body d-flex flex-column';
+			card3.appendChild(cardBody3);
+
+			const img3 = document.createElement('img');
+			img3.src = '../assets/images/database.svg';
+			img3.alt = '';
+			cardBody3.appendChild(img3);
+
+			const input3 = document.createElement('input');
+			input3.type = 'radio';
+			input3.className = 'btn-check';
+			input3.name = 'options-base';
+			input3.id = 'option3';
+			input3.setAttribute('autocomplete', 'off');
+			cardBody3.appendChild(input3);
+
+			const label3 = document.createElement('label');
+			label3.className = 'btn my-1';
+			label3.setAttribute('for', 'option3');
+			label3.textContent = 'Choose';
+			cardBody3.appendChild(label3);
+
+			// Card4 src = ../assets/images/engineer.svg
+			const card4 = document.createElement('div');
+			card4.className = 'card';
+			container.appendChild(card4);
+
+			const cardBody4 = document.createElement('div');
+			cardBody4.className = 'card-body d-flex flex-column';
+			card4.appendChild(cardBody4);
+
+			const img4 = document.createElement('img');
+			img4.src = '../assets/images/engineer.svg';
+			img4.alt = '';
+			cardBody4.appendChild(img4);
+
+			const input4 = document.createElement('input');
+			input4.type = 'radio';
+			input4.className = 'btn-check';
+			input4.name = 'options-base';
+			input4.id = 'option4';
+			input4.setAttribute('autocomplete', 'off');
+			cardBody4.appendChild(input4);
+
+			const label4 = document.createElement('label');
+			label4.className = 'btn my-1';
+			label4.setAttribute('for', 'option4');
+			label4.textContent = 'Choose';
+			cardBody4.appendChild(label4);
+
+			// Card5 src = ../assets/images/machine_learning.svg
+			const card5 = document.createElement('div');
+			card5.className = 'card';	
+			container.appendChild(card5);
+
+			const cardBody5 = document.createElement('div');
+			cardBody5.className = 'card-body d-flex flex-column';
+			card5.appendChild(cardBody5);
+			
+			const img5 = document.createElement('img');
+			img5.src = '../assets/images/machine_learning.svg';
+			img5.alt = '';
+			cardBody5.appendChild(img5);
+
+			const input5 = document.createElement('input');
+			input5.type = 'radio';
+			input5.className = 'btn-check';
+			input5.name = 'options-base';
+			input5.id = 'option5';
+			input5.setAttribute('autocomplete', 'off');
+			cardBody5.appendChild(input5);
+
+			const label5 = document.createElement('label');
+			label5.className = 'btn my-1';
+			label5.setAttribute('for', 'option5');
+			label5.textContent = 'Choose';
+			cardBody5.appendChild(label5);
+
+			// Card6 src = ../assets/images/modular_belt.svg
+			const card6 = document.createElement('div');
+			card6.className = 'card';
+			container.appendChild(card6);
+			
+			const cardBody6 = document.createElement('div');
+			cardBody6.className = 'card-body d-flex flex-column';
+			card6.appendChild(cardBody6);
+
+			const img6 = document.createElement('img');
+			img6.src = '../assets/images/modular_belt.svg';
+			img6.alt = '';
+			cardBody6.appendChild(img6);
+
+			const input6 = document.createElement('input');
+			input6.type = 'radio';
+			input6.className = 'btn-check';
+			input6.name = 'options-base';
+			input6.id = 'option6';
+			input6.setAttribute('autocomplete', 'off');
+			cardBody6.appendChild(input6);
+
+			const label6 = document.createElement('label');
+			label6.className = 'btn my-1';
+			label6.setAttribute('for', 'option6');
+			label6.textContent = 'Choose';
+			cardBody6.appendChild(label6);
+
+			// Card7 src = ../assets/images/router.svg
+			const card7 = document.createElement('div');
+			card7.className = 'card';
+			container.appendChild(card7);
+
+			const cardBody7 = document.createElement('div');
+			cardBody7.className = 'card-body d-flex flex-column';
+			card7.appendChild(cardBody7);
+
+			const img7 = document.createElement('img');
+			img7.src = '../assets/images/router.svg';
+			img7.alt = '';
+			cardBody7.appendChild(img7);
+
+			const input7 = document.createElement('input');
+			input7.type = 'radio';
+			input7.className = 'btn-check';
+			input7.name = 'options-base';
+			input7.id = 'option7';
+			input7.setAttribute('autocomplete', 'off');
+			cardBody7.appendChild(input7);
+
+			const label7 = document.createElement('label');
+			label7.className = 'btn my-1';
+			label7.setAttribute('for', 'option7');
+			label7.textContent = 'Choose';
+			cardBody7.appendChild(label7);
 
 			// Append elements
 			modalContent.appendChild(modalHeader);
@@ -947,6 +1089,36 @@ var flowchart = {
 
 			input2.onclick = function() {
 				node.changeImage(img2.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input3.onclick = function() {
+				node.changeImage(img3.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input4.onclick = function() {
+				node.changeImage(img4.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input5.onclick = function() {
+				node.changeImage(img5.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input6.onclick = function() {
+				node.changeImage(img6.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input7.onclick = function() {
+				node.changeImage(img7.src);
 				modalInstance.hide();
 				document.body.removeChild(modal);
 			}
