@@ -776,7 +776,6 @@ var flowchart = {
 		};
 
 		this.changeIcon = function(node) {
-			console.log('node:', node);
 
 			/*
 				Create:
@@ -798,20 +797,15 @@ var flowchart = {
 												<label class="btn my-1" for="option1">Choose</label>
 											</div>
 										</div>
-										for image in ../assets/images/icons:
 										<div class="card">
 											<div class="card-body d-flex flex-column">
-												<img src=image.url alt="">
+												<img src=.. alt="">
 												<input type="radio" class="btn-check" name="options-base" id="option2" autocomplete="off">
 												<label class="btn my-1" for="option2">Choose</label>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary" onclick="changeIcon()">Save changes</button>
 							</div>
 						</div>
 					</div>
@@ -896,42 +890,64 @@ var flowchart = {
 			label.textContent = 'Choose';
 			cardBody.appendChild(label);
 
-			// for image in ../assets/images/icons:
+			/*
+			<div class="card">
+				<div class="card-body d-flex flex-column">
+					<img src="../assets/images/icons/API-Gateway.svg" alt="">
+					<input type="radio" class="btn-check btn-primary" name="options-base" id="option2" autocomplete="off">
+					<label class="btn my-1" for="option2">Choose</label>
+				</div>
+			</div>
+			*/
+			const card2 = document.createElement('div');
+			card2.className = 'card';
+			container.appendChild(card2);
 
+			const cardBody2 = document.createElement('div');
+			cardBody2.className = 'card-body d-flex flex-column';
+			card2.appendChild(cardBody2);
 
+			const img2 = document.createElement('img');
+			img2.src = '../assets/images/icons/API-Gateway.svg';
+			img2.alt = '';
+			cardBody2.appendChild(img2);
 
-			// <div class="modal-footer">
-			const modalFooter = document.createElement('div');
-			modalFooter.className = 'modal-footer';
+			const input2 = document.createElement('input');
+			input2.type = 'radio';
+			input2.className = 'btn-check';
+			input2.name = 'options-base';
+			input2.id = 'option2';
+			input2.setAttribute('autocomplete', 'off');
+			cardBody2.appendChild(input2);
 
-			// <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			const closeButtonFooter = document.createElement('button');
-			closeButtonFooter.type = 'button';
-			closeButtonFooter.className = 'btn btn-secondary';
-			closeButtonFooter.setAttribute('data-bs-dismiss', 'modal');
-			closeButtonFooter.textContent = 'Close';
-			modalFooter.appendChild(closeButtonFooter);
+			const label2 = document.createElement('label');
+			label2.className = 'btn my-1';
+			label2.setAttribute('for', 'option2');
+			label2.textContent = 'Choose';
+			cardBody2.appendChild(label2);
 
-			// <button type="button" class="btn btn-primary" onclick="changeIcon()">Save changes</button>
-			const saveButton = document.createElement('button');
-			saveButton.type = 'button';
-			saveButton.className = 'btn btn-primary';
-			saveButton.textContent = 'Save changes';
-			saveButton.disabled = true;
-			// saveButton.onclick = 
-
-			modalFooter.appendChild(saveButton);
+			// Card3 img.src=../assets/images/icons/Aurora.svg
 
 			// Append elements
 			modalContent.appendChild(modalHeader);
 			modalContent.appendChild(modalBody);
-			modalContent.appendChild(modalFooter);
 			modalDialog.appendChild(modalContent);
 			modal.appendChild(modalDialog);
 
 			document.body.appendChild(modal);
 			const modalInstance = new bootstrap.Modal(modal);
 			modalInstance.show();
+
+			// onclick events for all the cards
+			input.onclick = function() {
+				node.changeImage(img.src);
+				modalInstance.hide();
+			}
+
+			input2.onclick = function() {
+				node.changeImage(img2.src);
+				modalInstance.hide();
+			}
 		}
 
 		this.modifyName = function() {
