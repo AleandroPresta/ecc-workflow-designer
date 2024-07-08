@@ -166,7 +166,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
-					image: "default_storage.png",
+					image: "../assets/images/icons/database.svg",
 				},
 				{
 					name: "Communication",
