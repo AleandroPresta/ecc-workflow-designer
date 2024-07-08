@@ -197,14 +197,30 @@ var flowchart = {
 			return this.data.height;
 		}
 
+		// Gives the node a default image if none was provided
+		this.image = function () {
+			if (!this.data.image) {
+				return '../assets/images/blank.svg';
+			}
+			return this.data.image;
+		}
+
+		// Changes the image of the node
+		this.changeImage = function(newImageUrl) {
+			console.log(`Changing image to: ${newImageUrl}`)
+			this.data.image = newImageUrl;
+		}
+
+		this.id = function() {
+			return this.data.id;
+		}
+
 		//
 		// Select the node.
 		//
 		this.select = function () {
 			this._selected = true;
 		};
-
-
 
 		//
 		// Deselect the node.
@@ -758,6 +774,183 @@ var flowchart = {
 			this.connections = newConnectionViewModels;
 			this.data.connections = newConnectionDataModels;
 		};
+
+		this.changeIcon = function(node) {
+
+			/*
+				Create:
+				<!-- Modal for changing the icon of a node -->
+				<div class="modal fade" id="changeIconModal" tabindex="-1" aria-labelledby="changeIconModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="changeIconModalLabel">Change Icon</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="modal-body">
+									<div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
+										<div class="card">
+											<div class="card-body d-flex flex-column">
+												<img src="../assets/images/blank.svg" alt="">
+												<input type="radio" class="btn-check" name="options-base" id="option1" autocomplete="off" checked>
+												<label class="btn my-1" for="option1">Choose</label>
+											</div>
+										</div>
+										<div class="card">
+											<div class="card-body d-flex flex-column">
+												<img src=.. alt="">
+												<input type="radio" class="btn-check" name="options-base" id="option2" autocomplete="off">
+												<label class="btn my-1" for="option2">Choose</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			*/
+
+			// <div class="modal fade" id="changeIconModal" tabindex="-1" aria-labelledby="changeIconModalLabel" aria-hidden="true">
+			const modal = document.createElement('div');
+			modal.className = 'modal fade';
+			modal.id = 'changeIconModal';
+			modal.tabIndex = '-1';
+			modal.setAttribute('aria-labelledby', 'changeIconModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
+
+			// <div class="modal-dialog">
+			const modalDialog = document.createElement('div');
+			modalDialog.className = 'modal-dialog';
+			modal.appendChild(modalDialog);
+
+			// <div class="modal-content">
+			const modalContent = document.createElement('div');
+			modalContent.className = 'modal-content';
+
+			// <div class="modal-header">
+			const modalHeader = document.createElement('div');
+			modalHeader.className = 'modal-header';
+
+			// <h1 class="modal-title fs-5" id="changeIconModalLabel">Change Icon</h1>
+			const h1 = document.createElement('h1');
+			h1.className = 'modal-title fs-5';
+			h1.id = 'changeIconModalLabel';
+			h1.textContent = 'Change Icon';
+			modalHeader.appendChild(h1);
+
+			// <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			const closeButton = document.createElement('button');
+			closeButton.type = 'button';
+			closeButton.className = 'btn-close';
+			closeButton.setAttribute('data-bs-dismiss', 'modal');
+			closeButton.setAttribute('aria-label', 'Close');
+			modalHeader.appendChild(closeButton);
+
+			// <div class="modal-body">
+			const modalBody = document.createElement('div');
+			modalBody.className = 'modal-body';
+
+			// <div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
+			const container = document.createElement('div');
+			container.className = 'container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start';
+			modalBody.appendChild(container);
+
+			// <div class="card">
+			const card = document.createElement('div');
+			card.className = 'card';
+			container.appendChild(card);
+
+			// <div class="card-body d-flex flex-column">
+			const cardBody = document.createElement('div');
+			cardBody.className = 'card-body d-flex flex-column';
+			card.appendChild(cardBody);
+
+			// <img src="../assets/images/blank.svg" alt="">
+			const img = document.createElement('img');
+			img.src = '../assets/images/blank.svg';
+			img.alt = '';
+			cardBody.appendChild(img);
+
+			// <input type="radio" class="btn-check" name="options-base" id="option1" autocomplete="off" checked>
+			const input = document.createElement('input');
+			input.type = 'radio';
+			input.className = 'btn-check';
+			input.name = 'options-base';
+			input.id = 'option1';
+			input.setAttribute('autocomplete', 'off');
+			input.checked = true;
+			cardBody.appendChild(input);
+
+			// <label class="btn my-1" for="option1">Choose</label>
+			const label = document.createElement('label');
+			label.className = 'btn my-1';
+			label.setAttribute('for', 'option1');
+			label.textContent = 'Choose';
+			cardBody.appendChild(label);
+
+			/*
+			<div class="card">
+				<div class="card-body d-flex flex-column">
+					<img src="../assets/images/icons/API-Gateway.svg" alt="">
+					<input type="radio" class="btn-check btn-primary" name="options-base" id="option2" autocomplete="off">
+					<label class="btn my-1" for="option2">Choose</label>
+				</div>
+			</div>
+			*/
+			const card2 = document.createElement('div');
+			card2.className = 'card';
+			container.appendChild(card2);
+
+			const cardBody2 = document.createElement('div');
+			cardBody2.className = 'card-body d-flex flex-column';
+			card2.appendChild(cardBody2);
+
+			const img2 = document.createElement('img');
+			img2.src = '../assets/images/icons/API-Gateway.svg';
+			img2.alt = '';
+			cardBody2.appendChild(img2);
+
+			const input2 = document.createElement('input');
+			input2.type = 'radio';
+			input2.className = 'btn-check';
+			input2.name = 'options-base';
+			input2.id = 'option2';
+			input2.setAttribute('autocomplete', 'off');
+			cardBody2.appendChild(input2);
+
+			const label2 = document.createElement('label');
+			label2.className = 'btn my-1';
+			label2.setAttribute('for', 'option2');
+			label2.textContent = 'Choose';
+			cardBody2.appendChild(label2);
+
+			// Card3 img.src=../assets/images/icons/Aurora.svg
+
+			// Append elements
+			modalContent.appendChild(modalHeader);
+			modalContent.appendChild(modalBody);
+			modalDialog.appendChild(modalContent);
+			modal.appendChild(modalDialog);
+
+			document.body.appendChild(modal);
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+
+			// onclick events for all the cards
+			input.onclick = function() {
+				node.changeImage(img.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input2.onclick = function() {
+				node.changeImage(img2.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+		}
 
 		this.modifyName = function() {
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
