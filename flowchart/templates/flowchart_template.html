@@ -70,6 +70,34 @@
     </rect>
   </g>
 
+  <g>
+    <g
+      ng-repeat="connection in chart.connections"
+      class="connection"
+      ng-mousedown="connectionMouseDown($event, connection)"
+      >
+        <path
+          ng-right-click="openContextMenuEdges($event, connection)"
+          ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
+          ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
+                     C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
+                       {{connection.destTangentX()}}, {{connection.destTangentY()}}
+                       {{connection.destCoordX()}}, {{connection.destCoordY()}}"
+
+          style="stroke: black;"
+          >
+        </path>
+
+      <text
+            ng-attr-class="{{connection.selected() && 'selected-connection-name' || (connection == mouseOverConnection && 'mouseover-connection-name' || 'connection-name')}}"
+        ng-attr-x="{{connection.middleX()}}"
+        ng-attr-y="{{connection.middleY()}}"
+        text-anchor="middle"
+        alignment-baseline="middle"
+        >{{connection.name()}}</text>
+    </g>
+  </g>
+
   <g
     ng-repeat="node in chart.nodes"
     ng-mousedown="nodeMouseDown($event, node)"
@@ -151,34 +179,6 @@
         ng-attr-cx="{{connector.x()}}"
         ng-attr-cy="{{connector.y()}}"
         />
-    </g>
-  </g>
-
-  <g>
-    <g
-      ng-repeat="connection in chart.connections"
-      class="connection"
-      ng-mousedown="connectionMouseDown($event, connection)"
-      >
-        <path
-          ng-right-click="openContextMenuEdges($event, connection)"
-          ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
-          ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
-                     C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
-                       {{connection.destTangentX()}}, {{connection.destTangentY()}}
-                       {{connection.destCoordX()}}, {{connection.destCoordY()}}"
-
-          style="stroke: black;"
-          >
-        </path>
-
-      <text
-            ng-attr-class="{{connection.selected() && 'selected-connection-name' || (connection == mouseOverConnection && 'mouseover-connection-name' || 'connection-name')}}"
-        ng-attr-x="{{connection.middleX()}}"
-        ng-attr-y="{{connection.middleY()}}"
-        text-anchor="middle"
-        alignment-baseline="middle"
-        >{{connection.name()}}</text>
     </g>
   </g>
 
