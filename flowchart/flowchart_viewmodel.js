@@ -855,6 +855,10 @@ var flowchart = {
 			// <div class="container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start">
 			const container = document.createElement('div');
 			container.className = 'container d-flex flex-wrap overflow-y-scroll icons-container justify-content-center align-items-start';
+			// Add styles: .icons-container { max - height: 600px; width: 100%; overflow-y: scroll;}
+			container.style.maxHeight = '600px';
+			container.style.width = '100%';
+			container.style.overflowY = 'scroll';
 			modalBody.appendChild(container);
 
 			// <div class="card">
