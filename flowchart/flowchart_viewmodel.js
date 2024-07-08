@@ -1089,7 +1089,35 @@ var flowchart = {
 				document.body.removeChild(modal);
 			}
 
-			
+			input3.onclick = function() {
+				node.changeImage(img3.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input4.onclick = function() {
+				node.changeImage(img4.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input5.onclick = function() {
+				node.changeImage(img5.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input6.onclick = function() {
+				node.changeImage(img6.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
+
+			input7.onclick = function() {
+				node.changeImage(img7.src);
+				modalInstance.hide();
+				document.body.removeChild(modal);
+			}
 		}
 
 		this.modifyName = function() {
