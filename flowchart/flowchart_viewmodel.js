@@ -200,7 +200,7 @@ var flowchart = {
 		// Gives the node a default image if none was provided
 		this.image = function () {
 			if (!this.data.image) {
-				return '/home/aleandro/Desktop/Research/ecc-workflow-designer/assets/images/blank.svg';
+				return '../assets/images/blank.svg';
 			}
 			return this.data.image;
 		}
