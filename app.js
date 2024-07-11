@@ -1376,30 +1376,71 @@ angular.module('app', ['flowChart',])
 			document.body.removeChild(link);
 		}
 
+
 		$scope.loadFile = function () {
-			const container = document.createElement('dialog');
-			container.id = 'file-container';
-			// Create the file input element
+			/*
+				Create:
+				<div class="modal fade" id="loadWorkflowModal" tabindex="-1" aria-labelledby="loadWorkflowModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="loadWorkflowModalLabel">Load Workflow</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<input class="form-control" type="file" accept=".json">
+							</div>
+						</div>
+					</div>
+				</div>
+			*/
+
+			const modal = document.createElement('div');
+			modal.className = 'modal fade';
+			modal.id = 'loadWorkflowModal';
+			modal.tabIndex = '-1';
+			modal.setAttribute('aria-labelledby', 'loadWorkflowModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
+
+			const modalDialog = document.createElement('div');
+			modalDialog.className = 'modal-dialog modal-dialog-centered';
+
+			const modalContent = document.createElement('div');
+			modalContent.className = 'modal-content';
+
+			const modalHeader = document.createElement('div');
+			modalHeader.className = 'modal-header';
+
+			const h1 = document.createElement('h1');
+			h1.className = 'modal-title fs-5';
+			h1.id = 'loadWorkflowModalLabel';
+			h1.textContent = 'Load Workflow';
+
+			const button = document.createElement('button');
+			button.type = 'button';
+			button.className = 'btn-close';
+			button.setAttribute('data-bs-dismiss', 'modal');
+			button.setAttribute('aria-label', 'Close');
+
+			const modalBody = document.createElement('div');
+			modalBody.className = 'modal-body';
+
 			const fileInput = document.createElement('input');
-			// Use Bootstrap's styling
 			fileInput.className = 'form-control';
 			fileInput.type = 'file';
-			fileInput.accept = '.json'; // Restrict file selection to JSON files
-			fileInput.style.display = 'block'; // Hide the input element
-			container.appendChild(fileInput);
+			fileInput.accept = '.json';
 
-			// Append the file input to the body
-			document.body.appendChild(container);
-			// Open the menu
-			container.showModal();
+			modalBody.appendChild(fileInput);
+			modalHeader.appendChild(h1);
+			modalHeader.appendChild(button);
+			modalContent.appendChild(modalHeader);
+			modalContent.appendChild(modalBody);
+			modalDialog.appendChild(modalContent);
+			modal.appendChild(modalDialog);
 
-			// Add an event listener for the esc key of the keyboard that closes the modal
-			document.addEventListener('keydown', function (event) {
-				if (event.keyCode === escKeyCode) {
-					container.close();
-					document.body.removeChild(container);
-				}
-			});
+			document.body.appendChild(modal);
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
 
 			// Add an event listener for the change event
 			fileInput.addEventListener('change', function (event) {
@@ -1433,8 +1474,9 @@ angular.module('app', ['flowChart',])
 					};
 
 					reader.readAsText(file);
-					// Close the dialog
-					container.close();
+					// Close and remove the modal
+					modalInstance.hide();
+					document.body.removeChild(modal);
 				}
 			});
 		}
