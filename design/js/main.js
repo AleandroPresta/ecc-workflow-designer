@@ -530,6 +530,39 @@ function openCreationModificationModal() {
 
     container2.appendChild(button3);
 
+    // <div class="modal-footer">
+    const modalFooter = document.createElement("div");
+    modalFooter.className = "modal-footer";
+
+    modalContent.appendChild(modalFooter);
+
+    // <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    const closeButton2 = document.createElement("button");
+    closeButton2.type = "button";
+    closeButton2.className = "btn btn-secondary";
+    closeButton2.setAttribute("data-bs-dismiss", "modal");
+    closeButton2.innerText = "Close";
+
+    modalFooter.appendChild(closeButton2);
+
+    // <button type="button" class="btn btn-primary">Save changes</button>
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    saveButton.className = "btn btn-primary";
+    saveButton.innerText = "Save changes";
+    saveButton.addEventListener("click", () => {
+        const newNode = {
+            name: input1.value,
+            type: "",
+            description: "",
+            constraints: []
+        }
+
+        console.log(newNode)
+    });
+
+    modalFooter.appendChild(saveButton);
+
     const modalInstance = new bootstrap.Modal(document.getElementById('addNodeModal'));
     modalInstance.show();
 }
