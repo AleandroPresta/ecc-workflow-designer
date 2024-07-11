@@ -1403,7 +1403,7 @@ angular.module('app', ['flowChart',])
 			modal.setAttribute('aria-hidden', 'true');
 
 			const modalDialog = document.createElement('div');
-			modalDialog.className = 'modal-dialog';
+			modalDialog.className = 'modal-dialog modal-dialog-centered';
 
 			const modalContent = document.createElement('div');
 			modalContent.className = 'modal-content';
