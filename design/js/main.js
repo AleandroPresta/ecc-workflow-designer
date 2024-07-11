@@ -252,21 +252,21 @@ function openCreationModificationModal() {
 
     // <option value="1">Computation</option>
     const option2 = document.createElement("option");
-    option2.value = "1";
+    option2.value = "Computation";
     option2.innerText = "Computation";
 
     select1.appendChild(option2);
     
     // <option value="2">Storage</option>
     const option3 = document.createElement("option");
-    option3.value = "2";
+    option3.value = "Storage";
     option3.innerText = "Storage";
 
     select1.appendChild(option3);
 
     // <option value="3">Communication</option>
     const option4 = document.createElement("option");
-    option4.value = "3";
+    option4.value = "Communication";
     option4.innerText = "Communication";
 
     select1.appendChild(option4);
@@ -341,7 +341,7 @@ function openCreationModificationModal() {
 
     // <option value="1">Categorical</option>
     const option6 = document.createElement("option");
-    option6.value = "1";
+    option6.value = "Categorical";
     option6.innerText = "Categorical";
 
     select2.appendChild(option6);
@@ -553,8 +553,8 @@ function openCreationModificationModal() {
     saveButton.addEventListener("click", () => {
         const newNode = {
             name: input1.value,
-            type: "",
-            description: "",
+            type: select1.value,
+            description: textarea.value,
             constraints: []
         }
 
