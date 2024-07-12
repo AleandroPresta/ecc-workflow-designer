@@ -497,51 +497,36 @@ function createAddNodeModal() {
 
     col2.appendChild(h42);
 
-    let span1 = document.createElement('span');
-    span1.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+    // Load the constraints directly from the node
+    for (let i = 0; i < node.parameters.length; i++) {
+        let span = document.createElement('span');
+        span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
 
-    col2.appendChild(span1);
+        col2.appendChild(span);
 
-    let container1 = document.createElement('div');
-    container1.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+        let container = document.createElement('div');
+        container.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
 
-    span1.appendChild(container1);
+        span.appendChild(container);
 
-    let span1Text = document.createElement('span');
-    span1Text.textContent = 'Execution Time <= 20ms';
+        let spanText = document.createElement('span');
+        spanText.textContent = node.parameters[i].name + ' ' + node.parameters[i].type + ' ' + node.parameters[i].value;
 
-    container1.appendChild(span1Text);
+        container.appendChild(spanText);
 
-    let button1 = document.createElement('button');
-    button1.type = 'button';
-    button1.classList.add('btn-close', 'btn-close-white');
-    button1.setAttribute('aria-label', 'Close');
-    button1.style = '--bs-btn-font-size: .25rem;';
+        let button = document.createElement('button');
+        button.type = 'button';
+        button.classList.add('btn-close', 'btn-close-white');
+        button.setAttribute('aria-label', 'Close');
+        button.style = '--bs-btn-font-size: .25rem;';
 
-    container1.appendChild(button1);
+        container.appendChild(button);
 
-    let span2 = document.createElement('span');
-    span2.classList.add('badge', 'rounded-pill', 'text-bg-primary');
-
-    col2.appendChild(span2);
-
-    let container2 = document.createElement('div');
-    container2.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
-
-    span2.appendChild(container2);
-
-    let span2Text = document.createElement('span');
-    span2Text.textContent = 'Volume of Data <= 200mb';
-
-    container2.appendChild(span2Text);
-
-    let button2 = document.createElement('button');
-    button2.type = 'button';
-    button2.classList.add('btn-close', 'btn-close-white');
-    button2.setAttribute('aria-label', 'Close');
-    button2.style = '--bs-btn-font-size: .25rem;';
-
-    container2.appendChild(button2);
+        button.onclick = function() {
+            node.parameters.splice(i, 1);
+            col2.removeChild(span);
+        }
+    }
 
     let span3 = document.createElement('span');
     span3.classList.add('badge', 'rounded-pill', 'text-bg-primary');
@@ -907,7 +892,7 @@ function createAddNodeModal() {
                 select2.appendChild(option);
             }
         }
-        
+
         let modalFooter = document.createElement('div');
         modalFooter.classList.add('modal-footer');
 
@@ -924,7 +909,7 @@ function createAddNodeModal() {
         let buttonSave = document.createElement('button');
         buttonSave.type = 'button';
         buttonSave.classList.add('btn', 'btn-primary');
-        buttonSave.textContent = 'Add Costraint';
+        buttonSave.textContent = 'Add New Costraint';
 
         modalFooter.appendChild(buttonSave);
 
@@ -939,6 +924,14 @@ function createAddNodeModal() {
                 }
     
                 node.parameters.push(costraint);
+
+                // Create a new badge for the constraint
+                const newBadge = createNewBadge(costraint);
+
+                // Add the badge to the modal
+                col2.appendChild(newBadge);
+
+                console.log(col2);
     
                 modalInstance.hide();
                 document.body.removeChild(modal);
@@ -989,6 +982,37 @@ function createAddNodeModal() {
         modalInstance.hide();
         document.body.removeChild(modal);
     }
-
     
 } 
+
+function createNewBadge(costraint) {
+    console.log('Creating new badge')
+    // Add a badge to the constraints shown in the modal
+    let span = document.createElement('span');
+    span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+
+    let container = document.createElement('div');
+    container.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+
+    span.appendChild(container);
+
+    let spanText = document.createElement('span');
+    spanText.textContent = costraint.name + ' == ' + costraint.value;
+
+    container.appendChild(spanText);
+
+    let button = document.createElement('button');
+    button.type = 'button';
+    button.classList.add('btn-close', 'btn-close-white');
+    button.setAttribute('aria-label', 'Close');
+    button.style = '--bs-btn-font-size: .25rem;';
+
+    container.appendChild(button);
+
+    button.onclick = function () {
+        node.parameters.splice(node.parameters.indexOf(costraint), 1);
+        col2.removeChild(span);
+    }
+
+    return span;
+}
