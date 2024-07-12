@@ -543,18 +543,11 @@ function createAddNodeModal() {
 
     modalContent.appendChild(modalFooter);
 
-    let buttonClose = document.createElement('button');
-    buttonClose.type = 'button';
-    buttonClose.classList.add('btn', 'btn-secondary');
-    buttonClose.setAttribute('data-bs-dismiss', 'modal');
-    buttonClose.textContent = 'Close';
+    let buttonClose = createButtonClose();
 
     modalFooter.appendChild(buttonClose);
 
-    let buttonSave = document.createElement('button');
-    buttonSave.type = 'button';
-    buttonSave.classList.add('btn', 'btn-primary');
-    buttonSave.textContent = 'Create Node';
+    let buttonSave = createButtonSave('Create Node');
 
     modalFooter.appendChild(buttonSave);
 
@@ -782,18 +775,11 @@ function createAddNumericalCostraintModal(node) {
 
     modalContent.appendChild(modalFooter);
 
-    let buttonClose = document.createElement('button');
-    buttonClose.type = 'button';
-    buttonClose.classList.add('btn', 'btn-secondary');
-    buttonClose.setAttribute('data-bs-dismiss', 'modal');
-    buttonClose.textContent = 'Close';
+    let buttonClose = createButtonClose();
 
     modalFooter.appendChild(buttonClose);
 
-    let buttonSave = document.createElement('button');
-    buttonSave.type = 'button';
-    buttonSave.classList.add('btn', 'btn-primary');
-    buttonSave.textContent = 'Add Costraint';
+    let buttonSave = createButtonSave('Add Costraint');
 
     modalFooter.appendChild(buttonSave);
 
@@ -968,18 +954,11 @@ function createAddCategoricalCostraintModal(node) {
 
     modalContent.appendChild(modalFooter);
 
-    let buttonClose = document.createElement('button');
-    buttonClose.type = 'button';
-    buttonClose.classList.add('btn', 'btn-secondary');
-    buttonClose.setAttribute('data-bs-dismiss', 'modal');
-    buttonClose.textContent = 'Close';
+    let buttonClose = createButtonClose();
 
     modalFooter.appendChild(buttonClose);
 
-    let buttonSave = document.createElement('button');
-    buttonSave.type = 'button';
-    buttonSave.classList.add('btn', 'btn-primary');
-    buttonSave.textContent = 'Add New Costraint';
+    let buttonSave = createButtonSave('Add New Costraint');
 
     modalFooter.appendChild(buttonSave);
 
@@ -1034,4 +1013,23 @@ function createBadgeFromExistingCostraint(node, i, col2){
         node.parameters.splice(i, 1);
         col2.removeChild(span);
     }
+}
+
+function createButtonSave(name) {
+    let buttonSave = document.createElement('button');
+    buttonSave.type = 'button';
+    buttonSave.classList.add('btn', 'btn-primary');
+    buttonSave.textContent = name;
+
+    return buttonSave;
+}
+
+function createButtonClose() {
+    let buttonClose = document.createElement('button');
+    buttonClose.type = 'button';
+    buttonClose.classList.add('btn', 'btn-secondary');
+    buttonClose.setAttribute('data-bs-dismiss', 'modal');
+    buttonClose.textContent = 'Close';
+
+    return buttonClose
 }
