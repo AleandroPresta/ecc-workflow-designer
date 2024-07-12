@@ -1,4 +1,224 @@
+let nextNodeId = 4;
+
+var chartDataModel = {
+    nodes: [
+        {
+            name: "Device",
+            id: 0,
+            type: "Device",
+            description: "This is a device",
+            x: 26,
+            y: 27,
+            width: 300,
+            height: 90,
+            inputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            outputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ]
+        },
+        {
+            name: "Computation",
+            id: 1,
+            type: "Computation",
+            parameters: [
+                {
+                    name: 'executionTime',
+                    value: 10,
+                    type: '>'
+                },
+                {
+                    name: 'volumeOfData',
+                    value: 100,
+                    type: '<='
+                }
+            ],
+            description: "This is a computation",
+            x: 418,
+            y: 138,
+            inputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            outputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            width: 250,
+            height: 90,
+        },
+        {
+            name: "Storage",
+            id: 2,
+            type: "Storage",
+            parameters: [
+                {
+                    name: 'availableMemory',
+                    value: 1000,
+                    type: '>'
+                }
+            ],
+            description: "This is a storage",
+            x: 687,
+            y: 296,
+            inputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            outputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            width: 250,
+            height: 90,
+            image: "../assets/images/database.svg",
+        },
+        {
+            name: "Communication",
+            id: 3,
+            type: "Communication",
+            parameters: {
+
+            },
+            description: "This is a communication",
+            x: 985,
+            y: 423,
+            inputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            outputConnectors: [
+                {
+                    name: "",
+                    direction: "x"
+                },
+                {
+                    name: "",
+                    direction: "y"
+                }
+            ],
+            width: 250,
+            height: 90,
+        }
+    ],
+    connections: [
+        {
+            name: "Connection 1",
+            source: {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            dest: {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        },
+        {
+            name: "Connection 2",
+            source: {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            dest: {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        },
+        {
+            name: "Connection 3",
+            source: {
+                "nodeID": 2,
+                "connectorIndex": 0
+            },
+            dest: {
+                "nodeID": 3,
+                "connectorIndex": 0
+            }
+        }
+    ]
+};
+
 function createAddNodeModal() {
+    // Create a blank node that will be modelled by the modal
+    let node = {
+        name: '',
+        type: '',
+        id: nextNodeId,
+        description: '',
+        quantity: 0,
+        parameters: [
+            
+        ],
+        x: 985,
+        y: 423,
+        inputConnectors: [
+            {
+                name: "",
+                direction: "x"
+            },
+            {
+                name: "",
+                direction: "y"
+            }
+        ],
+        outputConnectors: [
+            {
+                name: "",
+                direction: "x"
+            },
+            {
+                name: "",
+                direction: "y"
+            }
+        ],
+        width: 250,
+        height: 90,
+    };
     /*
     <!-- Modal -->
     <div class="modal fade" id="addNodeModal" tabindex="-1" aria-labelledby="addNodeModalLabel" aria-hidden="true">
@@ -301,6 +521,211 @@ function createAddNodeModal() {
 
     let a1 = document.createElement('a');
     a1.textContent = 'Add Numerical Costraint';
+    a1.onclick = function() {
+        /*
+        Create:
+        <!-- Modal -->
+        <div class="modal fade" id="addNumericalCostraintModal" tabindex="-1" aria-labelledby="addNumericalCostraintModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addNumericalCostraintModalLabel">Add Numerical Costraint</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Costraint Name -->
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="inputGroupCostraintName">
+                                    <option selected>Execution Time</option>
+                                    <option value="1">Volume of Data</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Costraint Type -->
+                        <div class="col-3">
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="inputGroupCostraintName">
+                                    <option selected>==</option>
+                                    <option value="1"><</option>
+                                    <option value="1">></option>
+                                    <option value="1"><=</option>
+                                    <option value="1">>=</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Costraint Value -->
+                        <div class="col-3">
+                            <input type="text" class="form-control" placeholder="Value" aria-label="Value">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Add Costraint</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        */
+        let modal = document.createElement('div');
+        modal.classList.add('modal', 'fade');
+        modal.id = 'addNumericalCostraintModal';
+        modal.tabIndex = -1;
+        modal.setAttribute('aria-labelledby', 'addNumericalCostraintModalLabel');
+        modal.setAttribute('aria-hidden', 'true');
+
+        let modalDialog = document.createElement('div');
+        modalDialog.classList.add('modal-dialog', 'modal-dialog-centered');
+
+        modal.appendChild(modalDialog);
+
+        let modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+
+        modalDialog.appendChild(modalContent);
+
+        let modalHeader = document.createElement('div');
+        modalHeader.classList.add('modal-header');
+
+        modalContent.appendChild(modalHeader);
+
+        let modalTitle = document.createElement('h1');
+        modalTitle.classList.add('modal-title', 'fs-5');
+        modalTitle.id = 'addNumericalCostraintModalLabel';
+        modalTitle.textContent = 'Add Numerical Costraint';
+
+        modalHeader.appendChild(modalTitle);
+
+        let modalButton = document.createElement('button');
+        modalButton.type = 'button';
+        modalButton.classList.add('btn-close');
+        modalButton.setAttribute('data-bs-dismiss', 'modal');
+        modalButton.setAttribute('aria-label', 'Close');
+
+        modalHeader.appendChild(modalButton);
+
+        let modalBody = document.createElement('div');
+        modalBody.classList.add('modal-body');
+
+        modalContent.appendChild(modalBody);
+
+        let row = document.createElement('div');
+        row.classList.add('row');
+
+        modalBody.appendChild(row);
+
+        let col1 = document.createElement('div');
+        col1.classList.add('col-6');
+
+        row.appendChild(col1);
+
+        let inputGroup1 = document.createElement('div');
+        inputGroup1.classList.add('input-group', 'mb-3');
+
+        col1.appendChild(inputGroup1);
+
+        let select1 = document.createElement('select');
+        select1.classList.add('form-select');
+        select1.id = 'inputGroupCostraintName';
+
+        inputGroup1.appendChild(select1);
+
+        let option1 = document.createElement('option');
+        option1.selected = true;
+        option1.textContent = 'Execution Time';
+
+        select1.appendChild(option1);
+
+        let option2 = document.createElement('option');
+        option2.value = 'Volume of Data';
+        option2.textContent = 'Volume of Data';
+
+        select1.appendChild(option2);
+
+        let col2 = document.createElement('div');
+        col2.classList.add('col-3');
+
+        row.appendChild(col2);
+
+        let inputGroup2 = document.createElement('div');
+        inputGroup2.classList.add('input-group', 'mb-3');
+
+        col2.appendChild(inputGroup2);
+
+        let select2 = document.createElement('select');
+        select2.classList.add('form-select');
+        select2.id = 'inputGroupCostraintType';
+
+        inputGroup2.appendChild(select2);
+
+        let option3 = document.createElement('option');
+        option3.selected = true;
+        option3.textContent = '==';
+
+        select2.appendChild(option3);
+
+        let option4 = document.createElement('option');
+        option4.value = '<';
+        option4.textContent = '<';
+
+        select2.appendChild(option4);
+
+        let option5 = document.createElement('option');
+        option5.value = '>';
+        option5.textContent = '>';
+
+        select2.appendChild(option5);
+
+        let option6 = document.createElement('option');
+        option6.value = '<=';
+        option6.textContent = '<=';
+
+        select2.appendChild(option6);
+
+        let option7 = document.createElement('option');
+        option7.value = '>=';
+        option7.textContent = '>=';
+
+        select2.appendChild(option7);
+
+        let col3 = document.createElement('div');
+        col3.classList.add('col-3');
+
+        row.appendChild(col3);
+
+        let input3 = document.createElement('input');
+        input3.type = 'text';
+        input3.classList.add('form-control');
+        input3.placeholder = 'Value';
+        input3.setAttribute('aria-label', 'Value');
+
+        col3.appendChild(input3);
+
+        let modalFooter = document.createElement('div');
+        modalFooter.classList.add('modal-footer');
+
+        modalContent.appendChild(modalFooter);
+
+        let buttonClose = document.createElement('button');
+        buttonClose.type = 'button';
+        buttonClose.classList.add('btn', 'btn-secondary');
+        buttonClose.setAttribute('data-bs-dismiss', 'modal');
+        buttonClose.textContent = 'Close';
+
+        modalFooter.appendChild(buttonClose);
+
+        let buttonSave = document.createElement('button');
+        buttonSave.type = 'button';
+        buttonSave.classList.add('btn', 'btn-primary');
+        buttonSave.textContent = 'Add Costraint';
+
+        modalFooter.appendChild(buttonSave);
+
+        const modalInstance = new bootstrap.Modal(modal);
+        modalInstance.show();
+    }
 
     container3.appendChild(a1);
 
@@ -335,10 +760,32 @@ function createAddNodeModal() {
     let buttonSave = document.createElement('button');
     buttonSave.type = 'button';
     buttonSave.classList.add('btn', 'btn-primary');
-    buttonSave.textContent = 'Save changes';
+    buttonSave.textContent = 'Create Node';
 
     modalFooter.appendChild(buttonSave);
 
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show(); 
+
+    buttonSave.onclick = function() {
+        // Set the node values to the values in the modal
+        node.name = input1.value;
+        node.type = select.value;
+        node.description = textarea.value;
+        node.quantity = input2.value;
+        
+        // Increment the nextNodeID
+        nextNodeId++;
+
+        // Add the node to the workflow
+        chartDataModel.nodes.push(node);
+
+        console.log(chartDataModel);
+
+        // Close the modal
+        modalInstance.hide();
+        document.body.removeChild(modal);
+    }
+
+    
 } 
