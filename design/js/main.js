@@ -518,7 +518,7 @@ function createAddNodeModal() {
     let a1 = document.createElement('a');
     a1.textContent = 'Add Numerical Costraint';
     a1.onclick = function() {
-        createAddNumericalCostraintModal(node);
+        createAddNumericalCostraintModal(node, constaintsContainer);
     }
 
     container3.appendChild(a1);
@@ -619,7 +619,7 @@ function closeModal(modalInstance, modal) {
     document.body.removeChild(modal);
 }
 
-function createAddNumericalCostraintModal(node) {
+function createAddNumericalCostraintModal(node, appendTo) {
     /*
         Create:
         <!-- Modal -->
@@ -798,6 +798,10 @@ function createAddNumericalCostraintModal(node) {
         }
 
         node.parameters.push(costraint);
+
+        const newBadge = createNewBadge(costraint);
+
+        appendTo.append(newBadge);
 
         closeModal(modalInstance, modal);
     }
