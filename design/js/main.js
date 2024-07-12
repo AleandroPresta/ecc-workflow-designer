@@ -192,7 +192,7 @@ function createAddNodeModal() {
         description: '',
         quantity: 0,
         parameters: [
-            
+
         ],
         x: 985,
         y: 423,
@@ -725,6 +725,20 @@ function createAddNodeModal() {
 
         const modalInstance = new bootstrap.Modal(modal);
         modalInstance.show();
+
+        buttonSave.onclick = function() {
+        
+            const costraint = {
+                name: select1.value,
+                type: select2.value,
+                value: input3.value
+            }
+
+            node.parameters.push(costraint);
+
+            modalInstance.hide();
+            document.body.removeChild(modal);
+        }
     }
 
     container3.appendChild(a1);
@@ -741,6 +755,9 @@ function createAddNodeModal() {
 
     let a2 = document.createElement('a');
     a2.textContent = 'Add Categorical Costraint';
+    a2.onclick = function() {
+        
+    }
 
     container4.appendChild(a2);
 
