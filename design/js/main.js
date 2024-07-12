@@ -454,7 +454,7 @@ function createAddNodeModal() {
     col1.appendChild(formFloating2);
 
     let textarea = document.createElement('textarea');
-    textarea.classList.add('form-control');
+    textarea.classList.add('form-control', 'mb-3');
     textarea.placeholder = 'Describe yout node';
     textarea.id = 'floatingTextareaDescription';
     textarea.style.height = '100px';
@@ -561,7 +561,7 @@ function createAddNodeModal() {
     
 } 
 
-function createNewBadge(costraint) {
+function createNewBadge(node, costraint, appendTo) {
     // Add a badge to the constraints shown in the modal
     let span = document.createElement('span');
     span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
@@ -585,8 +585,10 @@ function createNewBadge(costraint) {
     container.appendChild(button);
 
     button.onclick = function () {
-        node.parameters.splice(node.parameters.indexOf(costraint), 1);
-        col2.removeChild(span);
+        // If the x button is clicked, remove the constraint from the node and from the appendTo element
+        const indexOfCostraint = node.parameters.indexOf(costraint);
+        node.parameters.splice(indexOfCostraint, 1);
+        appendTo.removeChild(span);
     }
 
     return span;
@@ -793,7 +795,7 @@ function createAddNumericalCostraintModal(node, appendTo) {
 
         node.parameters.push(costraint);
 
-        const newBadge = createNewBadge(costraint);
+        const newBadge = createNewBadge(node, costraint, appendTo);
 
         appendTo.append(newBadge);
 
@@ -977,7 +979,7 @@ function createAddCategoricalCostraintModal(node, appendTo) {
         node.parameters.push(costraint);
 
         // Create a new badge for the constraint
-        const newBadge = createNewBadge(costraint);
+        const newBadge = createNewBadge(node, costraint, appendTo);
 
         // Add the badge to the modal in first position
         appendTo.append(newBadge);
@@ -1011,8 +1013,10 @@ function createBadgeFromExistingCostraint(node, i, col2){
     container.appendChild(button);
 
     button.onclick = function () {
-        node.parameters.splice(i, 1);
-        col2.removeChild(span);
+        // If the x button is clicked, remove the constraint from the node and from the appendTo element
+        const indexOfCostraint = node.parameters.indexOf(costraint);
+        node.parameters.splice(indexOfCostraint, 1);
+        appendTo.removeChild(span);
     }
 }
 
