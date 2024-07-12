@@ -988,38 +988,6 @@ function createAddCategoricalCostraintModal(node, appendTo) {
     }
 }
 
-function createBadgeFromExistingCostraint(node, i, col2){
-    let span = document.createElement('span');
-    span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
-
-    col2.appendChild(span);
-
-    let container = document.createElement('div');
-    container.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
-
-    span.appendChild(container);
-
-    let spanText = document.createElement('span');
-    spanText.textContent = node.parameters[i].name + ' ' + node.parameters[i].type + ' ' + node.parameters[i].value;
-
-    container.appendChild(spanText);
-
-    let button = document.createElement('button');
-    button.type = 'button';
-    button.classList.add('btn-close', 'btn-close-white');
-    button.setAttribute('aria-label', 'Close');
-    button.style = '--bs-btn-font-size: .25rem;';
-
-    container.appendChild(button);
-
-    button.onclick = function () {
-        // If the x button is clicked, remove the constraint from the node and from the appendTo element
-        const indexOfCostraint = node.parameters.indexOf(costraint);
-        node.parameters.splice(indexOfCostraint, 1);
-        appendTo.removeChild(span);
-    }
-}
-
 function createButtonSave(name) {
     let buttonSave = document.createElement('button');
     buttonSave.type = 'button';
