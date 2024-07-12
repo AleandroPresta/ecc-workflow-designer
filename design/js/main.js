@@ -500,11 +500,6 @@ function createAddNodeModal() {
     const constaintsContainer = document.createElement('div');
     col2.appendChild(constaintsContainer);
 
-    // Load the constraints directly from the node
-    for (let i = 0; i < node.parameters.length; i++) { // TODO fix this
-        createBadgeFromExistingCostraint(node, i, col2);
-    }
-
     let span3 = document.createElement('span');
     span3.classList.add('badge', 'rounded-pill', 'text-bg-primary');
 
@@ -567,7 +562,6 @@ function createAddNodeModal() {
 } 
 
 function createNewBadge(costraint) {
-    console.log('Creating new badge')
     // Add a badge to the constraints shown in the modal
     let span = document.createElement('span');
     span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
