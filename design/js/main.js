@@ -497,8 +497,11 @@ function createAddNodeModal() {
 
     col2.appendChild(h42);
 
+    const constaintsContainer = document.createElement('div');
+    col2.appendChild(constaintsContainer);
+
     // Load the constraints directly from the node
-    for (let i = 0; i < node.parameters.length; i++) {
+    for (let i = 0; i < node.parameters.length; i++) { // TODO fix this
         createBadgeFromExistingCostraint(node, i, col2);
     }
 
@@ -533,7 +536,7 @@ function createAddNodeModal() {
     let a2 = document.createElement('a');
     a2.textContent = 'Add Categorical Costraint';
     a2.onclick = function() {
-        createAddCategoricalCostraintModal(node);
+        createAddCategoricalCostraintModal(node, constaintsContainer);
     }
 
     container4.appendChild(a2);
@@ -802,7 +805,7 @@ function createAddNumericalCostraintModal(node) {
     return modal;
 }
 
-function createAddCategoricalCostraintModal(node) {
+function createAddCategoricalCostraintModal(node, appendTo) {
     /*
         Create:
         <!-- Modal -->
@@ -978,8 +981,8 @@ function createAddCategoricalCostraintModal(node) {
         // Create a new badge for the constraint
         const newBadge = createNewBadge(costraint);
 
-        // Add the badge to the modal
-        col2.appendChild(newBadge); // TODO wrong col
+        // Add the badge to the modal in first position
+        appendTo.append(newBadge);
 
         closeModal(modalInstance, modal);
     }
