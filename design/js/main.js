@@ -964,19 +964,7 @@ function createAddNodeModal() {
     modalInstance.show(); 
 
     buttonSave.onclick = function() {
-        // Set the node values to the values in the modal
-        node.name = input1.value;
-        node.type = select.value;
-        node.description = textarea.value;
-        node.quantity = input2.value;
-        
-        // Increment the nextNodeID
-        nextNodeId++;
-
-        // Add the node to the workflow
-        chartDataModel.nodes.push(node);
-
-        console.log(chartDataModel);
+        saveNewNode(node, input1, select, textarea, input2);
 
         // Close the modal
         modalInstance.hide();
@@ -1016,3 +1004,19 @@ function createNewBadge(costraint) {
 
     return span;
 }
+
+function saveNewNode(node, input1, select, textarea, input2) {
+    // Set the node values to the values in the modal
+    node.name = input1.value;
+    node.type = select.value;
+    node.description = textarea.value;
+    node.quantity = input2.value;
+
+    // Increment the nextNodeID
+    nextNodeId++;
+
+    // Add the node to the workflow
+    chartDataModel.nodes.push(node);
+
+    console.log(chartDataModel);
+} 
