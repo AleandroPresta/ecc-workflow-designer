@@ -183,6 +183,40 @@ var chartDataModel = {
     ]
 };
 
+// The list of possible numerical constraints
+const numericalConstraints = [
+    'Execution Time',
+    'Volume of Data'
+];
+
+const numericalOperators = [
+    '==',
+    '<',
+    '>',
+    '<=',
+    '>='
+];
+
+// The list of possible categorical constraints and the options for each constraint
+const categoricalConstraints = [
+    {
+        name: 'Type of Database',
+        options: [
+            'SQL',
+            'NoSQL',
+            'Graph'
+        ]
+    },
+    {
+        name: 'Network Protocol',
+        options: [
+            'HTTP',
+            'FTP',
+            'TCP'
+        ]
+    }
+];
+
 function createAddNodeModal() {
     // Create a blank node that will be modelled by the modal
     let node = {
@@ -632,17 +666,12 @@ function createAddNodeModal() {
 
         inputGroup1.appendChild(select1);
 
-        let option1 = document.createElement('option');
-        option1.selected = true;
-        option1.textContent = 'Execution Time';
-
-        select1.appendChild(option1);
-
-        let option2 = document.createElement('option');
-        option2.value = 'Volume of Data';
-        option2.textContent = 'Volume of Data';
-
-        select1.appendChild(option2);
+        // Read the possible options from the numericalConstraints array
+        for (let i = 0; i < numericalConstraints.length; i++) {
+            let option = document.createElement('option');
+            option.textContent = numericalConstraints[i];
+            select1.appendChild(option);
+        }
 
         let col2 = document.createElement('div');
         col2.classList.add('col-3');
@@ -660,35 +689,12 @@ function createAddNodeModal() {
 
         inputGroup2.appendChild(select2);
 
-        let option3 = document.createElement('option');
-        option3.selected = true;
-        option3.textContent = '==';
-
-        select2.appendChild(option3);
-
-        let option4 = document.createElement('option');
-        option4.value = '<';
-        option4.textContent = '<';
-
-        select2.appendChild(option4);
-
-        let option5 = document.createElement('option');
-        option5.value = '>';
-        option5.textContent = '>';
-
-        select2.appendChild(option5);
-
-        let option6 = document.createElement('option');
-        option6.value = '<=';
-        option6.textContent = '<=';
-
-        select2.appendChild(option6);
-
-        let option7 = document.createElement('option');
-        option7.value = '>=';
-        option7.textContent = '>=';
-
-        select2.appendChild(option7);
+        // Read the operators from the numericalOperators array
+        for (let i = 0; i < numericalOperators.length; i++) {
+            let option = document.createElement('option');
+            option.textContent = numericalOperators[i];
+            select2.appendChild(option);
+        }
 
         let col3 = document.createElement('div');
         col3.classList.add('col-3');
@@ -860,17 +866,12 @@ function createAddNodeModal() {
 
         inputGroup1.appendChild(select1);
 
-        let option1 = document.createElement('option');
-        option1.selected = true;
-        option1.textContent = 'Type of Database';
-
-        select1.appendChild(option1);
-
-        let option2 = document.createElement('option');
-        option2.value = 'Network Protocol';
-        option2.textContent = 'Network Protocol';
-
-        select1.appendChild(option2);
+        // Read the possible options from the categoricalConstraints array
+        for (let i = 0; i < categoricalConstraints.length; i++) {
+            let option = document.createElement('option');
+            option.textContent = categoricalConstraints[i].name;
+            select1.appendChild(option);
+        }
 
         let col2 = document.createElement('div');
         col2.classList.add('col-6');
@@ -888,24 +889,25 @@ function createAddNodeModal() {
 
         inputGroup2.appendChild(select2);
 
-        let option3 = document.createElement('option');
-        option3.selected = true;
-        option3.textContent = 'SQL';
+        // Read the options for the selected constraint
+        for (let i = 0; i < categoricalConstraints[0].options.length; i++) {
+            let option = document.createElement('option');
+            option.textContent = categoricalConstraints[0].options[i];
+            select2.appendChild(option);
+        }
 
-        select2.appendChild(option3);
+        select1.onchange = function() {
+            // Remove all the options from the select2
+            select2.innerHTML = '';
 
-        let option4 = document.createElement('option');
-        option4.value = 'NoSQL';
-        option4.textContent = 'NoSQL';
-
-        select2.appendChild(option4);
-
-        let option5 = document.createElement('option');
-        option5.value = 'Graph';
-        option5.textContent = 'Graph';
-
-        select2.appendChild(option5);
-
+            // Read the options for the selected constraint
+            for (let i = 0; i < categoricalConstraints[select1.selectedIndex].options.length; i++) {
+                let option = document.createElement('option');
+                option.textContent = categoricalConstraints[select1.selectedIndex].options[i];
+                select2.appendChild(option);
+            }
+        }
+        
         let modalFooter = document.createElement('div');
         modalFooter.classList.add('modal-footer');
 
