@@ -478,7 +478,7 @@ angular.module('flowChart', ['dragging'])
 			const modifyNodeOption = {
 				name: 'Modify Node',
 				action: function () {
-					console.log('Modify node');
+					$scope.openModifyNodeModal(node);
 				}
 			}
 
@@ -667,6 +667,12 @@ angular.module('flowChart', ['dragging'])
 				}
 			}, { once: true });
 		};
+
+		$scope.openModifyNodeModal = function (node) {
+			// Call the function in app.js
+			$scope.$parent.openModifyNodeModal(node.data);
+		}
+
 	}])
 
 	.directive('onWheel', function () {
