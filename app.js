@@ -94,12 +94,12 @@ angular.module('app', ['flowChart',])
 					type: "Computation",
 					parameters: [
 						{
-							name: 'executionTime',
+							name: 'Execution Time',
 							value: 10,
 							type: '>'
 						},
 						{
-							name: 'volumeOfData',
+							name: 'Volume of Data',
 							value: 100,
 							type: '<='
 						}
@@ -136,7 +136,7 @@ angular.module('app', ['flowChart',])
 					type: "Storage",
 					parameters: [
 						{
-							name: 'availableMemory',
+							name: 'Available Memory',
 							value: 1000,
 							type: '>'
 						}
