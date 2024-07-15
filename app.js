@@ -284,128 +284,66 @@ angular.module('app', ['flowChart',])
 			}
 		};
 
+		// ############################################################################################################
+
 		//
-		// Add a new device to the chart.
+		// Functionality and utilities to add a new node and constraints to said node.
 		//
-		$scope.addDevice = function () {
+		// The list of possible numerical constraints
+		$scope.numericalCostraints = [
+			'Execution Time',
+			'Volume of Data',
+			'Memory',
+			'CPU Usage',
+			'Energy Consumption',
+		];
 
-			const form = createDeviceForm();
-			document.body.appendChild(form);
-			form.showModal();
+		$scope.numericalOperators = [
+			'==',
+			'<',
+			'>',
+			'<=',
+			'>='
+		];
 
-		};
-
-		function createDeviceForm() {
-			// Create elements
-			const container = document.createElement('dialog');
-			container.id = 'device-creation-container';
-			container.className = 'container';
-			const form = document.createElement('form');
-
-			// Create 4 rows
-			const row1 = document.createElement('div');
-			row1.className = 'row m-3';
-			const row2 = document.createElement('div');
-			row2.className = 'row mb-3';
-			const row3 = document.createElement('div');
-			row3.className = 'row mb-3';
-			const row4 = document.createElement('div');
-			row4.className = 'row mb-3';
-
-			const h3 = document.createElement('h3');
-			const fieldset1 = document.createElement('fieldset');
-			const fieldset2 = document.createElement('fieldset');
-			const fieldset3 = document.createElement('fieldset');
-			const input1 = document.createElement('input');
-			input1.className = 'form-control';
-			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control';
-			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary';
-			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary';
-
-			// Set attributes and content
-			form.id = 'create-device-form';
-			form.action = '';
-			h3.textContent = 'Create Device';
-			input1.placeholder = 'Device Name';
-			input1.type = 'text';
-			input1.tabIndex = '1';
-			input1.required = true;
-			input1.autofocus = true;
-			textarea.placeholder = 'Computation description....';
-			textarea.tabIndex = '2';
-			textarea.required = true;
-			submitButton.name = 'submit';
-			submitButton.type = 'submit';
-			submitButton.id = 'submit-button';
-			submitButton.textContent = 'Submit';
-			submitButton.onclick = submitDeviceCreation;
-
-			cancelButton.type = 'submit';
-			cancelButton.formNoValidate = true;
-			cancelButton.textContent = 'Cancel';
-			cancelButton.onclick = function () {
-				container.close();
-				document.body.removeChild(container);
+		// The list of possible categorical constraints and the options for each constraint
+		$scope.categoricalCostraints = [
+			{
+				name: 'Type of Database',
+				options: [
+					'SQL',
+					'NoSQL',
+					'Graph'
+				]
+			},
+			{
+				name: 'Network Protocol',
+				options: [
+					'HTTP',
+					'FTP',
+					'TCP'
+				]
 			}
+		];
 
-			fieldset3.className = 'd-flex align-items-center justify-content-around';
+		$scope.nodeTypes = [
+			'Device',
+			'Computation',
+			'Storage',
+			'Communication'
+		]
 
-			// Append elements
-			fieldset1.appendChild(input1);
-			fieldset2.appendChild(textarea);
-			fieldset3.appendChild(submitButton);
-			fieldset3.appendChild(cancelButton);
-
-			row1.appendChild(h3);
-			row2.appendChild(fieldset1);
-			row3.appendChild(fieldset2);
-			row4.appendChild(fieldset3);
-
-			form.appendChild(row1);
-			form.appendChild(row2);
-			form.appendChild(row3);
-			form.appendChild(row4);	
-
-			container.appendChild(form);
-
-			return container;
-		}
-
-		function submitDeviceCreation(event) {
-			// Avoids the reloading of the page
-			event.preventDefault();
-			const container = document.getElementById('device-creation-container');
-
-			// Check if the form is valid before removing it from the document
-			// TODO add custom validation for the values
-			if (container.querySelector('form').checkValidity()) {
-				// Form is valid, continue with the next line of code
-				// Get the values from the form
-				const deviceName = container.querySelector('input[placeholder="Device Name"]').value;
-				const description = container.querySelector('textarea').value;
-
-				createNewDevice(deviceName, description);
-				// Remove the form
-				container.close();
-				document.body.removeChild(container);
-			} else {
-				// Form is not valid, handle the error or show an error message
-				alert("Please fill in all fields.");
-			}
-		}
-
-		function createNewDevice(deviceName, description) {
-			//
-			// Template for a new device.
-			//
-			let newNodeDataModel = {
-				name: deviceName,
+		$scope.openAddNodeModal = function () {
+			// Create a blank node that will be modelled by the modal
+			let node = {
+				name: '',
+				type: '',
 				id: nextNodeID,
-				type: "Device",
-				description: description,
+				description: '',
+				quantity: 0,
+				parameters: [
+
+				],
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -428,833 +366,989 @@ angular.module('app', ['flowChart',])
 						direction: "y"
 					}
 				],
+				width: 250,
+				height: 90,
 			};
-			nextNodeID = nextNodeID + 1;
-			$scope.chartViewModel.addNode(newNodeDataModel);
-		}
-
-		//
-		// Add a new Computation to the chart.
-		//
-		$scope.addComputation = function () {
-
-			const form = createComputationForm();
-			document.body.appendChild(form);
-			form.showModal();
-		};
+			/*
+			<!-- Modal -->
+			<div class="modal fade" id="addNodeModal" tabindex="-1" aria-labelledby="addNodeModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="addNodeModalLabel">Create new node</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col">
+									<h4>Node Informations</h4>
+									<!-- Node Name -->
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control" id="floatingInputName" placeholder="Name">
+										<label for="floatingInputName">Node Name</label>
+									</div>
 		
-		// Convert the value of the select element to the corresponding operator
-		function valueToOperator(value) {
-			switch (value) {
-				case '1':
-					return '>';
-				case '2':
-					return '>=';
-				case '3':
-					return '<';
-				case '4':
-					return '<=';
-				default:
-					return '==';
-			}
-		}
-
-		// Create a form to add a new computation
-		function createComputationForm() {
-			// Create elements
-			const container = document.createElement('dialog');
-			container.id = 'computation-creation-container';
-			container.className = 'container';
-			const form = document.createElement('form');
-
-			// Create 6 rows
-			const row1 = document.createElement('div');
-			row1.className = 'row m-3';
-			const row2 = document.createElement('div');
-			row2.className = 'row mb-3';
-			const row3 = document.createElement('div');
-			row3.className = 'row mb-3';
-			const row4 = document.createElement('div');
-			row4.className = 'row mb-3';
-			const row5 = document.createElement('div');
-			row5.className = 'row mb-3';
-			const row6 = document.createElement('div');
-			row6.className = 'row mb-3';
-
-			const h3 = document.createElement('h3');
-			const fieldset1 = document.createElement('fieldset');
-			const fieldset2 = document.createElement('fieldset');
-			const fieldset3 = document.createElement('fieldset');
-			const fieldset4 = document.createElement('fieldset');
-			const fieldset5 = document.createElement('fieldset');
-			
-			// Name
-			// Create: <input class='form-control' ...> ... </input>
-			const input1 = document.createElement('input');
-			input1.className = 'form-control';
-
-			// executionTime			
-			/*
-				Create:
-				<div class="input-group mb-3">
-					<div class="col-9">
-						<input class='form-control' ...> ... </input>
+									<!-- Node Type -->
+									<div class="input-group mb-3">
+										<label class="input-group-text" for="inputGroupNodeType">Type</label>
+										<select class="form-select" id="inputGroupNodeType">
+											<option selected>Device</option>
+											<option value="1">Computation</option>
+											<option value="2">Storage</option>
+											<option value="3">Communication</option>
+										</select>
+									</div>
+		
+									<!-- Node Description-->
+									<div class="form-floating">
+										<textarea class="form-control" placeholder="Describe yout node" id="floatingTextareaDescription" style="height: 100px"></textarea>
+										<label for="floatingTextareaDescription">Description</label>
+									</div>
+		
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control" id="floatingInputQuantity" placeholder="Quantity">
+										<label for="floatingInputQuantity">Node Quantity</label>
+									</div>
+								</div>
+								<div class="col">
+									<h4 class="modal-title fs-5">Current Costraints</h4>
+									<span class="badge rounded-pill text-bg-primary">
+										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
+											<span>Execution Time <= 20ms</span>
+											<button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
+										</div>
+									</span>
+								    
+									<span class="badge rounded-pill text-bg-primary">
+										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
+											<span>Volume of Data <= 200mb</span>
+											<button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
+										</div>
+									</span>
+									<span class="badge rounded-pill text-bg-primary">
+										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
+											<a>Add Numerical Costraint</a>
+										</div>
+									</span>
+									<span class="badge rounded-pill text-bg-primary">
+										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
+											<a>Add Categorical Costraint</a>
+										</div>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
 					</div>
-					<div class="col-3">
-						<select class="form-select" id="inputGroupSelect02">
-							<option selected> == </option>
-							<option value="1"> > </option>
-							<option value="2"> >= </option>
-							<option value="3"> < </option>
-							<option value="4"> <= </option>
-						</select>
-					</div>			
 				</div>
-
+			</div>
 			*/
+			let modal = document.createElement('div');
+			modal.classList.add('modal', 'fade');
+			modal.id = 'addNodeModal';
+			modal.tabIndex = -1;
+			modal.setAttribute('aria-labelledby', 'addNodeModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
 
-			const inputGroup1 = document.createElement('div');
-			inputGroup1.className = 'input-group mb-3';
+			let modalDialog = document.createElement('div');
+			modalDialog.classList.add('modal-dialog', 'modal-dialog-centered', 'modal-xl');
 
-			const col11 = document.createElement('div');
-			col11.className = 'col-9';
-			inputGroup1.appendChild(col11);
+			modal.appendChild(modalDialog);
 
-			const input2 = document.createElement('input');
-			input2.className = 'form-control';
-			col11.appendChild(input2);
+			let modalContent = document.createElement('div');
+			modalContent.classList.add('modal-content');
 
-			const col12 = document.createElement('div');
-			col12.className = 'col-3';
-			inputGroup1.appendChild(col12);
+			modalDialog.appendChild(modalContent);
 
-			const select1 = document.createElement('select');
-			select1.className = 'form-select';
-			select1.id = 'computation-execution-time-select';
+			let modalHeader = document.createElement('div');
+			modalHeader.classList.add('modal-header');
 
-			const option1 = document.createElement('option');
-			option1.selected = true;
-			option1.textContent = '==';
-			select1.appendChild(option1);
+			modalContent.appendChild(modalHeader);
 
-			const option2 = document.createElement('option');
-			option2.value = '1';
-			option2.textContent = '>';
-			select1.appendChild(option2);
+			let modalTitle = document.createElement('h1');
+			modalTitle.classList.add('modal-title', 'fs-5');
+			modalTitle.id = 'addNodeModalLabel';
+			modalTitle.textContent = 'Create new node';
 
-			const option3 = document.createElement('option');
-			option3.value = '2';
-			option3.textContent = '>=';
-			select1.appendChild(option3);
+			modalHeader.appendChild(modalTitle);
 
-			const option4 = document.createElement('option');
-			option4.value = '3';
-			option4.textContent = '<';
-			select1.appendChild(option4);
+			let modalButton = document.createElement('button');
+			modalButton.type = 'button';
+			modalButton.classList.add('btn-close');
+			modalButton.setAttribute('data-bs-dismiss', 'modal');
+			modalButton.setAttribute('aria-label', 'Close');
 
-			const option5 = document.createElement('option');
-			option5.value = '4';
-			option5.textContent = '<=';
-			select1.appendChild(option5);
+			modalHeader.appendChild(modalButton);
 
-			col12.appendChild(select1);
+			let modalBody = document.createElement('div');
+			modalBody.classList.add('modal-body');
 
-			fieldset2.appendChild(inputGroup1);
+			modalContent.appendChild(modalBody);
 
-			// Volume of Data
-			/*
-				Create:
-				<div class="input-group mb-3">
-					<div class="col-9">
-						<input class='form-control' ...> ... </input>
-					</div>
-					<div class="col-3">
-						<select class="form-select" id="inputGroupSelect02">
-							<option selected> == </option>
-							<option value="1"> > </option>
-							<option value="2"> >= </option>
-							<option value="3"> < </option>
-							<option value="4"> <= </option>
-						</select>
-					</div>			
-				</div>
+			let row = document.createElement('div');
+			row.classList.add('row');
 
-			*/
-			const inputGroup2 = document.createElement('div');
-			inputGroup2.className = 'input-group mb-3';
+			modalBody.appendChild(row);
 
-			const col21 = document.createElement('div');
-			col21.className = 'col-9';
-			inputGroup2.appendChild(col21);
+			let col1 = document.createElement('div');
+			col1.classList.add('col');
 
-			const input3 = document.createElement('input');
-			input3.className = 'form-control';
-			col21.appendChild(input3);
+			row.appendChild(col1);
 
-			const col22 = document.createElement('div');
-			col22.className = 'col-3';
-			inputGroup2.appendChild(col22);
+			let h4 = document.createElement('h4');
+			h4.textContent = 'Node Informations';
 
-			const select2 = document.createElement('select');
-			select2.className = 'form-select';
-			select2.id = 'computation-volume-of-data-select';
+			col1.appendChild(h4);
 
-			const option6 = document.createElement('option');
-			option6.selected = true;
-			option6.textContent = '==';
-			select2.appendChild(option6);
+			let formFloating1 = document.createElement('div');
+			formFloating1.classList.add('form-floating', 'mb-3');
 
-			const option7 = document.createElement('option');
-			option7.value = '1';
-			option7.textContent = '>';
-			select2.appendChild(option7);
+			col1.appendChild(formFloating1);
 
-			const option8 = document.createElement('option');
-			option8.value = '2';
-			option8.textContent = '>=';
-			select2.appendChild(option8);
-
-			const option9 = document.createElement('option');
-			option9.value = '3';
-			option9.textContent = '<';
-			select2.appendChild(option9);
-
-			const option10 = document.createElement('option');
-			option10.value = '4';
-			option10.textContent = '<=';
-			select2.appendChild(option10);
-			
-			col22.appendChild(select2);
-
-			fieldset3.appendChild(inputGroup2);
-
-			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control';
-			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary';
-			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary';
-
-			// Set attributes and content	
-			form.id = 'create-computation-form';
-			form.action = '';
-			h3.textContent = 'Create Computation';
-
-			input1.placeholder = 'Computation Name';
+			let input1 = document.createElement('input');
 			input1.type = 'text';
-			input1.tabIndex = '1';
-			input1.required = true;
-			input1.autofocus = true;
-			input1.id = 'computation-name-input';
-		
-			input2.placeholder = 'Computation execution time';
-			input2.type = 'text';
-			input2.tabIndex = '2';
-			input2.required = true;
-			input2.id = 'computation-execution-time-input';
+			input1.classList.add('form-control');
+			input1.id = 'floatingInputName';
+			input1.placeholder = 'Name';
 
-			input3.placeholder = 'Computation volume of data';
+			formFloating1.appendChild(input1);
+
+			let label1 = document.createElement('label');
+			label1.setAttribute('for', 'floatingInputName');
+			label1.textContent = 'Node Name';
+
+			formFloating1.appendChild(label1);
+
+			let inputGroup = document.createElement('div');
+			inputGroup.classList.add('input-group', 'mb-3');
+
+			col1.appendChild(inputGroup);
+
+			let label2 = document.createElement('label');
+			label2.classList.add('input-group-text');
+			label2.setAttribute('for', 'inputGroupNodeType');
+			label2.textContent = 'Type';
+
+			inputGroup.appendChild(label2);
+
+			let select = document.createElement('select');
+			select.classList.add('form-select');
+			select.id = 'inputGroupNodeType';
+
+			inputGroup.appendChild(select);
+
+			// Read the options from the nodeTypes array
+			for (let i = 0; i < $scope.nodeTypes.length; i++) {
+				let option = document.createElement('option');
+				option.textContent = $scope.nodeTypes[i];
+				select.appendChild(option);
+			}
+
+			let formFloating2 = document.createElement('div');
+			formFloating2.classList.add('form-floating');
+
+			col1.appendChild(formFloating2);
+
+			let textarea = document.createElement('textarea');
+			textarea.classList.add('form-control', 'mb-3');
+			textarea.placeholder = 'Describe yout node';
+			textarea.id = 'floatingTextareaDescription';
+			textarea.style.height = '100px';
+
+			formFloating2.appendChild(textarea);
+
+			let label3 = document.createElement('label');
+			label3.setAttribute('for', 'floatingTextareaDescription');
+			label3.textContent = 'Description';
+
+			formFloating2.appendChild(label3);
+
+			let formFloating3 = document.createElement('div');
+			formFloating3.classList.add('form-floating', 'mb-3');
+
+			col1.appendChild(formFloating3);
+
+			let input2 = document.createElement('input');
+			input2.type = 'text';
+			input2.classList.add('form-control');
+			input2.id = 'floatingInputQuantity';
+			input2.placeholder = 'Quantity';
+
+			formFloating3.appendChild(input2);
+
+			let label4 = document.createElement('label');
+			label4.setAttribute('for', 'floatingInputQuantity');
+			label4.textContent = 'Node Quantity';
+
+			formFloating3.appendChild(label4);
+
+			let col2 = document.createElement('div');
+			col2.classList.add('col');
+
+			row.appendChild(col2);
+
+			let h42 = document.createElement('h4');
+			h42.classList.add('modal-title', 'fs-5');
+			h42.textContent = 'Current Costraints';
+
+			col2.appendChild(h42);
+
+			const constaintsContainer = document.createElement('div');
+			col2.appendChild(constaintsContainer);
+
+			// Add a badge for each constraint in the node
+			for (let i = 0; i < node.parameters.length; i++) {
+				const newBadge = createNewBadge(node, node.parameters[i], constaintsContainer);
+				constaintsContainer.append(newBadge);
+			}
+
+			let span3 = document.createElement('span');
+			span3.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+
+			col2.appendChild(span3);
+
+			let container3 = document.createElement('div');
+			container3.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+
+			span3.appendChild(container3);
+
+			let a1 = document.createElement('a');
+			a1.textContent = 'Add Numerical Costraint';
+			a1.onclick = function () {
+				$scope.createAddNumericalCostraintModal(node, constaintsContainer);
+			}
+
+			container3.appendChild(a1);
+
+			let span4 = document.createElement('span');
+			span4.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+
+			col2.appendChild(span4);
+
+			let container4 = document.createElement('div');
+			container4.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+
+			span4.appendChild(container4);
+
+			let a2 = document.createElement('a');
+			a2.textContent = 'Add Categorical Costraint';
+			a2.onclick = function () {
+				createAddCategoricalCostraintModal(node, constaintsContainer);
+			}
+
+			container4.appendChild(a2);
+
+			let modalFooter = document.createElement('div');
+			modalFooter.classList.add('modal-footer');
+
+			modalContent.appendChild(modalFooter);
+
+			let buttonClose = createButtonClose();
+
+			modalFooter.appendChild(buttonClose);
+
+			let buttonSave = createButtonSave('Save Node');
+
+			modalFooter.appendChild(buttonSave);
+
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+
+			buttonSave.onclick = function () {
+				$scope.saveNewNode(node, input1, select, textarea, input2);
+
+				// Close the modal
+				closeModal(modalInstance, modal);
+			}
+
+		}
+
+		$scope.openModifyNodeModal = function (originalNode) {
+
+			// Create a deep copy of the node to modify
+			let node = JSON.parse(JSON.stringify(originalNode));
+
+			let modal = document.createElement('div');
+			modal.classList.add('modal', 'fade');
+			modal.id = 'addNodeModal';
+			modal.tabIndex = -1;
+			modal.setAttribute('aria-labelledby', 'addNodeModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
+
+			let modalDialog = document.createElement('div');
+			modalDialog.classList.add('modal-dialog', 'modal-dialog-centered', 'modal-xl');
+
+			modal.appendChild(modalDialog);
+
+			let modalContent = document.createElement('div');
+			modalContent.classList.add('modal-content');
+
+			modalDialog.appendChild(modalContent);
+
+			let modalHeader = document.createElement('div');
+			modalHeader.classList.add('modal-header');
+
+			modalContent.appendChild(modalHeader);
+
+			let modalTitle = document.createElement('h1');
+			modalTitle.classList.add('modal-title', 'fs-5');
+			modalTitle.id = 'addNodeModalLabel';
+			modalTitle.textContent = 'Create new node';
+
+			modalHeader.appendChild(modalTitle);
+
+			let modalButton = document.createElement('button');
+			modalButton.type = 'button';
+			modalButton.classList.add('btn-close');
+			modalButton.setAttribute('data-bs-dismiss', 'modal');
+			modalButton.setAttribute('aria-label', 'Close');
+
+			modalHeader.appendChild(modalButton);
+
+			let modalBody = document.createElement('div');
+			modalBody.classList.add('modal-body');
+
+			modalContent.appendChild(modalBody);
+
+			let row = document.createElement('div');
+			row.classList.add('row');
+
+			modalBody.appendChild(row);
+
+			let col1 = document.createElement('div');
+			col1.classList.add('col');
+
+			row.appendChild(col1);
+
+			let h4 = document.createElement('h4');
+			h4.textContent = 'Node Informations';
+
+			col1.appendChild(h4);
+
+			let formFloating1 = document.createElement('div');
+			formFloating1.classList.add('form-floating', 'mb-3');
+
+			col1.appendChild(formFloating1);
+
+			let input1 = document.createElement('input');
+			input1.type = 'text';
+			input1.classList.add('form-control');
+			input1.id = 'floatingInputName';
+			// Read the value from the node
+			input1.value = node.name;
+
+			formFloating1.appendChild(input1);
+
+			let label1 = document.createElement('label');
+			label1.setAttribute('for', 'floatingInputName');
+			label1.textContent = 'Node Name';
+
+			formFloating1.appendChild(label1);
+
+			let inputGroup = document.createElement('div');
+			inputGroup.classList.add('input-group', 'mb-3');
+
+			col1.appendChild(inputGroup);
+
+			let label2 = document.createElement('label');
+			label2.classList.add('input-group-text');
+			label2.setAttribute('for', 'inputGroupNodeType');
+			label2.textContent = 'Type';
+
+			inputGroup.appendChild(label2);
+
+			let select = document.createElement('select');
+			select.classList.add('form-select');
+			select.id = 'inputGroupNodeType';
+
+			inputGroup.appendChild(select);
+
+			// Read the options from the nodeTypes array
+			for (let i = 0; i < $scope.nodeTypes.length; i++) {
+				let option = document.createElement('option');
+				// Make the right option selected
+				if ($scope.nodeTypes[i] === node.type) {
+					option.selected = true;
+				}
+				option.textContent = $scope.nodeTypes[i];
+				select.appendChild(option);
+			}
+
+			let formFloating2 = document.createElement('div');
+			formFloating2.classList.add('form-floating');
+
+			col1.appendChild(formFloating2);
+
+			let textarea = document.createElement('textarea');
+			textarea.classList.add('form-control', 'mb-3');
+			// Read the value from the node
+			textarea.value = node.description;
+			textarea.id = 'floatingTextareaDescription';
+			textarea.style.height = '100px';
+
+			formFloating2.appendChild(textarea);
+
+			let label3 = document.createElement('label');
+			label3.setAttribute('for', 'floatingTextareaDescription');
+			label3.textContent = 'Description';
+
+			formFloating2.appendChild(label3);
+
+			let formFloating3 = document.createElement('div');
+			formFloating3.classList.add('form-floating', 'mb-3');
+
+			col1.appendChild(formFloating3);
+
+			let input2 = document.createElement('input');
+			input2.type = 'text';
+			input2.classList.add('form-control');
+			input2.id = 'floatingInputQuantity';
+			// Read the value from the node
+			input2.value = node.quantity;
+
+			formFloating3.appendChild(input2);
+
+			let label4 = document.createElement('label');
+			label4.setAttribute('for', 'floatingInputQuantity');
+			label4.textContent = 'Node Quantity';
+
+			formFloating3.appendChild(label4);
+
+			let col2 = document.createElement('div');
+			col2.classList.add('col');
+
+			row.appendChild(col2);
+
+			let h42 = document.createElement('h4');
+			h42.classList.add('modal-title', 'fs-5');
+			h42.textContent = 'Current Costraints';
+
+			col2.appendChild(h42);
+
+			const constaintsContainer = document.createElement('div');
+			col2.appendChild(constaintsContainer);
+
+			let span3 = document.createElement('span');
+			span3.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+
+			col2.appendChild(span3);
+
+			let container3 = document.createElement('div');
+			container3.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+
+			span3.appendChild(container3);
+
+			// Read the parameters from the node
+			for (let i = 0; i < node.parameters.length; i++) {
+				const newBadge = createNewBadge(node, node.parameters[i], constaintsContainer);
+				constaintsContainer.append(newBadge);
+			}
+
+			let a1 = document.createElement('a');
+			a1.textContent = 'Add Numerical Costraint';
+			a1.onclick = function () {
+				$scope.createAddNumericalCostraintModal(node, constaintsContainer);
+			}
+
+			container3.appendChild(a1);
+
+			let span4 = document.createElement('span');
+			span4.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+
+			col2.appendChild(span4);
+
+			let container4 = document.createElement('div');
+			container4.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+
+			span4.appendChild(container4);
+
+			let a2 = document.createElement('a');
+			a2.textContent = 'Add Categorical Costraint';
+			a2.onclick = function () {
+				createAddCategoricalCostraintModal(node, constaintsContainer);
+			}
+
+			container4.appendChild(a2);
+
+			let modalFooter = document.createElement('div');
+			modalFooter.classList.add('modal-footer');
+
+			modalContent.appendChild(modalFooter);
+
+			let buttonClose = createButtonClose();
+
+			modalFooter.appendChild(buttonClose);
+
+			let buttonSave = createButtonSave('Save Changes');
+
+			modalFooter.appendChild(buttonSave);
+
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+
+			buttonSave.onclick = function () {
+				// Set the node values to the values in the modal
+				originalNode.name = input1.value;
+				originalNode.type = select.value;
+				originalNode.description = textarea.value;
+				originalNode.quantity = input2.value;
+				// Set the parameters
+				originalNode.parameters = node.parameters;
+
+				// Close the modal
+				closeModal(modalInstance, modal);
+			}
+
+		}
+
+		function createNewBadge(node, costraint, appendTo) {
+			// Add a badge to the constraints shown in the modal
+			let span = document.createElement('span');
+			span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+
+			let container = document.createElement('div');
+			container.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
+
+			span.appendChild(container);
+
+			let spanText = document.createElement('span');
+			spanText.textContent = costraint.name + ' == ' + costraint.value;
+
+			container.appendChild(spanText);
+
+			let button = document.createElement('button');
+			button.type = 'button';
+			button.classList.add('btn-close', 'btn-close-white');
+			button.setAttribute('aria-label', 'Close');
+			button.style = '--bs-btn-font-size: .25rem;';
+
+			container.appendChild(button);
+
+			button.onclick = function () {
+				// If the x button is clicked, remove the constraint from the node and from the appendTo element
+				const indexOfCostraint = node.parameters.indexOf(costraint);
+				node.parameters.splice(indexOfCostraint, 1);
+				appendTo.removeChild(span);
+			}
+
+			return span;
+		}
+
+		$scope.saveNewNode = function (node, input1, select, textarea, input2) {
+			// Set the node values to the values in the modal
+			node.name = input1.value;
+			node.type = select.value;
+			node.description = textarea.value;
+			node.quantity = input2.value;
+
+			// Increment the nextNodeID
+			nextNodeID = nextNodeID + 1;
+
+			// Add the node to the chart
+			$scope.chartViewModel.addNode(node);
+		}
+
+		function closeModal(modalInstance, modal) {
+			modalInstance.hide();
+			document.body.removeChild(modal);
+		}
+
+		$scope.createAddNumericalCostraintModal = function (node, appendTo) {
+			/*
+				Create:
+				<!-- Modal -->
+				<div class="modal fade" id="addNumericalCostraintModal" tabindex="-1" aria-labelledby="addNumericalCostraintModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="addNumericalCostraintModalLabel">Add Numerical Costraint</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<!-- Costraint Name -->
+								<div class="col-6">
+									<div class="input-group mb-3">
+										<select class="form-select" id="inputGroupCostraintName">
+											<option selected>Execution Time</option>
+											<option value="1">Volume of Data</option>
+										</select>
+									</div>
+								</div>
+								<!-- Costraint Type -->
+								<div class="col-3">
+									<div class="input-group mb-3">
+										<select class="form-select" id="inputGroupCostraintName">
+											<option selected>==</option>
+											<option value="1"><</option>
+											<option value="1">></option>
+											<option value="1"><=</option>
+											<option value="1">>=</option>
+										</select>
+									</div>
+								</div>
+								<!-- Costraint Value -->
+								<div class="col-3">
+									<input type="text" class="form-control" placeholder="Value" aria-label="Value">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Add Costraint</button>
+						</div>
+						</div>
+					</div>
+				</div>
+				*/
+			let modal = document.createElement('div');
+			modal.classList.add('modal', 'fade');
+			modal.id = 'addNumericalCostraintModal';
+			modal.tabIndex = -1;
+			modal.setAttribute('aria-labelledby', 'addNumericalCostraintModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
+
+			let modalDialog = document.createElement('div');
+			modalDialog.classList.add('modal-dialog', 'modal-dialog-centered');
+
+			modal.appendChild(modalDialog);
+
+			let modalContent = document.createElement('div');
+			modalContent.classList.add('modal-content');
+
+			modalDialog.appendChild(modalContent);
+
+			let modalHeader = document.createElement('div');
+			modalHeader.classList.add('modal-header');
+
+			modalContent.appendChild(modalHeader);
+
+			let modalTitle = document.createElement('h1');
+			modalTitle.classList.add('modal-title', 'fs-5');
+			modalTitle.id = 'addNumericalCostraintModalLabel';
+			modalTitle.textContent = 'Add Numerical Costraint';
+
+			modalHeader.appendChild(modalTitle);
+
+			let modalButton = document.createElement('button');
+			modalButton.type = 'button';
+			modalButton.classList.add('btn-close');
+			modalButton.setAttribute('data-bs-dismiss', 'modal');
+			modalButton.setAttribute('aria-label', 'Close');
+
+			modalHeader.appendChild(modalButton);
+
+			let modalBody = document.createElement('div');
+			modalBody.classList.add('modal-body');
+
+			modalContent.appendChild(modalBody);
+
+			let row = document.createElement('div');
+			row.classList.add('row');
+
+			modalBody.appendChild(row);
+
+			let col1 = document.createElement('div');
+			col1.classList.add('col-6');
+
+			row.appendChild(col1);
+
+			let inputGroup1 = document.createElement('div');
+			inputGroup1.classList.add('input-group', 'mb-3');
+
+			col1.appendChild(inputGroup1);
+
+			let select1 = document.createElement('select');
+			select1.classList.add('form-select');
+			select1.id = 'inputGroupCostraintName';
+
+			inputGroup1.appendChild(select1);
+
+			// Read the possible options from the numericalCostraints array
+			for (let i = 0; i < $scope.numericalCostraints.length; i++) {
+				let option = document.createElement('option');
+				option.textContent = $scope.numericalCostraints[i];
+				select1.appendChild(option);
+			}
+
+			let col2 = document.createElement('div');
+			col2.classList.add('col-3');
+
+			row.appendChild(col2);
+
+			let inputGroup2 = document.createElement('div');
+			inputGroup2.classList.add('input-group', 'mb-3');
+
+			col2.appendChild(inputGroup2);
+
+			let select2 = document.createElement('select');
+			select2.classList.add('form-select');
+			select2.id = 'inputGroupCostraintType';
+
+			inputGroup2.appendChild(select2);
+
+			// Read the operators from the numericalOperators array
+			for (let i = 0; i < $scope.numericalOperators.length; i++) {
+				let option = document.createElement('option');
+				option.textContent = $scope.numericalOperators[i];
+				select2.appendChild(option);
+			}
+
+			let col3 = document.createElement('div');
+			col3.classList.add('col-3');
+
+			row.appendChild(col3);
+
+			let input3 = document.createElement('input');
 			input3.type = 'text';
-			input3.tabIndex = '3';
-			input3.required = true;
-			input3.id = 'computation-volume-of-data-input';
+			input3.classList.add('form-control');
+			input3.placeholder = 'Value';
+			input3.setAttribute('aria-label', 'Value');
 
-			textarea.placeholder = 'Computation description....';
-			textarea.tabIndex = '4';
-			textarea.required = true;
-			textarea.id = 'computation-description-textarea';
+			col3.appendChild(input3);
 
-			submitButton.name = 'submit';
-			submitButton.type = 'submit';
-			submitButton.id = 'submit-button';
-			submitButton.textContent = 'Submit';
-			submitButton.onclick = submitComputationCreation;
+			let modalFooter = document.createElement('div');
+			modalFooter.classList.add('modal-footer');
 
-			cancelButton.type = 'submit';
-			cancelButton.formNoValidate = true;
-			cancelButton.textContent = 'Cancel';
-			cancelButton.onclick = function () {
-				container.close();
-				document.body.removeChild(container);
-			}
+			modalContent.appendChild(modalFooter);
 
-			fieldset5.className = 'd-flex align-items-center justify-content-around';
+			let buttonClose = createButtonClose();
 
-			// Append elements
-			fieldset1.appendChild(input1);
-			fieldset4.appendChild(textarea);
-			fieldset5.appendChild(submitButton);
-			fieldset5.appendChild(cancelButton);
+			modalFooter.appendChild(buttonClose);
 
-			row1.appendChild(h3);
-			row2.appendChild(fieldset1);
-			row3.appendChild(fieldset2);
-			row4.appendChild(fieldset3);
-			row5.appendChild(fieldset4);
-			row6.appendChild(fieldset5);
+			let buttonSave = createButtonSave('Add Costraint');
 
-			form.appendChild(row1);
-			form.appendChild(row2);
-			form.appendChild(row3);
-			form.appendChild(row4);
-			form.appendChild(row5);
-			form.appendChild(row6);
-			
-			container.appendChild(form);
+			modalFooter.appendChild(buttonSave);
 
-			return container;
-		}
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
 
+			buttonSave.onclick = function () {
 
-		function submitComputationCreation(event) {
-
-			// Avoids the reloading of the page
-			event.preventDefault();
-			const container = document.getElementById('computation-creation-container');
-
-			// Check if the form is valid before removing it from the document
-			// TODO add custom validation for the values
-			if (container.querySelector('form').checkValidity()) {
-				// Form is valid, continue with the next line of code
-				// Get the values from the form
-				const computationName = document.getElementById('computation-name-input').value;
-
-				const executionTime = parseInt(document.getElementById('computation-execution-time-input').value);
-				const executionTimeOperatorValue = document.getElementById('computation-execution-time-select').value;
-				const executionTimeOperator = valueToOperator(executionTimeOperatorValue);
-
-				const volumeOfData = parseInt(document.getElementById('computation-volume-of-data-input').value);
-				const volumeOfDataOperatorValue = document.getElementById('computation-volume-of-data-select').value;
-				const volumeOfDataOperator = valueToOperator(volumeOfDataOperatorValue);
-
-				// Check if the values are valid integers
-				if (isNaN(executionTime) || isNaN(volumeOfData)) {
-					alert("Please enter valid integers for execution time and volume of data.");
-					return;
+				const costraint = {
+					name: select1.value,
+					type: select2.value,
+					value: input3.value
 				}
 
-				const description = container.querySelector('textarea').value;
+				node.parameters.push(costraint);
 
-				createNewComputation(computationName, executionTime, executionTimeOperator, volumeOfData, volumeOfDataOperator, description);
-				// Remove the form
-				container.close();
-				document.body.removeChild(container);
-			} else {
-				// Form is not valid, handle the error or show an error message
-				alert("Please fill in all fields.");
+				const newBadge = createNewBadge(node, costraint, appendTo);
+
+				appendTo.append(newBadge);
+
+				closeModal(modalInstance, modal);
 			}
 
+			return modal;
 		}
 
-		function createNewComputation(computationName, executionTime, executionTimeOperator, volumeOfData, volumeOfDataOperator, description) {
-			//
-			// Template for a new computation.
-			//
-			let newNodeDataModel = {
-				name: computationName,
-				id: nextNodeID,
-				type: "Computation",
-				parameters: [
-					{
-						name: 'executionTime',
-						value: executionTime,
-						type: executionTimeOperator
-					},
-					{
-						name: 'volumeOfData',
-						value: volumeOfData,
-						type: volumeOfDataOperator
-					}
-				],
-				description: description,
-				x: 0,
-				y: 0,
-				inputConnectors: [
-					{
-						name: "",
-						direction: "x"
-					},
-					{
-						name: "",
-						direction: "y"
-					}
-				],
-				outputConnectors: [
-					{
-						name: "",
-						direction: "x"
-					},
-					{
-						name: "",
-						direction: "y"
-					}
-				],
-			};
-
-			nextNodeID = nextNodeID + 1;
-			$scope.chartViewModel.addNode(newNodeDataModel);
-		}
-
-
-		$scope.addStorage = function () {
-
-			const form = createStorageForm();
-			document.body.appendChild(form);
-			form.showModal();
-
-		};
-
-		function createStorageForm() {
-			// Create elements
-			const container = document.createElement('dialog');
-			container.id = 'storage-creation-container';
-			container.className = 'container';
-			const form = document.createElement('form');
-
-			// Create 5 rows
-			const row1 = document.createElement('div');
-			row1.className = 'row m-3';
-			const row2 = document.createElement('div');
-			row2.className = 'row mb-3';
-			const row3 = document.createElement('div');
-			row3.className = 'row mb-3';
-			const row4 = document.createElement('div');
-			row4.className = 'row mb-3';
-			const row5 = document.createElement('div');
-			row5.className = 'row mb-3';
-
-			const h3 = document.createElement('h3');
-			const fieldset1 = document.createElement('fieldset');
-			const fieldset2 = document.createElement('fieldset');
-			const fieldset3 = document.createElement('fieldset');
-			const fieldset4 = document.createElement('fieldset');
-
-			const input1 = document.createElement('input');
-			input1.className = 'form-control';
-
-			// Available Memory
+		function createAddCategoricalCostraintModal(node, appendTo) {
 			/*
 				Create:
-				<div class="input-group mb-3">
-					<div class="col-9">
-						<input class='form-control' ...> ... </input>
+				<!-- Modal -->
+				<div class="modal fade" id="addCategoricalCostraintModal" tabindex="-1" aria-labelledby="addCategoricalCostraintModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-lg">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="addCategoricalCostraintModalLabel">Add Categorical Costraint</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<!-- Costraint Name -->
+								<div class="col-6">
+									<div class="input-group mb-3">
+										<select class="form-select" id="inputGroupCostraintName">
+											<option selected>Type of Database</option>
+											<option value="1">Network Protocol</option>
+										</select>
+									</div>
+								</div>
+								<!-- Costraint Value -->
+								<div class="col-6">
+									<div class="input-group mb-3">
+										<select class="form-select" id="inputGroupCostraintName">
+											<option selected>SQL</option>
+											<option value="1">NoSQL</option>
+											<option value="2">Graph</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Add Costraint</button>
+						</div>
+						</div>
 					</div>
-					<div class="col-3">
-						<select class="form-select" id="inputGroupSelect02">
-							<option selected> == </option>
-							<option value="1"> > </option>
-							<option value="2"> >= </option>
-							<option value="3"> < </option>
-							<option value="4"> <= </option>
-						</select>
-					</div>			
 				</div>
-			*/
+				*/
+			let modal = document.createElement('div');
+			modal.classList.add('modal', 'fade');
+			modal.id = 'addCategoricalCostraintModal';
+			modal.tabIndex = -1;
+			modal.setAttribute('aria-labelledby', 'addCategoricalCostraintModalLabel');
+			modal.setAttribute('aria-hidden', 'true');
 
-			const inputGroup1 = document.createElement('div');
-			inputGroup1.className = 'input-group mb-3';
+			let modalDialog = document.createElement('div');
+			modalDialog.classList.add('modal-dialog', 'modal-dialog-centered', 'modal-lg');
 
-			const col11 = document.createElement('div');
-			col11.className = 'col-9';
-			inputGroup1.appendChild(col11);
+			modal.appendChild(modalDialog);
 
-			const input2 = document.createElement('input');
-			input2.className = 'form-control';
-			col11.appendChild(input2);
+			let modalContent = document.createElement('div');
+			modalContent.classList.add('modal-content');
 
-			const col12 = document.createElement('div');
-			col12.className = 'col-3';
-			inputGroup1.appendChild(col12);
+			modalDialog.appendChild(modalContent);
 
-			const select1 = document.createElement('select');
-			select1.className = 'form-select';
-			select1.id = 'storage-available-memory-select';
+			let modalHeader = document.createElement('div');
+			modalHeader.classList.add('modal-header');
 
-			const option1 = document.createElement('option');
-			option1.selected = true;
-			option1.textContent = '==';
-			select1.appendChild(option1);
+			modalContent.appendChild(modalHeader);
 
-			const option2 = document.createElement('option');
-			option2.value = '1';
-			option2.textContent = '>';
-			select1.appendChild(option2);
-			
-			const option3 = document.createElement('option');
-			option3.value = '2';
-			option3.textContent = '>=';
-			select1.appendChild(option3);
+			let modalTitle = document.createElement('h1');
+			modalTitle.classList.add('modal-title', 'fs-5');
+			modalTitle.id = 'addCategoricalCostraintModalLabel';
+			modalTitle.textContent = 'Add Categorical Costraint';
 
-			const option4 = document.createElement('option');
-			option4.value = '3';
-			option4.textContent = '<';
-			select1.appendChild(option4);
+			modalHeader.appendChild(modalTitle);
 
-			const option5 = document.createElement('option');
-			option5.value = '4';
-			option5.textContent = '<=';
-			select1.appendChild(option5);
-	
-			col12.appendChild(select1);
+			let modalButton = document.createElement('button');
+			modalButton.type = 'button';
+			modalButton.classList.add('btn-close');
+			modalButton.setAttribute('data-bs-dismiss', 'modal');
+			modalButton.setAttribute('aria-label', 'Close');
 
-			fieldset2.appendChild(inputGroup1);
+			modalHeader.appendChild(modalButton);
 
-			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control';
-			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary';
-			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary';
+			let modalBody = document.createElement('div');
+			modalBody.classList.add('modal-body');
 
-			// Set attributes and content
-			
-			form.id = 'create-storage-form';
-			form.action = '';
-			h3.textContent = 'Create Storage';
+			modalContent.appendChild(modalBody);
 
-			input1.placeholder = 'Storage Name';
-			input1.type = 'text';
-			input1.tabIndex = '1';
-			input1.required = true;
-			input1.autofocus = true;
-			input1.id = 'storage-name-input';
+			let row = document.createElement('div');
+			row.classList.add('row');
 
-			input2.placeholder = 'Available Memory';
-			input2.type = 'text';
-			input2.tabIndex = '2';
-			input2.required = true;
-			input2.autofocus = true;
-			input2.id = 'storage-available-memory-input';
+			modalBody.appendChild(row);
 
-			textarea.placeholder = 'Storage description....';
-			textarea.tabIndex = '3';
-			textarea.required = true;
-			textarea.id = 'storage-description-textarea';
+			let col1 = document.createElement('div');
+			col1.classList.add('col-6');
 
-			submitButton.name = 'submit';
-			submitButton.type = 'submit';
-			submitButton.id = 'submit-button';
-			submitButton.textContent = 'Submit';
-			submitButton.onclick = submitStorageCreation;
+			row.appendChild(col1);
 
-			cancelButton.type = 'submit';
-			cancelButton.formNoValidate = true;
-			cancelButton.textContent = 'Cancel';
-			cancelButton.onclick = function () {
-				container.close();
-				document.body.removeChild(container);
+			let inputGroup1 = document.createElement('div');
+			inputGroup1.classList.add('input-group', 'mb-3');
+
+			col1.appendChild(inputGroup1);
+
+			let select1 = document.createElement('select');
+			select1.classList.add('form-select');
+			select1.id = 'inputGroupCostraintName';
+
+			inputGroup1.appendChild(select1);
+
+			// Read the possible options from the categoricalConstraints array
+			for (let i = 0; i < $scope.categoricalCostraints.length; i++) {
+				let option = document.createElement('option');
+				option.textContent = $scope.categoricalCostraints[i].name;
+				select1.appendChild(option);
 			}
 
-			fieldset4.className = 'd-flex align-items-center justify-content-around';
+			let col2 = document.createElement('div');
+			col2.classList.add('col-6');
 
-			// Append elements
-			fieldset1.appendChild(input1);
-			fieldset3.appendChild(textarea);
-			fieldset4.appendChild(submitButton);
-			fieldset4.appendChild(cancelButton);
-			
-			row1.appendChild(h3);
-			row2.appendChild(fieldset1);
-			row3.appendChild(fieldset2);
-			row4.appendChild(fieldset3);
-			row5.appendChild(fieldset4);
+			row.appendChild(col2);
 
-			form.appendChild(row1);
-			form.appendChild(row2);
-			form.appendChild(row3);
-			form.appendChild(row4);	
-			form.appendChild(row5);
+			let inputGroup2 = document.createElement('div');
+			inputGroup2.classList.add('input-group', 'mb-3');
 
-			container.appendChild(form);
+			col2.appendChild(inputGroup2);
 
-			return container;
-		}
+			let select2 = document.createElement('select');
+			select2.classList.add('form-select');
+			select2.id = 'inputGroupCostraintName';
 
-		function submitStorageCreation(event) {
-			// Avoids the reloading of the page
-			event.preventDefault();
-			const container = document.getElementById('storage-creation-container');
+			inputGroup2.appendChild(select2);
 
-			// Check if the form is valid before removing it from the document
-			// TODO add custom validation for the values
-			if (container.querySelector('form').checkValidity()) {
-				// Form is valid, continue with the next line of code
-				// Get the values from the form
-				const storageName = document.getElementById('storage-name-input').value;
-				
-				const availableMemory = parseInt(document.getElementById('storage-available-memory-input').value);
-				const availableMemoryOperatorValue = document.getElementById('storage-available-memory-select').value;
-				const availableMemoryOperator = valueToOperator(availableMemoryOperatorValue);
+			// Read the options for the selected constraint
+			for (let i = 0; i < $scope.categoricalCostraints[0].options.length; i++) {
+				let option = document.createElement('option');
+				option.textContent = $scope.categoricalCostraints[0].options[i];
+				select2.appendChild(option);
+			}
 
-				// Check if the values are valid integers
-				if (isNaN(availableMemory)) {
-					alert("Please enter a valid integer for available memory.");
-					return;
+			select1.onchange = function () {
+				// Remove all the options from the select2
+				select2.innerHTML = '';
+
+				// Read the options for the selected constraint
+				for (let i = 0; i < $scope.categoricalCostraints[select1.selectedIndex].options.length; i++) {
+					let option = document.createElement('option');
+					option.textContent = $scope.categoricalCostraints[select1.selectedIndex].options[i];
+					select2.appendChild(option);
+				}
+			}
+
+			let modalFooter = document.createElement('div');
+			modalFooter.classList.add('modal-footer');
+
+			modalContent.appendChild(modalFooter);
+
+			let buttonClose = createButtonClose();
+
+			modalFooter.appendChild(buttonClose);
+
+			let buttonSave = createButtonSave('Add New Costraint');
+
+			modalFooter.appendChild(buttonSave);
+
+			const modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+
+			buttonSave.onclick = function () {
+
+				const costraint = {
+					name: select1.value,
+					type: '==',
+					value: select2.value
 				}
 
-				const description = container.querySelector('textarea').value;
+				node.parameters.push(costraint);
 
-				createNewStorage(storageName, availableMemory, availableMemoryOperator, description);
-				// Remove the form
-				container.close();
-				document.body.removeChild(container);
-			} else {
-				// Form is not valid, handle the error or show an error message
-				alert("Please fill in all fields.");
+				// Create a new badge for the constraint
+				const newBadge = createNewBadge(node, costraint, appendTo);
+
+				// Add the badge to the modal in first position
+				appendTo.append(newBadge);
+
+				closeModal(modalInstance, modal);
 			}
 		}
 
-		function createNewStorage(storageName, availableMemory, availableMemoryOperator, description) {
-			//
-			// Template for a new node.
-			//
-			var newNodeDataModel = {
-				name: storageName,
-				id: nextNodeID,
-				type: "Storage",
-				parameters: [
-					{
-						name: 'availableMemory',
-						value: availableMemory,
-						type: availableMemoryOperator
-					}
-				],
-				description: description,
-				x: 0,
-				y: 0,
-				inputConnectors: [
-					{
-						name: "",
-						direction: "x"
-					},
-					{
-						name: "",
-						direction: "y"
-					}
-				],
-				outputConnectors: [
-					{
-						name: "",
-						direction: "x"
-					},
-					{
-						name: "",
-						direction: "y"
-					}
-				],
-			};
+		function createButtonSave(name) {
+			let buttonSave = document.createElement('button');
+			buttonSave.type = 'button';
+			buttonSave.classList.add('btn', 'btn-primary');
+			buttonSave.textContent = name;
 
-			nextNodeID = nextNodeID + 1;
-			$scope.chartViewModel.addNode(newNodeDataModel);
+			return buttonSave;
 		}
 
-		$scope.addCommunication = function () {
+		function createButtonClose() {
+			let buttonClose = document.createElement('button');
+			buttonClose.type = 'button';
+			buttonClose.classList.add('btn', 'btn-secondary');
+			buttonClose.setAttribute('data-bs-dismiss', 'modal');
+			buttonClose.textContent = 'Close';
 
-			const form = createCommunicationForm();
-			document.body.appendChild(form);
-			form.showModal();
-		};
-
-		function createCommunicationForm() {
-			// Create elements
-			const container = document.createElement('dialog');
-			container.id = 'communication-creation-container';
-			container.className = 'container';
-			const form = document.createElement('form');
-
-			// Create 4 rows
-			const row1 = document.createElement('div');
-			row1.className = 'row m-3';
-			const row2 = document.createElement('div');
-			row2.className = 'row mb-3';
-			const row3 = document.createElement('div');
-			row3.className = 'row mb-3';
-			const row4 = document.createElement('div');
-			row4.className = 'row mb-3';
-
-			const h3 = document.createElement('h3');
-			const fieldset1 = document.createElement('fieldset');
-			const fieldset2 = document.createElement('fieldset');
-			const fieldset3 = document.createElement('fieldset');
-			const input1 = document.createElement('input');
-			input1.className = 'form-control';
-			const textarea = document.createElement('textarea');
-			textarea.className = 'form-control';
-			const submitButton = document.createElement('button');
-			submitButton.className = 'btn btn-primary';
-			const cancelButton = document.createElement('button');
-			cancelButton.className = 'btn btn-secondary';
-
-			// Set attributes and content
-			container.className = 'container';
-			form.id = 'create-communication-form';
-			form.action = '';
-			h3.textContent = 'Create Communication';
-			input1.placeholder = 'Communication Name';
-			input1.type = 'text';
-			input1.tabIndex = '1';
-			input1.required = true;
-			input1.autofocus = true;
-			textarea.placeholder = 'Communication description....';
-			textarea.tabIndex = '2';
-			textarea.required = true;
-			submitButton.name = 'submit';
-			submitButton.type = 'submit';
-			submitButton.id = 'submit-button';
-			submitButton.textContent = 'Submit';
-			submitButton.onclick = submitCommunicationCreation;
-
-			cancelButton.type = 'submit';
-			cancelButton.formNoValidate = true;
-			cancelButton.textContent = 'Cancel';
-			cancelButton.onclick = function () {
-				container.close();
-				document.body.removeChild(container);
-			}
-
-			fieldset3.className = 'd-flex align-items-center justify-content-around';
-
-			// Append elements
-			fieldset1.appendChild(input1);
-			fieldset2.appendChild(textarea);
-			fieldset3.appendChild(submitButton);
-			fieldset3.appendChild(cancelButton);
-			
-			row1.appendChild(h3);
-			row2.appendChild(fieldset1);
-			row3.appendChild(fieldset2);
-			row4.appendChild(fieldset3);
-
-			form.appendChild(row1);
-			form.appendChild(row2);
-			form.appendChild(row3);
-			form.appendChild(row4);	
-
-			container.appendChild(form);
-
-			return container;
+			return buttonClose
 		}
 
-		function submitCommunicationCreation(event) {
-			// Avoids the reloading of the page
-			event.preventDefault();
-			const container = document.getElementById('communication-creation-container');
-
-			// Check if the form is valid before removing it from the document
-			// TODO add custom validation for the values
-			if (container.querySelector('form').checkValidity()) {
-				// Form is valid, continue with the next line of code
-				// Get the values from the form
-				const communicationName = container.querySelector('input[placeholder="Communication Name"]').value;
-				const description = container.querySelector('textarea').value;
-
-				createNewCommunication(communicationName, description);
-				// Remove the form
-				container.close();
-				document.body.removeChild(container);
-			} else {
-				// Form is not valid, handle the error or show an error message
-				alert("Please fill in all fields.");
-			}
-		}
-
-		function createNewCommunication(communicationName, description) {
-			//
-			// Template for a new node.
-			//
-			var newNodeDataModel = {
-				name: communicationName,
-				id: nextNodeID,
-				type: "Communication",
-				parameters: {
-
-				},
-				description: description,
-				x: 0,
-				y: 0,
-				inputConnectors: [
-					{
-						name: "",
-						direction: "x"
-					},
-					{
-						name: "",
-						direction: "y"
-					}
-				],
-				outputConnectors: [
-					{
-						name: "",
-						direction: "x"
-					},
-					{
-						name: "",
-						direction: "y"
-					}
-				],
-			};
-			nextNodeID = nextNodeID + 1;
-			$scope.chartViewModel.addNode(newNodeDataModel);
-		}
-
-		//
-		// Add an input connector to selected nodes.
-		//
-		$scope.addNewInputConnector = function () {
-
-			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-
-			let suggestedConnectorName = "New connector";
-
-			// If only one node is selected then the suggested name will be
-			// in_<id>_<id_port>
-			if (selectedNodes.length === 1) {
-				const nodeId = selectedNodes[0].data.id
-				const connectorId = selectedNodes[0].data.inputConnectors.length;
-				suggestedConnectorName = `in_${nodeId}_${connectorId}`;
-			}
-
-			var connectorName = prompt("Enter a connector name:", suggestedConnectorName);
-			if (!connectorName) {
-				return;
-			}
-
-			for (var i = 0; i < selectedNodes.length; ++i) {
-				var node = selectedNodes[i];
-				node.addInputConnector({
-					name: connectorName,
-				});
-			}
-		};
-
-		//
-		// Add an output connector to selected nodes.
-		//
-		$scope.addNewOutputConnector = function () {
-			var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-
-			let suggestedConnectorName = "New connector";
-
-			// If only one node is selected then the suggested name will be
-			// in_<id>_<id_port>
-			if (selectedNodes.length === 1) {
-				const nodeId = selectedNodes[0].data.id
-				const connectorId = selectedNodes[0].data.outputConnectors.length;
-				suggestedConnectorName = `out_${nodeId}_${connectorId}`;
-			}
-
-			var connectorName = prompt("Enter a connector name:", suggestedConnectorName);
-			if (!connectorName) {
-				return;
-			}
-
-			for (var i = 0; i < selectedNodes.length; ++i) {
-				var node = selectedNodes[i];
-				node.addOutputConnector({
-					name: connectorName,
-				});
-			}
-		};
+		// ############################################################################################################
 
 		//
 		// Delete selected nodes and connections.
@@ -1304,7 +1398,8 @@ angular.module('app', ['flowChart',])
 			sendCatalogAndWorkflowToServer();
 		}
 
-		function sendCatalogAndWorkflowToServer() {;
+		function sendCatalogAndWorkflowToServer() {
+			;
 			const catalog = loadDefaultCatalog();
 
 			// Define the URL of the server
@@ -1317,7 +1412,7 @@ angular.module('app', ['flowChart',])
 		}
 
 		// Loads the default catalog of services
-		function loadDefaultCatalog(){
+		function loadDefaultCatalog() {
 			const defaultCatalog = {
 			};
 

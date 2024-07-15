@@ -8,25 +8,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNodeModal">
-        Launch demo modal
+    <div class="container d-flex justify-content-center align-items-center">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNodeModal">
+            Launch add new node modal
         </button>
 
-        <!-- Modal -->
         <div class="modal fade" id="addNodeModal" tabindex="-1" aria-labelledby="addNodeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addNodeModalLabel">Create new node</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <h4>Node Informations</h4>
-                            <form>
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addNodeModalLabel">Create new node</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h4>Node Informations</h4>
                                 <!-- Node Name -->
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="floatingInputName" placeholder="Name">
@@ -49,75 +46,132 @@
                                     <textarea class="form-control" placeholder="Describe yout node" id="floatingTextareaDescription" style="height: 100px"></textarea>
                                     <label for="floatingTextareaDescription">Description</label>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col">
-                            <h4 class="modal-title fs-5">Add a Costraint</h4>
-                            <form>
-                                <!-- Costraint Categorical/Numerical -->
-                                <div class="input-group mb-3">
-                                    <label class="input-group-text" for="inputGroupCostraintType">Type</label>
-                                    <select class="form-select" id="inputGroupCostraintType">
-                                        <option selected>Numerical</option>
-                                        <option value="1">Categorical</option>
-                                    </select>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInputQuantity" placeholder="Quantity">
+                                    <label for="floatingInputQuantity">Node Quantity</label>
                                 </div>
+                            </div>
+                            <div class="col">
+                                <h4 class="modal-title fs-5">Current Costraints</h4>
+                                <span class="badge rounded-pill text-bg-primary">
+                                    <div class="container d-flex justify-content-center align-items-center m-0 p-0">
+                                        <span>Execution Time <= 20ms</span>
+                                        <button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
+                                    </div>
+                                </span>
                                 
-                                <div class="row">
-                                    <!-- Costraint Name -->
-                                    <div class="col-6">
-                                        <div class="input-group mb-3">
-                                            <select class="form-select" id="inputGroupCostraintName">
-                                                <option selected>Execution Time</option>
-                                                <option value="1">Volume of Data</option>
-                                            </select>
-                                        </div>
+                                <span class="badge rounded-pill text-bg-primary">
+                                    <div class="container d-flex justify-content-center align-items-center m-0 p-0">
+                                        <span>Volume of Data <= 200mb</span>
+                                        <button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
                                     </div>
-                                    <!-- Costraint Type -->
-                                    <div class="col-3">
-                                        <div class="input-group mb-3">
-                                            <select class="form-select" id="inputGroupCostraintName">
-                                                <option selected>==</option>
-                                                <option value="1"><</option>
-                                                <option value="1">></option>
-                                                <option value="1"><=</option>
-                                                <option value="1">>=</option>
-                                            </select>
-                                        </div>
+                                </span>
+                                <span class="badge rounded-pill text-bg-primary">
+                                    <div class="container d-flex justify-content-center align-items-center m-0 p-0">
+                                        <a data-bs-toggle="modal" data-bs-target="#addNumericalCostraintModal">Add Numerical Costraint</a>
                                     </div>
-                                    <!-- Costraint Value -->
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" placeholder="Value" aria-label="Value">
+                                </span>
+                                <span class="badge rounded-pill text-bg-primary">
+                                    <div class="container d-flex justify-content-center align-items-center m-0 p-0">
+                                        <a data-bs-toggle="modal" data-bs-target="#addCategoricalCostraintModal">Add Categorical Costraint</a>
                                     </div>
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-primary" type="button">Add Costraint</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <h4 class="modal-title fs-5">Current Costraints</h4>
-                            <span class="badge rounded-pill text-bg-primary">
-                                <div class="container d-flex justify-content-center align-items-center m-0 p-0">
-                                    <span>Execution Time <= 20ms</span>
-                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
-                                </div>
-                            </span>
-                            
-                            <span class="badge rounded-pill text-bg-primary">
-                                <div class="container d-flex justify-content-center align-items-center m-0 p-0">
-                                    <span>Volume of Data <= 200mb</span>
-                                    <button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
-                                </div>
-                            </span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal add numerical costraint -->
+    <div class="modal fade" id="addNumericalCostraintModal" tabindex="-1" aria-labelledby="addNumericalCostraintModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-ld">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addNumericalCostraintModalLabel">Add Numerical Costraint</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Costraint Name -->
+                    <div class="col-6">
+                        <div class="input-group mb-3">
+                            <select class="form-select" id="inputGroupCostraintName">
+                                <option selected>Execution Time</option>
+                                <option value="1">Volume of Data</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Costraint Type -->
+                    <div class="col-3">
+                        <div class="input-group mb-3">
+                            <select class="form-select" id="inputGroupCostraintName">
+                                <option selected>==</option>
+                                <option value="1"><</option>
+                                <option value="1">></option>
+                                <option value="1"><=</option>
+                                <option value="1">>=</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Costraint Value -->
+                    <div class="col-3">
+                        <input type="text" class="form-control" placeholder="Value" aria-label="Value">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add Costraint</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add categorical costraint modal -->
+    <div class="modal fade" id="addCategoricalCostraintModal" tabindex="-1" aria-labelledby="addCategoricalCostraintModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addCategoricalCostraintModalLabel">Add Categorical Costraint</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Costraint Name -->
+                    <div class="col-6">
+                        <div class="input-group mb-3">
+                            <select class="form-select" id="inputGroupCostraintName">
+                                <option selected>Type of Database</option>
+                                <option value="1">Network Protocol</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Costraint Value -->
+                    <div class="col-6">
+                        <div class="input-group mb-3">
+                            <select class="form-select" id="inputGroupCostraintName">
+                                <option selected>SQL</option>
+                                <option value="1">NoSQL</option>
+                                <option value="2">Graph</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add Costraint</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js" defer></script>
 </body>
 </html>
