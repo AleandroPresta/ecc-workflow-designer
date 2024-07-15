@@ -285,8 +285,12 @@ angular.module('app', ['flowChart',])
 		};
 
 		//
-		// Add a new device to the chart.
+		// Add a new node to the chart.
 		//
+
+		$scope.addNode = function () {
+			console.log("Add Node");
+		}
 		$scope.addDevice = function () {
 
 			const form = createDeviceForm();
@@ -367,7 +371,7 @@ angular.module('app', ['flowChart',])
 			form.appendChild(row1);
 			form.appendChild(row2);
 			form.appendChild(row3);
-			form.appendChild(row4);	
+			form.appendChild(row4);
 
 			container.appendChild(form);
 
@@ -442,7 +446,7 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(form);
 			form.showModal();
 		};
-		
+
 		// Convert the value of the select element to the corresponding operator
 		function valueToOperator(value) {
 			switch (value) {
@@ -487,7 +491,7 @@ angular.module('app', ['flowChart',])
 			const fieldset3 = document.createElement('fieldset');
 			const fieldset4 = document.createElement('fieldset');
 			const fieldset5 = document.createElement('fieldset');
-			
+
 			// Name
 			// Create: <input class='form-control' ...> ... </input>
 			const input1 = document.createElement('input');
@@ -623,7 +627,7 @@ angular.module('app', ['flowChart',])
 			option10.value = '4';
 			option10.textContent = '<=';
 			select2.appendChild(option10);
-			
+
 			col22.appendChild(select2);
 
 			fieldset3.appendChild(inputGroup2);
@@ -646,7 +650,7 @@ angular.module('app', ['flowChart',])
 			input1.required = true;
 			input1.autofocus = true;
 			input1.id = 'computation-name-input';
-		
+
 			input2.placeholder = 'Computation execution time';
 			input2.type = 'text';
 			input2.tabIndex = '2';
@@ -699,7 +703,7 @@ angular.module('app', ['flowChart',])
 			form.appendChild(row4);
 			form.appendChild(row5);
 			form.appendChild(row6);
-			
+
 			container.appendChild(form);
 
 			return container;
@@ -879,7 +883,7 @@ angular.module('app', ['flowChart',])
 			option2.value = '1';
 			option2.textContent = '>';
 			select1.appendChild(option2);
-			
+
 			const option3 = document.createElement('option');
 			option3.value = '2';
 			option3.textContent = '>=';
@@ -894,7 +898,7 @@ angular.module('app', ['flowChart',])
 			option5.value = '4';
 			option5.textContent = '<=';
 			select1.appendChild(option5);
-	
+
 			col12.appendChild(select1);
 
 			fieldset2.appendChild(inputGroup1);
@@ -907,7 +911,7 @@ angular.module('app', ['flowChart',])
 			cancelButton.className = 'btn btn-secondary';
 
 			// Set attributes and content
-			
+
 			form.id = 'create-storage-form';
 			form.action = '';
 			h3.textContent = 'Create Storage';
@@ -952,7 +956,7 @@ angular.module('app', ['flowChart',])
 			fieldset3.appendChild(textarea);
 			fieldset4.appendChild(submitButton);
 			fieldset4.appendChild(cancelButton);
-			
+
 			row1.appendChild(h3);
 			row2.appendChild(fieldset1);
 			row3.appendChild(fieldset2);
@@ -962,7 +966,7 @@ angular.module('app', ['flowChart',])
 			form.appendChild(row1);
 			form.appendChild(row2);
 			form.appendChild(row3);
-			form.appendChild(row4);	
+			form.appendChild(row4);
 			form.appendChild(row5);
 
 			container.appendChild(form);
@@ -981,7 +985,7 @@ angular.module('app', ['flowChart',])
 				// Form is valid, continue with the next line of code
 				// Get the values from the form
 				const storageName = document.getElementById('storage-name-input').value;
-				
+
 				const availableMemory = parseInt(document.getElementById('storage-available-memory-input').value);
 				const availableMemoryOperatorValue = document.getElementById('storage-available-memory-select').value;
 				const availableMemoryOperator = valueToOperator(availableMemoryOperatorValue);
@@ -1119,7 +1123,7 @@ angular.module('app', ['flowChart',])
 			fieldset2.appendChild(textarea);
 			fieldset3.appendChild(submitButton);
 			fieldset3.appendChild(cancelButton);
-			
+
 			row1.appendChild(h3);
 			row2.appendChild(fieldset1);
 			row3.appendChild(fieldset2);
@@ -1128,7 +1132,7 @@ angular.module('app', ['flowChart',])
 			form.appendChild(row1);
 			form.appendChild(row2);
 			form.appendChild(row3);
-			form.appendChild(row4);	
+			form.appendChild(row4);
 
 			container.appendChild(form);
 
@@ -1304,7 +1308,8 @@ angular.module('app', ['flowChart',])
 			sendCatalogAndWorkflowToServer();
 		}
 
-		function sendCatalogAndWorkflowToServer() {;
+		function sendCatalogAndWorkflowToServer() {
+			;
 			const catalog = loadDefaultCatalog();
 
 			// Define the URL of the server
@@ -1317,7 +1322,7 @@ angular.module('app', ['flowChart',])
 		}
 
 		// Loads the default catalog of services
-		function loadDefaultCatalog(){
+		function loadDefaultCatalog() {
 			const defaultCatalog = {
 			};
 
