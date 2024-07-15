@@ -67,7 +67,7 @@
 						<button
 						class="btn btn-primary"
 						title="Add a new node"
-						data-bs-toggle="modal" data-bs-target="#addNodeModal"
+						ng-click="openAddNodeModal()"
 						>
 						Add Node
 						</button>
@@ -102,122 +102,6 @@
 			      	>
 			    </flow-chart>
 		    </div>
-		</div>
-
-		<div class="container d-flex justify-content-center align-items-center">
-			<div class="modal fade" id="addNodeModal" tabindex="-1" aria-labelledby="addNodeModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-xl">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="addNodeModalLabel">Create new node</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col">
-									<h4 class="modal-title fs-5">Node Informations</h4>
-									<!-- Node Name -->
-									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floatingInputName" placeholder="Name">
-										<label for="floatingInputName">Node Name</label>
-									</div>
-
-									<!-- Node Type -->
-									<div class="input-group mb-3">
-										<label class="input-group-text" for="inputGroupNodeType">Type</label>
-										<select class="form-select" id="inputGroupNodeType">
-											<option selected>Device</option>
-											<option value="1">Computation</option>
-											<option value="2">Storage</option>
-											<option value="3">Communication</option>
-										</select>
-									</div>
-
-									<!-- Node Description-->
-									<div class="form-floating">
-										<textarea class="form-control" placeholder="Describe yout node" id="floatingTextareaDescription" style="height: 100px"></textarea>
-										<label for="floatingTextareaDescription">Description</label>
-									</div>
-
-									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floatingInputQuantity" placeholder="Quantity">
-										<label for="floatingInputQuantity">Node Quantity</label>
-									</div>
-								</div>
-								<div class="col">
-									<h4 class="modal-title fs-5">Current Costraints</h4>
-									<span class="badge rounded-pill text-bg-primary">
-										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
-											<span>Execution Time <= 20ms</span>
-											<button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
-										</div>
-									</span>
-									
-									<span class="badge rounded-pill text-bg-primary">
-										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
-											<span>Volume of Data <= 200mb</span>
-											<button type="button" class="btn-close btn-close-white" aria-label="Close" style="--bs-btn-font-size: .25rem;"></button>
-										</div>
-									</span>
-									<span class="badge rounded-pill text-bg-primary">
-										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
-											<a ng-click="addNumericalCostraint()">Add Numerical Costraint</a>
-										</div>
-									</span>
-									<span class="badge rounded-pill text-bg-primary">
-										<div class="container d-flex justify-content-center align-items-center m-0 p-0">
-											<a data-bs-toggle="modal" data-bs-target="#addCategoricalCostraintModal">Add Categorical Costraint</a>
-										</div>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" ng-click="addNewNode()">Save changes</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Add categorical costraint modal -->
-		<div class="modal fade" id="addCategoricalCostraintModal" tabindex="-1" aria-labelledby="addCategoricalCostraintModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="addCategoricalCostraintModalLabel">Add Categorical Costraint</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<!-- Costraint Name -->
-							<div class="col-6">
-								<div class="input-group mb-3">
-									<select class="form-select" id="inputGroupCostraintName">
-										<option selected>Type of Database</option>
-										<option value="1">Network Protocol</option>
-									</select>
-								</div>
-							</div>
-							<!-- Costraint Value -->
-							<div class="col-6">
-								<div class="input-group mb-3">
-									<select class="form-select" id="inputGroupCostraintName">
-										<option selected>SQL</option>
-										<option value="1">NoSQL</option>
-										<option value="2">Graph</option>
-									</select>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Add Costraint</button>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<link rel="stylesheet" type="text/css" href="app.css">

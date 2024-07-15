@@ -366,7 +366,7 @@ function createAddNodeModal() {
     modalButton.setAttribute('aria-label', 'Close');
 
     modalHeader.appendChild(modalButton);
-    
+
     let modalBody = document.createElement('div');
     modalBody.classList.add('modal-body');
 
@@ -464,7 +464,7 @@ function createAddNodeModal() {
     let label3 = document.createElement('label');
     label3.setAttribute('for', 'floatingTextareaDescription');
     label3.textContent = 'Description';
-    
+
     formFloating2.appendChild(label3);
 
     let formFloating3 = document.createElement('div');
@@ -512,7 +512,7 @@ function createAddNodeModal() {
 
     let a1 = document.createElement('a');
     a1.textContent = 'Add Numerical Costraint';
-    a1.onclick = function() {
+    a1.onclick = function () {
         createAddNumericalCostraintModal(node, constaintsContainer);
     }
 
@@ -530,7 +530,7 @@ function createAddNodeModal() {
 
     let a2 = document.createElement('a');
     a2.textContent = 'Add Categorical Costraint';
-    a2.onclick = function() {
+    a2.onclick = function () {
         createAddCategoricalCostraintModal(node, constaintsContainer);
     }
 
@@ -550,16 +550,16 @@ function createAddNodeModal() {
     modalFooter.appendChild(buttonSave);
 
     const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show(); 
+    modalInstance.show();
 
-    buttonSave.onclick = function() {
+    buttonSave.onclick = function () {
         saveNewNode(node, input1, select, textarea, input2);
 
         // Close the modal
         closeModal(modalInstance, modal);
     }
-    
-} 
+
+}
 
 function createNewBadge(node, costraint, appendTo) {
     // Add a badge to the constraints shown in the modal
@@ -602,13 +602,10 @@ function saveNewNode(node, input1, select, textarea, input2) {
     node.quantity = input2.value;
 
     // Increment the nextNodeID
-    nextNodeId++;
+    nextNodeID++;
 
-    // Add the node to the workflow
-    chartDataModel.nodes.push(node);
-
-    console.log(chartDataModel);
-} 
+    $scope.chartDataModel.addNode(node);
+}
 
 function closeModal(modalInstance, modal) {
     modalInstance.hide();
