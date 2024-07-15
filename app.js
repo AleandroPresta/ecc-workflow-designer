@@ -291,6 +291,193 @@ angular.module('app', ['flowChart',])
 		$scope.addNewNode = function () {
 			console.log("Add Node");
 		}
+
+		$scope.numericalCostraintNames = ['Execution Time', 'Volume of Data', 'Memory', 'Energy Consumption'];
+		$scope.numericalCostraintOperators = ['==', '>', '>=', '<', '<='];
+
+		$scope.addNumericalCostraint = function () {
+
+			/* 
+				Create:
+				<!-- Modal add numerical costraint -->
+				<div class="modal fade" id="addNumericalCostraintModal" tabindex="-1" aria-labelledby="addNumericalCostraintModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="addNumericalCostraintModalLabel">Add Numerical Costraint</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<!-- Costraint Name -->
+									<div class="col-6">
+										<div class="input-group mb-3">
+											<select class="form-select" id="inputGroupCostraintName">
+												<option selected>Execution Time</option>
+												<option value="1">Volume of Data</option>
+											</select>
+										</div>
+									</div>
+									<!-- Costraint Type -->
+									<div class="col-3">
+										<div class="input-group mb-3">
+											<select class="form-select" id="inputGroupCostraintName">
+												<option selected>==</option>
+												<option value="1"><</option>
+												<option value="1">></option>
+												<option value="1"><=</option>
+												<option value="1">>=</option>
+											</select>
+										</div>
+									</div>
+									<!-- Costraint Value -->
+									<div class="col-3">
+										<input type="text" class="form-control" placeholder="Value" aria-label="Value">
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Add Costraint</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			*/
+
+			const container = document.createElement('div');
+			container.className = 'modal fade';
+			container.id = 'addNumericalCostraintModal';
+			container.tabIndex = '-1';
+			container.setAttribute('aria-labelledby', 'addNumericalCostraintModalLabel');
+			container.setAttribute('aria-hidden', 'true');
+
+			const dialog = document.createElement('div');
+			dialog.className = 'modal-dialog modal-dialog-centered';
+
+			const content = document.createElement('div');
+			content.className = 'modal-content';
+
+			const header = document.createElement('div');
+			header.className = 'modal-header';
+
+			const h1 = document.createElement('h1');
+			h1.className = 'modal-title fs-5';
+			h1.id = 'addNumericalCostraintModalLabel';
+			h1.textContent = 'Add Numerical Costraint';
+
+			header.appendChild(h1);
+
+			const closeButton = document.createElement('button');
+			closeButton.type = 'button';
+			closeButton.className = 'btn-close';
+			closeButton.setAttribute('data-bs-dismiss', 'modal');
+			closeButton.setAttribute('aria-label', 'Close');
+
+			header.appendChild(closeButton);
+
+			const body = document.createElement('div');
+			body.className = 'modal-body';
+
+			const row = document.createElement('div');
+			row.className = 'row';
+
+			// Costraint Name
+			const col1 = document.createElement('div');
+			col1.className = 'col-6';
+
+			const inputGroup1 = document.createElement('div');
+			inputGroup1.className = 'input-group mb-3';
+
+			const select1 = document.createElement('select');
+			select1.className = 'form-select';
+			select1.id = 'inputGroupCostraintName';
+
+			// Add options from the $scope.numericalCostraintNames array
+			for (let i = 0; i < $scope.numericalCostraintNames.length; i++) {
+				const option = document.createElement('option');
+				option.textContent = $scope.numericalCostraintNames[i];
+				if (i == 0) {
+					option.selected = true;
+				}
+				select1.appendChild(option);
+			}
+
+			inputGroup1.appendChild(select1);
+			col1.appendChild(inputGroup1);
+
+			// Costraint Type
+			const col2 = document.createElement('div');
+			col2.className = 'col-3';
+
+			const inputGroup2 = document.createElement('div');
+			inputGroup2.className = 'input-group mb-3';
+
+			const select2 = document.createElement('select');
+			select2.className = 'form-select';
+			select2.id = 'inputGroupCostraintType';
+
+			// Add operators from the $scope.numericalCostraintOperators array
+			for (let i = 0; i < $scope.numericalCostraintOperators.length; i++) {
+				const option = document.createElement('option');
+				option.textContent = $scope.numericalCostraintOperators[i];
+				if (i == 0) {
+					option.selected = true;
+				}
+				select2.appendChild(option);
+			}
+
+			inputGroup2.appendChild(select2);
+			col2.appendChild(inputGroup2);
+
+			// Costraint Value
+			const col3 = document.createElement('div');
+			col3.className = 'col-3';
+
+			const input = document.createElement('input');
+			input.type = 'text';
+			input.className = 'form-control';
+			input.placeholder = 'Value';
+			input.setAttribute('aria-label', 'Value');
+
+			col3.appendChild(input);
+
+			row.appendChild(col1);
+			row.appendChild(col2);
+			row.appendChild(col3);
+
+			body.appendChild(row);
+
+			const footer = document.createElement('div');
+			footer.className = 'modal-footer';
+
+			const closeButton2 = document.createElement('button');
+			closeButton2.type = 'button';
+			closeButton2.className = 'btn btn-secondary';
+			closeButton2.setAttribute('data-bs-dismiss', 'modal');
+			closeButton2.textContent = 'Close';
+
+			const addButton = document.createElement('button');
+			addButton.type = 'button';
+			addButton.className = 'btn btn-primary';
+			addButton.textContent = 'Add Costraint';
+
+			footer.appendChild(closeButton2);
+			footer.appendChild(addButton);
+
+			content.appendChild(header);
+			content.appendChild(body);
+			content.appendChild(footer);
+
+			dialog.appendChild(content);
+
+			container.appendChild(dialog);
+
+			const modalInstance = new bootstrap.Modal(container);
+			document.body.appendChild(container);
+			modalInstance.show();
+		}
+
 		$scope.addDevice = function () {
 
 			const form = createDeviceForm();
