@@ -664,7 +664,7 @@ function createAddNumericalCostraintModal(node, appendTo) {
     modal.classList.add('modal', 'fade');
     modal.id = 'addNumericalCostraintModal';
     modal.tabIndex = -1;
-    modal.setAttribute('aria-labelledby', 'addNumericalCostraintModalLabel');
+    modal.setAttribute('aria-labelledby', 'add  ModalLabel');
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
@@ -724,7 +724,7 @@ function createAddNumericalCostraintModal(node, appendTo) {
     inputGroup1.appendChild(select1);
 
     // Read the possible options from the numericalConstraints array
-    for (let i = 0; i < numericalConstraints.length; i++) {
+    for (let i = 0; i < $scope.numericalConstraints.length; i++) {
         let option = document.createElement('option');
         option.textContent = numericalConstraints[i];
         select1.appendChild(option);

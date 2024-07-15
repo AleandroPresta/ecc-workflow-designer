@@ -290,9 +290,12 @@ angular.module('app', ['flowChart',])
 		// Functionality and utilities to add a new node and constraints to said node.
 		//
 		// The list of possible numerical constraints
-		$scope.numericalConstraints = [
+		$scope.numericalCostraints = [
 			'Execution Time',
-			'Volume of Data'
+			'Volume of Data',
+			'Memory',
+			'CPU Usage',
+			'Energy Consumption',
 		];
 
 		$scope.numericalOperators = [
@@ -619,7 +622,7 @@ angular.module('app', ['flowChart',])
 			let a1 = document.createElement('a');
 			a1.textContent = 'Add Numerical Costraint';
 			a1.onclick = function () {
-				createAddNumericalCostraintModal(node, constaintsContainer);
+				$scope.createAddNumericalCostraintModal(node, constaintsContainer);
 			}
 
 			container3.appendChild(a1);
@@ -720,7 +723,7 @@ angular.module('app', ['flowChart',])
 			document.body.removeChild(modal);
 		}
 
-		function createAddNumericalCostraintModal(node, appendTo) {
+		$scope.createAddNumericalCostraintModal = function (node, appendTo) {
 			/*
 				Create:
 				<!-- Modal -->
@@ -831,10 +834,10 @@ angular.module('app', ['flowChart',])
 
 			inputGroup1.appendChild(select1);
 
-			// Read the possible options from the numericalConstraints array
-			for (let i = 0; i < numericalConstraints.length; i++) {
+			// Read the possible options from the numericalCostraints array
+			for (let i = 0; i < $scope.numericalCostraints.length; i++) {
 				let option = document.createElement('option');
-				option.textContent = numericalConstraints[i];
+				option.textContent = $scope.numericalCostraints[i];
 				select1.appendChild(option);
 			}
 
@@ -855,9 +858,9 @@ angular.module('app', ['flowChart',])
 			inputGroup2.appendChild(select2);
 
 			// Read the operators from the numericalOperators array
-			for (let i = 0; i < numericalOperators.length; i++) {
+			for (let i = 0; i < $scope.numericalOperators.length; i++) {
 				let option = document.createElement('option');
-				option.textContent = numericalOperators[i];
+				option.textContent = $scope.numericalOperators[i];
 				select2.appendChild(option);
 			}
 
