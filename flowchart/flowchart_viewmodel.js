@@ -840,7 +840,7 @@ var flowchart = {
 
 			// <div class="modal-dialog">
 			const modalDialog = document.createElement('div');
-			modalDialog.className = 'modal-dialog';
+			modalDialog.className = 'modal-dialog modal-dialog-centered modal-xl';
 			modal.appendChild(modalDialog);
 
 			// <div class="modal-content">
