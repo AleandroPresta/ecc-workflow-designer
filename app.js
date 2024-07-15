@@ -307,7 +307,7 @@ angular.module('app', ['flowChart',])
 		];
 
 		// The list of possible categorical constraints and the options for each constraint
-		$scope.categoricalConstraints = [
+		$scope.categoricalCostraints = [
 			{
 				name: 'Type of Database',
 				options: [
@@ -1019,9 +1019,9 @@ angular.module('app', ['flowChart',])
 			inputGroup1.appendChild(select1);
 
 			// Read the possible options from the categoricalConstraints array
-			for (let i = 0; i < categoricalConstraints.length; i++) {
+			for (let i = 0; i < $scope.categoricalCostraints.length; i++) {
 				let option = document.createElement('option');
-				option.textContent = categoricalConstraints[i].name;
+				option.textContent = $scope.categoricalCostraints[i].name;
 				select1.appendChild(option);
 			}
 
@@ -1042,9 +1042,9 @@ angular.module('app', ['flowChart',])
 			inputGroup2.appendChild(select2);
 
 			// Read the options for the selected constraint
-			for (let i = 0; i < categoricalConstraints[0].options.length; i++) {
+			for (let i = 0; i < $scope.categoricalCostraints[0].options.length; i++) {
 				let option = document.createElement('option');
-				option.textContent = categoricalConstraints[0].options[i];
+				option.textContent = $scope.categoricalCostraints[0].options[i];
 				select2.appendChild(option);
 			}
 
@@ -1053,9 +1053,9 @@ angular.module('app', ['flowChart',])
 				select2.innerHTML = '';
 
 				// Read the options for the selected constraint
-				for (let i = 0; i < categoricalConstraints[select1.selectedIndex].options.length; i++) {
+				for (let i = 0; i < $scope.categoricalCostraints[select1.selectedIndex].options.length; i++) {
 					let option = document.createElement('option');
-					option.textContent = categoricalConstraints[select1.selectedIndex].options[i];
+					option.textContent = $scope.categoricalCostraints[select1.selectedIndex].options[i];
 					select2.appendChild(option);
 				}
 			}
