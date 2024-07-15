@@ -288,7 +288,7 @@ angular.module('app', ['flowChart',])
 		// Add a new node to the chart.
 		//
 
-		$scope.addNode = function () {
+		$scope.addNewNode = function () {
 			console.log("Add Node");
 		}
 		$scope.addDevice = function () {
