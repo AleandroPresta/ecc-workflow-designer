@@ -287,9 +287,9 @@ angular.module('app', ['flowChart',])
 		// ############################################################################################################
 
 		//
-		// Functionality and utilities to add a new node and constraints to said node.
+		// Functionality and utilities to add a new node and costraints to said node.
 		//
-		// The list of possible numerical constraints
+		// The list of possible numerical costraints
 		$scope.numericalCostraints = [
 			'Execution Time',
 			'Volume of Data',
@@ -306,7 +306,7 @@ angular.module('app', ['flowChart',])
 			'>='
 		];
 
-		// The list of possible categorical constraints and the options for each constraint
+		// The list of possible categorical costraints and the options for each costraint
 		$scope.categoricalCostraints = [
 			{
 				name: 'Type of Database',
@@ -599,7 +599,7 @@ angular.module('app', ['flowChart',])
 			const constaintsContainer = document.createElement('div');
 			col2.appendChild(constaintsContainer);
 
-			// Add a badge for each constraint in the node
+			// Add a badge for each costraint in the node
 			for (let i = 0; i < node.parameters.length; i++) {
 				const newBadge = createNewBadge(node, node.parameters[i], constaintsContainer);
 				constaintsContainer.append(newBadge);
@@ -905,7 +905,7 @@ angular.module('app', ['flowChart',])
 		}
 
 		function createNewBadge(node, costraint, appendTo) {
-			// Add a badge to the constraints shown in the modal
+			// Add a badge to the costraints shown in the modal
 			let span = document.createElement('span');
 			span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
 
@@ -928,7 +928,7 @@ angular.module('app', ['flowChart',])
 			container.appendChild(button);
 
 			button.onclick = function () {
-				// If the x button is clicked, remove the constraint from the node and from the appendTo element
+				// If the x button is clicked, remove the costraint from the node and from the appendTo element
 				const indexOfCostraint = node.parameters.indexOf(costraint);
 				node.parameters.splice(indexOfCostraint, 1);
 				appendTo.removeChild(span);
@@ -1251,7 +1251,7 @@ angular.module('app', ['flowChart',])
 
 			inputGroup1.appendChild(select1);
 
-			// Read the possible options from the categoricalConstraints array
+			// Read the possible options from the categoricalCostraints array
 			for (let i = 0; i < $scope.categoricalCostraints.length; i++) {
 				let option = document.createElement('option');
 				option.textContent = $scope.categoricalCostraints[i].name;
@@ -1274,7 +1274,7 @@ angular.module('app', ['flowChart',])
 
 			inputGroup2.appendChild(select2);
 
-			// Read the options for the selected constraint
+			// Read the options for the selected costraint
 			for (let i = 0; i < $scope.categoricalCostraints[0].options.length; i++) {
 				let option = document.createElement('option');
 				option.textContent = $scope.categoricalCostraints[0].options[i];
@@ -1285,7 +1285,7 @@ angular.module('app', ['flowChart',])
 				// Remove all the options from the select2
 				select2.innerHTML = '';
 
-				// Read the options for the selected constraint
+				// Read the options for the selected costraint
 				for (let i = 0; i < $scope.categoricalCostraints[select1.selectedIndex].options.length; i++) {
 					let option = document.createElement('option');
 					option.textContent = $scope.categoricalCostraints[select1.selectedIndex].options[i];
@@ -1319,7 +1319,7 @@ angular.module('app', ['flowChart',])
 
 				node.parameters.push(costraint);
 
-				// Create a new badge for the constraint
+				// Create a new badge for the costraint
 				const newBadge = createNewBadge(node, costraint, appendTo);
 
 				// Add the badge to the modal in first position
