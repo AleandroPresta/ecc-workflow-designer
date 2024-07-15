@@ -599,6 +599,12 @@ angular.module('app', ['flowChart',])
 			const constaintsContainer = document.createElement('div');
 			col2.appendChild(constaintsContainer);
 
+			// Add a badge for each constraint in the node
+			for (let i = 0; i < node.parameters.length; i++) {
+				const newBadge = createNewBadge(node, node.parameters[i], constaintsContainer);
+				constaintsContainer.append(newBadge);
+			}
+
 			let span3 = document.createElement('span');
 			span3.classList.add('badge', 'rounded-pill', 'text-bg-primary');
 
@@ -644,7 +650,7 @@ angular.module('app', ['flowChart',])
 
 			modalFooter.appendChild(buttonClose);
 
-			let buttonSave = createButtonSave('Create Node');
+			let buttonSave = createButtonSave('Save Node');
 
 			modalFooter.appendChild(buttonSave);
 
@@ -660,9 +666,10 @@ angular.module('app', ['flowChart',])
 
 		}
 
-		$scope.openModifyNodeModal = function (node) {
+		$scope.openModifyNodeModal = function (originalNode) {
 
-			console.log(node);
+			// Create a deep copy of the node to modify
+			let node = JSON.parse(JSON.stringify(originalNode));
 
 			let modal = document.createElement('div');
 			modal.classList.add('modal', 'fade');
@@ -777,7 +784,8 @@ angular.module('app', ['flowChart',])
 
 			let textarea = document.createElement('textarea');
 			textarea.classList.add('form-control', 'mb-3');
-			textarea.placeholder = 'Describe yout node';
+			// Read the value from the node
+			textarea.value = node.description;
 			textarea.id = 'floatingTextareaDescription';
 			textarea.style.height = '100px';
 
@@ -798,7 +806,8 @@ angular.module('app', ['flowChart',])
 			input2.type = 'text';
 			input2.classList.add('form-control');
 			input2.id = 'floatingInputQuantity';
-			input2.placeholder = 'Quantity';
+			// Read the value from the node
+			input2.value = node.quantity;
 
 			formFloating3.appendChild(input2);
 
@@ -831,6 +840,12 @@ angular.module('app', ['flowChart',])
 			container3.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
 
 			span3.appendChild(container3);
+
+			// Read the parameters from the node
+			for (let i = 0; i < node.parameters.length; i++) {
+				const newBadge = createNewBadge(node, node.parameters[i], constaintsContainer);
+				constaintsContainer.append(newBadge);
+			}
 
 			let a1 = document.createElement('a');
 			a1.textContent = 'Add Numerical Costraint';
@@ -867,7 +882,7 @@ angular.module('app', ['flowChart',])
 
 			modalFooter.appendChild(buttonClose);
 
-			let buttonSave = createButtonSave('Create Node');
+			let buttonSave = createButtonSave('Save Changes');
 
 			modalFooter.appendChild(buttonSave);
 
@@ -875,7 +890,13 @@ angular.module('app', ['flowChart',])
 			modalInstance.show();
 
 			buttonSave.onclick = function () {
-				$scope.saveNewNode(node, input1, select, textarea, input2);
+				// Set the node values to the values in the modal
+				originalNode.name = input1.value;
+				originalNode.type = select.value;
+				originalNode.description = textarea.value;
+				originalNode.quantity = input2.value;
+				// Set the parameters
+				originalNode.parameters = node.parameters;
 
 				// Close the modal
 				closeModal(modalInstance, modal);
@@ -926,7 +947,6 @@ angular.module('app', ['flowChart',])
 			// Increment the nextNodeID
 			nextNodeID = nextNodeID + 1;
 
-			console.log(node);
 			// Add the node to the chart
 			$scope.chartViewModel.addNode(node);
 		}
