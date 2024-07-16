@@ -67,6 +67,8 @@ angular.module('app', ['flowChart',])
 					y: 27,
 					width: 300,
 					height: 90,
+					quantity: 0,
+					parameters: [],
 					inputConnectors: [
 						{
 							name: "",
@@ -107,6 +109,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a computation",
 					x: 418,
 					y: 138,
+					quantity: 0,
 					inputConnectors: [
 						{
 							name: "",
@@ -144,6 +147,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a storage",
 					x: 687,
 					y: 296,
+					quantity: 0,
 					inputConnectors: [
 						{
 							name: "",
@@ -172,9 +176,7 @@ angular.module('app', ['flowChart',])
 					name: "Communication",
 					id: 3,
 					type: "Communication",
-					parameters: {
-
-					},
+					parameters: [],
 					description: "This is a communication",
 					x: 985,
 					y: 423,
@@ -200,6 +202,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					quantity: 0,
 				}
 			],
 			connections: [
