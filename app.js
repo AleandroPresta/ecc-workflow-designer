@@ -813,12 +813,7 @@ angular.module('app', ['flowChart',])
 			input2.type = 'text';
 			input2.classList.add('form-control');
 			input2.id = 'floatingInputQuantity';
-			// Read the value from the node (if the value trimmed is a void string, set the value to 1)
-			if (input2.value.trim() === "") {
-				node.quantity = 1;
-			} else {
-				node.quantity = parseInt(node.quantity);
-			}
+			input2.value = node.quantity;
 
 			formFloating3.appendChild(input2);
 
@@ -909,8 +904,9 @@ angular.module('app', ['flowChart',])
 				if (input2.value.trim() === "") {
 					originalNode.quantity = 1;
 				} else {
-					originalNode.quantity = parseInt(node.quantity);
+					originalNode.quantity = parseInt(input2.value);
 				}
+				console.log('originalNode.quantity', originalNode.quantity);
 				// Set the parameters
 				originalNode.parameters = node.parameters;
 
