@@ -233,6 +233,11 @@ var flowchart = {
 			return this.data.id;
 		}
 
+		// The quantity of the node
+		this.quantity = function () {
+			return this.data.quantity;
+		}
+
 		//
 		// Select the node.
 		//
