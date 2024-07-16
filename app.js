@@ -905,7 +905,12 @@ angular.module('app', ['flowChart',])
 				originalNode.name = input1.value;
 				originalNode.type = select.value;
 				originalNode.description = textarea.value;
-				originalNode.quantity = input2.value;
+				// Check if is empty
+				if (input2.value.trim() === "") {
+					originalNode.quantity = 1;
+				} else {
+					originalNode.quantity = parseInt(node.quantity);
+				}
 				// Set the parameters
 				originalNode.parameters = node.parameters;
 
