@@ -814,7 +814,7 @@ angular.module('app', ['flowChart',])
 			input2.classList.add('form-control');
 			input2.id = 'floatingInputQuantity';
 			// Read the value from the node (if the value trimmed is a void string, set the value to 1)
-			if (node.quantity.trim() === "") {
+			if (input2.value.trim() === "") {
 				node.quantity = 1;
 			} else {
 				node.quantity = parseInt(node.quantity);
