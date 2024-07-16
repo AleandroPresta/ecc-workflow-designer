@@ -67,6 +67,8 @@ angular.module('app', ['flowChart',])
 					y: 27,
 					width: 300,
 					height: 90,
+					quantity: 0,
+					parameters: [],
 					inputConnectors: [
 						{
 							name: "",
@@ -107,6 +109,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a computation",
 					x: 418,
 					y: 138,
+					quantity: 0,
 					inputConnectors: [
 						{
 							name: "",
@@ -144,6 +147,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a storage",
 					x: 687,
 					y: 296,
+					quantity: 0,
 					inputConnectors: [
 						{
 							name: "",
@@ -172,9 +176,7 @@ angular.module('app', ['flowChart',])
 					name: "Communication",
 					id: 3,
 					type: "Communication",
-					parameters: {
-
-					},
+					parameters: [],
 					description: "This is a communication",
 					x: 985,
 					y: 423,
@@ -200,6 +202,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					quantity: 0,
 				}
 			],
 			connections: [
@@ -658,6 +661,10 @@ angular.module('app', ['flowChart',])
 			modalInstance.show();
 
 			buttonSave.onclick = function () {
+				// input1: node name
+				// select: node type
+				// textarea: node description
+				// input2: node quantity
 				$scope.saveNewNode(node, input1, select, textarea, input2);
 
 				// Close the modal
@@ -806,7 +813,6 @@ angular.module('app', ['flowChart',])
 			input2.type = 'text';
 			input2.classList.add('form-control');
 			input2.id = 'floatingInputQuantity';
-			// Read the value from the node
 			input2.value = node.quantity;
 
 			formFloating3.appendChild(input2);
@@ -894,7 +900,13 @@ angular.module('app', ['flowChart',])
 				originalNode.name = input1.value;
 				originalNode.type = select.value;
 				originalNode.description = textarea.value;
-				originalNode.quantity = input2.value;
+				// Check if is empty
+				if (input2.value.trim() === "") {
+					originalNode.quantity = 1;
+				} else {
+					originalNode.quantity = parseInt(input2.value);
+				}
+				console.log('originalNode.quantity', originalNode.quantity);
 				// Set the parameters
 				originalNode.parameters = node.parameters;
 
@@ -942,7 +954,11 @@ angular.module('app', ['flowChart',])
 			node.name = input1.value;
 			node.type = select.value;
 			node.description = textarea.value;
-			node.quantity = input2.value;
+			if (input2.value.trim() === "") {
+				node.quantity = 1;
+			} else {
+				node.quantity = parseInt(node.quantity);
+			}
 
 			// Increment the nextNodeID
 			nextNodeID = nextNodeID + 1;

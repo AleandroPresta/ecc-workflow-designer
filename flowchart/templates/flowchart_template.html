@@ -127,15 +127,14 @@
 
         <!-- Node quantity -->
         <text
-            ng-if="{{node.quantity() > 0}}"
-            ng-attr-x="{{node.width()-20}}"
-            y="{{node.height()-20}}"
+            ng-if="node.quantity() > 1"
+            ng-attr-x="{{node.width() - 20}}"
+            ng-attr-y="{{node.height() - 20}}"
             text-anchor="middle"
             alignment-baseline="middle"
         >
             {{node.quantity()}}
         </text>
-
         <!-- Node image -->
 
         <image

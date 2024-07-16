@@ -625,7 +625,7 @@ angular.module('flowChart', ['dragging'])
 			const addNewNode = {
 				name: ' Add Node',
 				action: function () {
-					$scope.$parent.addNode();
+					$scope.$parent.openAddNodeModal();
 				}
 			};
 
