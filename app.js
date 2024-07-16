@@ -67,6 +67,7 @@ angular.module('app', ['flowChart',])
 					y: 27,
 					width: 300,
 					height: 90,
+					quantity: 0,
 					inputConnectors: [
 						{
 							name: "",
@@ -107,6 +108,7 @@ angular.module('app', ['flowChart',])
 					description: "This is a computation",
 					x: 418,
 					y: 138,
+					quantity: 0,
 					inputConnectors: [
 						{
 							name: "",
@@ -166,6 +168,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					quantity: 0,
 					image: "../assets/images/database.svg",
 				},
 				{
@@ -200,6 +203,7 @@ angular.module('app', ['flowChart',])
 					],
 					width: 250,
 					height: 90,
+					quantity: 0,
 				}
 			],
 			connections: [
