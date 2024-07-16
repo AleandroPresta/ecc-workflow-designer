@@ -661,6 +661,10 @@ angular.module('app', ['flowChart',])
 			modalInstance.show();
 
 			buttonSave.onclick = function () {
+				// input1: node name
+				// select: node type
+				// textarea: node description
+				// input2: node quantity
 				$scope.saveNewNode(node, input1, select, textarea, input2);
 
 				// Close the modal
@@ -809,8 +813,12 @@ angular.module('app', ['flowChart',])
 			input2.type = 'text';
 			input2.classList.add('form-control');
 			input2.id = 'floatingInputQuantity';
-			// Read the value from the node
-			input2.value = node.quantity;
+			// Read the value from the node (if the value trimmed is a void string, set the value to 1)
+			if (node.quantity.trim() === "") {
+				node.quantity = 1;
+			} else {
+				node.quantity = parseInt(node.quantity);
+			}
 
 			formFloating3.appendChild(input2);
 
@@ -945,7 +953,11 @@ angular.module('app', ['flowChart',])
 			node.name = input1.value;
 			node.type = select.value;
 			node.description = textarea.value;
-			node.quantity = input2.value;
+			if (input2.value.trim() === "") {
+				node.quantity = 1;
+			} else {
+				node.quantity = parseInt(node.quantity);
+			}
 
 			// Increment the nextNodeID
 			nextNodeID = nextNodeID + 1;
