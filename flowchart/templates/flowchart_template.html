@@ -144,6 +144,7 @@
             ng-attr-y="{{node.height()/2 - 20}}"
             ng-attr-x="{{node.width()/2 - 25}}"
             href="{{node.image()}}"
+            ng-right-click="openContextMenuNodes($event, node)"
         />
 
         <!-- Input connector -->
