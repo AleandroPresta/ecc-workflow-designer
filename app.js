@@ -343,7 +343,7 @@ angular.module('app', ['flowChart',])
 				type: '',
 				id: nextNodeID,
 				description: '',
-				quantity: 0,
+				quantity: 1,
 				parameters: [
 
 				],
