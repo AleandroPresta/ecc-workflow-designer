@@ -296,7 +296,7 @@ angular.module('app', ['flowChart',])
 		$scope.numericalCostraints = [
 			'Execution Time',
 			'Volume of Data',
-			'Memory',
+			'Memory Size',
 			'CPU Usage',
 			'Energy Consumption',
 		];
@@ -326,7 +326,40 @@ angular.module('app', ['flowChart',])
 					'FTP',
 					'TCP'
 				]
+			},
+			{
+				name: 'Operating System',
+				options: [
+					'Windows',
+					'Linux',
+					'MacOS'
+				]
+			},
+			{
+				name: 'Architecture',
+				options: [
+					'amd64',
+					'arm',
+					'aarch64',
+					'x86'
+				]
+			},
+			{
+				name: 'Region',
+				options: [
+					'us-east-1',  // N.Virginia
+					'us-west-1',  // N.California
+					'us-west-2',  // Oregon
+					'eu-west-1',  // Ireland
+					'eu-central-1',  // Frankfurt
+					'ap-southeast-1',  // Singapore
+					'ap-northeast-1',  // Tokyo
+					'ap-south-1',  // Mumbai
+					'sa-east-1',  // São Paulo
+					'ca-central-1'  // Canada(Central)
+				]
 			}
+
 		];
 
 		$scope.nodeTypes = [
