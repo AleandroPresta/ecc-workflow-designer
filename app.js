@@ -316,7 +316,8 @@ angular.module('app', ['flowChart',])
 				options: [
 					'SQL',
 					'NoSQL',
-					'Graph'
+					'Graph',
+					'Time Series'
 				]
 			},
 			{
@@ -343,6 +344,13 @@ angular.module('app', ['flowChart',])
 					'aarch64',
 					'x86'
 				]
+			},
+			{
+				name: 'Machine Learning',
+				options: [
+					'Yes',
+					'No'
+				],
 			},
 			{
 				name: 'Region',
