@@ -960,7 +960,7 @@ angular.module('app', ['flowChart',])
 			span.appendChild(container);
 
 			let spanText = document.createElement('span');
-			spanText.textContent = costraint.name + ' == ' + costraint.value;
+			spanText.textContent = costraint.name + costraint.type + costraint.value;
 
 			container.appendChild(spanText);
 
@@ -1183,6 +1183,7 @@ angular.module('app', ['flowChart',])
 					value: input3.value
 				}
 
+				console.log(`Adding costraint: ${costraint.name} ${costraint.type} ${costraint.value}`);
 				node.parameters.push(costraint);
 
 				const newBadge = createNewBadge(node, costraint, appendTo);
