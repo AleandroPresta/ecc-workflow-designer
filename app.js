@@ -317,7 +317,8 @@ angular.module('app', ['flowChart',])
 					'SQL',
 					'NoSQL',
 					'Graph',
-					'Time Series'
+					'Time Series',
+					'JSON'
 				]
 			},
 			{
