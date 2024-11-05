@@ -1,35 +1,35 @@
 :root {
-    --color-bg-primary: #d0d6df;
-    --color-bg-primary-offset: #f1f3f7;
-    --color-bg-secondary: #fff;
-    --color-text-primary: #3a3c42;
-    --color-text-primary-offset: #898c94;
-    --color-orange: #dc9960;
-    --color-green: #1eb8b1;
-    --color-purple: #657cc4;
-    --color-black: var(--color-text-primary);
-    --color-red: #d92027;
+	--color-bg-primary: #d0d6df;
+	--color-bg-primary-offset: #f1f3f7;
+	--color-bg-secondary: #fff;
+	--color-text-primary: #3a3c42;
+	--color-text-primary-offset: #898c94;
+	--color-orange: #dc9960;
+	--color-green: #1eb8b1;
+	--color-purple: #657cc4;
+	--color-black: var(--color-text-primary);
+	--color-red: #d92027;
 }
 
 /*
 Generic reset.
 */
 * {
-    padding: 0;
-    margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 body {
-    font-family: "Inter", sans-serif;
-    color: var(--color-text-primary);
+	font-family: "Inter", sans-serif;
+	color: var(--color-text-primary);
 }
 
 .test {
-    border: 5px red solid;
-    padding: 10;
-    margin: 10;
-    font-family: "Times New Roman";
-    font-style: italic;
+	border: 5px red solid;
+	padding: 10;
+	margin: 10;
+	font-family: "Times New Roman";
+	font-style: italic;
 }
 
 /*
@@ -37,30 +37,30 @@ Styles for nodes and connectors.
 */
 
 .node-rect {
-    stroke: black;
-    stroke-width: 2;
+	stroke: black;
+	stroke-width: 2;
 }
 
 .mouseover-node-rect {
-    stroke: black;
-    stroke-width: 4;
+	stroke: black;
+	stroke-width: 4;
 }
 
 .selected-node-rect {
-    stroke: red;
-    stroke-width: 3;
+	stroke: red;
+	stroke-width: 3;
 }
 
 .connector-circle {
-    fill: white;
-    stroke: black;
-    stroke-width: 2;
+	fill: white;
+	stroke: black;
+	stroke-width: 2;
 }
 
 .mouseover-connector-circle {
-    fill: white;
-    stroke: black;
-    stroke-width: 3;
+	fill: white;
+	stroke: black;
+	stroke-width: 3;
 }
 
 /*
@@ -68,62 +68,62 @@ Style for connections.
 */
 
 .connection-line {
-    stroke: gray;
-    stroke-width: 4;
-    fill: transparent;
+	stroke: gray;
+	stroke-width: 4;
+	fill: transparent;
 }
 
 .mouseover-connection-line {
-    stroke: gray;
-    stroke-width: 6;
-    fill: transparent;
+	stroke: gray;
+	stroke-width: 6;
+	fill: transparent;
 }
 
 .selected-connection-line {
-    stroke: red;
-    stroke-width: 4;
-    fill: transparent;
+	stroke: red;
+	stroke-width: 4;
+	fill: transparent;
 }
 
 .connection-endpoint {
-    fill: gray;
+	fill: gray;
 }
 
 .selected-connection-endpoint {
-    fill: red;
+	fill: red;
 }
 
 .mouseover-connection-endpoint {
-    fill: gray;
+	fill: gray;
 }
 
 .connection-name {
-    fill: black;
+	fill: black;
 }
 
 .selected-connection-name {
-    fill: red;
+	fill: red;
 }
 
 .mouseover-connection-name {
-    fill: gray;
+	fill: gray;
 }
 /*
 Style for the connection being dragged out.
 */
 
 .dragging-connection {
-    pointer-events: none;
+	pointer-events: none;
 }
 
 .dragging-connection-line {
-    stroke: gray;
-    stroke-width: 3;
-    fill: transparent;
+	stroke: gray;
+	stroke-width: 3;
+	fill: transparent;
 }
 
 .dragging-connection-endpoint {
-    fill: gray;
+	fill: gray;
 }
 
 /*
@@ -131,11 +131,10 @@ The element (in this case the SVG element) that contains the draggable elements.
 */
 
 .draggable-container {
-    
 }
 
 rect {
-    cursor: move;
+	cursor: move;
 }
 
 /*
@@ -143,121 +142,119 @@ Drag selection rectangle.
 */
 
 .drag-selection-rect {
-    stroke: blue;
-    stroke-width: 2;
-    fill: transparent;
+	stroke: blue;
+	stroke-width: 2;
+	fill: transparent;
 }
 
 /* ADDED STYLES BY aleandro.presta */
 .app-container {
-    display: flex;
-    height: 100%;
-    width: 100%;
+	display: flex;
+	height: 100%;
+	width: 100%;
 }
 
 .json-container {
-    flex-basis: 30%;
-    flex-grow: 1;
+	flex-basis: 30%;
+	flex-grow: 1;
 }
 
 #json-textarea {
-    resize: horizontal;
+	resize: horizontal;
 }
 
 .flowchart-container {
-    flex-basis: 70%;
-    flex-grow: 1;
-    height: 100%;
-    width: 100%;
+	flex-basis: 70%;
+	flex-grow: 1;
+	height: 100%;
+	width: 100%;
 }
 
 .zoom-element {
-    width: 300%;
-    height: 300%;
-    transform-origin: top left; /* Ensure scaling is from the top left corner */
-    transition: transform 0.2s ease;
-    overflow: hidden;
+	width: 300%;
+	height: 300%;
+	transform-origin: top left; /* Ensure scaling is from the top left corner */
+	transition: transform 0.2s ease;
+	overflow: hidden;
 }
 
-
-
 .json-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
 }
 
 #context-menu {
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(#404040, 0.15);
+	display: flex;
+	flex-direction: column;
+	border-radius: 10px;
+	box-shadow: 0 10px 20px rgba(#404040, 0.15);
 }
 
 .menu-list-custom {
-    list-style-type: none;
-    margin: 0;
-    padding-left: 0px; /* Overriding Bootstrap's left padding */
-    display: block;
-    width: 100%;
-    & + .menu-list {
-        border-top: 1px solid #ddd;
-    }
+	list-style-type: none;
+	margin: 0;
+	padding-left: 0px; /* Overriding Bootstrap's left padding */
+	display: block;
+	width: 100%;
+	& + .menu-list {
+		border-top: 1px solid #ddd;
+	}
 }
 
 .menu-item-custom {
-    position: relative;
+	position: relative;
 }
 
 .menu-button-custom {
-    font: inherit;
-    border: 0;
-    padding: 8px 8px;
-    padding-right: 36px;
-    width: 100%;
-    border-radius: 8px;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    position: relative;
-    background-color: var(--color-bg-secondary);
-    cursor: pointer;
-    &:hover {
-        background-color: var(--color-bg-primary-offset);
-        & + .menu-sub-list {
-            display: flex;
-        }
-        svg {
-            stroke: var(--color-text-primary);
-        }
-    }
+	font: inherit;
+	border: 0;
+	padding: 8px 8px;
+	padding-right: 36px;
+	width: 100%;
+	border-radius: 8px;
+	text-align: left;
+	display: flex;
+	align-items: center;
+	position: relative;
+	background-color: var(--color-bg-secondary);
+	cursor: pointer;
+	&:hover {
+		background-color: var(--color-bg-primary-offset);
+		& + .menu-sub-list {
+			display: flex;
+		}
+		svg {
+			stroke: var(--color-text-primary);
+		}
+	}
 }
 
 .background-board {
-    height: 100vh;
-    width: 100vw;
-    z-index: -1;
-    background-color: white;
+	height: 100vh;
+	width: 100vw;
+	z-index: -1;
+	background-color: white;
 }
 
 .background-board > rect {
-    width: 100%;
-    height: 100%;
-    fill: white;
+	width: 100%;
+	height: 100%;
+	fill: white;
 }
 
 #file-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: none;
-    border-radius: 5px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: none;
+	border-radius: 5px;
 }
 
 /* Make cursor inside the dropdown menu of the group button to pointer */
 a {
-    cursor: pointer;
+	cursor: pointer;
 }
