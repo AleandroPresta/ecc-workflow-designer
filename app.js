@@ -63,12 +63,13 @@ angular.module('app', ['flowChart',])
 					id: 0,
 					type: "Device",
 					description: "This is a device",
+					tags: [],
+					parameters: [],
 					x: 26,
 					y: 27,
 					width: 300,
 					height: 90,
 					quantity: 1,
-					parameters: [],
 					inputConnectors: [
 						{
 							name: "",
@@ -94,19 +95,9 @@ angular.module('app', ['flowChart',])
 					name: "Computation",
 					id: 1,
 					type: "Computation",
-					parameters: [
-						{
-							name: 'Execution Time',
-							value: 10,
-							type: '>'
-						},
-						{
-							name: 'Volume of Data',
-							value: 100,
-							type: '<='
-						}
-					],
 					description: "This is a computation",
+					tags: [],
+					parameters: [],
 					x: 418,
 					y: 138,
 					quantity: 1,
@@ -137,14 +128,9 @@ angular.module('app', ['flowChart',])
 					name: "Storage",
 					id: 2,
 					type: "Storage",
-					parameters: [
-						{
-							name: 'Available Memory',
-							value: 1000,
-							type: '>'
-						}
-					],
 					description: "This is a storage",
+					tags: [],
+					parameters: [],
 					x: 687,
 					y: 296,
 					quantity: 1,
@@ -178,6 +164,8 @@ angular.module('app', ['flowChart',])
 					type: "Communication",
 					parameters: [],
 					description: "This is a communication",
+					tags: [],
+					parameters: [],
 					x: 985,
 					y: 423,
 					inputConnectors: [
@@ -1462,7 +1450,7 @@ angular.module('app', ['flowChart',])
 			const catalog = loadDefaultCatalog();
 
 			// Define the URL of the server
-			const url = 'http://127.0.0.1:8000/api/compare';
+			const url = 'http://127.0.0.1:8000/api/v1/solve/llm';
 			// Get the data from the chart
 			const workflow = $scope.chartViewModel.data
 			const data = [workflow, catalog];
