@@ -63,8 +63,12 @@ angular.module('app', ['flowChart',])
 					id: 0,
 					type: "Device",
 					description: "This is a device",
-					tags: [],
-					parameters: [],
+					tags: ["device", "mobile"],
+					parameters: {
+						"execution_time": "moderate",
+						"power_consumption": "moderate",
+						"network_bandwidth": "moderate"
+					},
 					x: 26,
 					y: 27,
 					width: 300,
@@ -96,8 +100,12 @@ angular.module('app', ['flowChart',])
 					id: 1,
 					type: "Computation",
 					description: "This is a computation",
-					tags: [],
-					parameters: [],
+					tags: ["compute", "server"],
+					parameters: {
+						"execution_time": "moderate",
+						"power_consumption": "moderate",
+						"network_bandwidth": "moderate"
+					},
 					x: 418,
 					y: 138,
 					quantity: 1,
@@ -129,8 +137,12 @@ angular.module('app', ['flowChart',])
 					id: 2,
 					type: "Storage",
 					description: "This is a storage",
-					tags: [],
-					parameters: [],
+					tags: ["storage", "database"],
+					parameters: {
+						"execution_time": "moderate",
+						"power_consumption": "moderate",
+						"network_bandwidth": "moderate"
+					},
 					x: 687,
 					y: 296,
 					quantity: 1,
@@ -162,10 +174,13 @@ angular.module('app', ['flowChart',])
 					name: "Communication",
 					id: 3,
 					type: "Communication",
-					parameters: [],
 					description: "This is a communication",
-					tags: [],
-					parameters: [],
+					tags: ["communication", "network"],
+					parameters: {
+						"execution_time": "moderate",
+						"power_consumption": "moderate",
+						"network_bandwidth": "moderate"
+					},
 					x: 985,
 					y: 423,
 					inputConnectors: [
@@ -278,12 +293,12 @@ angular.module('app', ['flowChart',])
 		// ############################################################################################################
 
 		//
-		// Functionality and utilities to add a new node and costraints to said node.
+		// Functionality and utilities to add a new node and constraints to said node.
 		//
-		// The list of possible numerical costraints
+		// The list of possible numerical constraints
 
-		// The list of possible categorical costraints and the options for each costraint
-		$scope.categoricalCostraints = [
+		// The list of possible categorical constraints and the options for each constraint
+		$scope.categoricalConstraints = [
 			{
 				name: 'execution_time',
 				options: [
@@ -331,7 +346,11 @@ angular.module('app', ['flowChart',])
 				id: nextNodeID,
 				description: '',
 				quantity: 1,
-				parameters: [],
+				parameters: {
+					"execution_time": "moderate",
+					"power_consumption": "moderate",
+					"network_bandwidth": "moderate"
+				},
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -482,15 +501,6 @@ angular.module('app', ['flowChart',])
 			let modal = wrapper.firstElementChild;
 			document.body.appendChild(modal);
 
-			// Render existing costraints badges
-			let costraintsContainer = modal.querySelector("#costraintsContainer");
-			node.parameters.forEach(function (parameter) {
-				let badgeHtml = `<span class="badge rounded-pill text-bg-primary">
-					${parameter.name}${parameter.type}${parameter.value}
-				</span>`;
-				costraintsContainer.insertAdjacentHTML('beforeend', badgeHtml);
-			});
-
 			// Initialize and show the modal
 			let modalInstance = new bootstrap.Modal(modal);
 			modalInstance.show();
@@ -507,46 +517,45 @@ angular.module('app', ['flowChart',])
 				originalNode.type = select.value;
 				originalNode.description = textarea.value;
 				originalNode.quantity = inputQuantity.value.trim() === "" ? 1 : parseInt(inputQuantity.value);
-				// ...handle additional costraints updates if necessary...
+				// ...handle additional constraints updates if necessary...
 
 				modalInstance.hide();
 				modal.remove();
 			};
 		};
 
-
-		function createNewBadge(node, costraint, appendTo) {
-			// Add a badge to the costraints shown in the modal
-			let span = document.createElement('span');
-			span.classList.add('badge', 'rounded-pill', 'text-bg-primary');
-
-			let container = document.createElement('div');
-			container.classList.add('container', 'd-flex', 'justify-content-center', 'align-items-center', 'm-0', 'p-0');
-
-			span.appendChild(container);
-
-			let spanText = document.createElement('span');
-			spanText.textContent = costraint.name + costraint.type + costraint.value;
-
-			container.appendChild(spanText);
-
-			let button = document.createElement('button');
-			button.type = 'button';
-			button.classList.add('btn-close', 'btn-close-white');
-			button.setAttribute('aria-label', 'Close');
-			button.style = '--bs-btn-font-size: .25rem;';
-
-			container.appendChild(button);
-
-			button.onclick = function () {
-				// If the x button is clicked, remove the costraint from the node and from the appendTo element
-				const indexOfCostraint = node.parameters.indexOf(costraint);
-				node.parameters.splice(indexOfCostraint, 1);
-				appendTo.removeChild(span);
-			}
-
-			return span;
-		}
+		$scope.openSetConstraints = function () {
+			let modalHtml = `
+				<div class="modal fade" id="setConstraintsModal" tabindex="-1" aria-labelledby="setConstraintsModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-dialog-centered">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h1 class="modal-title fs-5" id="setConstraintsModalLabel">Set Constraints</h1>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <!-- Add your constraint configuration here -->
+				        <p>Configure your constraints below.</p>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Constraints</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			`;
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = modalHtml;
+			let modal = wrapper.firstElementChild;
+			document.body.appendChild(modal);
+			let modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+			// Cleanup modal on hide
+			modal.addEventListener('hidden.bs.modal', function () {
+				modal.remove();
+			});
+		};
 
 		$scope.saveNewNode = function (node, input1, select, textarea, input2) {
 			// Set the node values to the values in the modal
@@ -569,380 +578,6 @@ angular.module('app', ['flowChart',])
 		function closeModal(modalInstance, modal) {
 			modalInstance.hide();
 			document.body.removeChild(modal);
-		}
-
-		$scope.createAddNumericalCostraintModal = function (node, appendTo) {
-			/*
-				Create:
-				<!-- Modal -->
-				<div class="modal fade" id="addNumericalCostraintModal" tabindex="-1" aria-labelledby="addNumericalCostraintModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="addNumericalCostraintModalLabel">Add Numerical Costraint</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<!-- Costraint Name -->
-								<div class="col-6">
-									<div class="input-group mb-3">
-										<select class="form-select" id="inputGroupCostraintName">
-											<option selected>Execution Time</option>
-											<option value="1">Volume of Data</option>
-										</select>
-									</div>
-								</div>
-								<!-- Costraint Type -->
-								<div class="col-3">
-									<div class="input-group mb-3">
-										<select class="form-select" id="inputGroupCostraintName">
-											<option selected>==</option>
-											<option value="1"><</option>
-											<option value="1">></option>
-											<option value="1"><=</option>
-											<option value="1">>=</option>
-										</select>
-									</div>
-								</div>
-								<!-- Costraint Value -->
-								<div class="col-3">
-									<input type="text" class="form-control" placeholder="Value" aria-label="Value">
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Add Costraint</button>
-						</div>
-						</div>
-					</div>
-				</div>
-				*/
-			let modal = document.createElement('div');
-			modal.classList.add('modal', 'fade');
-			modal.id = 'addNumericalCostraintModal';
-			modal.tabIndex = -1;
-			modal.setAttribute('aria-labelledby', 'addNumericalCostraintModalLabel');
-			modal.setAttribute('aria-hidden', 'true');
-
-			let modalDialog = document.createElement('div');
-			modalDialog.classList.add('modal-dialog', 'modal-dialog-centered');
-
-			modal.appendChild(modalDialog);
-
-			let modalContent = document.createElement('div');
-			modalContent.classList.add('modal-content');
-
-			modalDialog.appendChild(modalContent);
-
-			let modalHeader = document.createElement('div');
-			modalHeader.classList.add('modal-header');
-
-			modalContent.appendChild(modalHeader);
-
-			let modalTitle = document.createElement('h1');
-			modalTitle.classList.add('modal-title', 'fs-5');
-			modalTitle.id = 'addNumericalCostraintModalLabel';
-			modalTitle.textContent = 'Add Numerical Costraint';
-
-			modalHeader.appendChild(modalTitle);
-
-			let modalButton = document.createElement('button');
-			modalButton.type = 'button';
-			modalButton.classList.add('btn-close');
-			modalButton.setAttribute('data-bs-dismiss', 'modal');
-			modalButton.setAttribute('aria-label', 'Close');
-
-			modalHeader.appendChild(modalButton);
-
-			let modalBody = document.createElement('div');
-			modalBody.classList.add('modal-body');
-
-			modalContent.appendChild(modalBody);
-
-			let row = document.createElement('div');
-			row.classList.add('row');
-
-			modalBody.appendChild(row);
-
-			let col1 = document.createElement('div');
-			col1.classList.add('col-6');
-
-			row.appendChild(col1);
-
-			let inputGroup1 = document.createElement('div');
-			inputGroup1.classList.add('input-group', 'mb-3');
-
-			col1.appendChild(inputGroup1);
-
-			let select1 = document.createElement('select');
-			select1.classList.add('form-select');
-			select1.id = 'inputGroupCostraintName';
-
-			inputGroup1.appendChild(select1);
-
-			// Read the possible options from the numericalCostraints array
-			for (let i = 0; i < $scope.numericalCostraints.length; i++) {
-				let option = document.createElement('option');
-				option.textContent = $scope.numericalCostraints[i];
-				select1.appendChild(option);
-			}
-
-			let col2 = document.createElement('div');
-			col2.classList.add('col-3');
-
-			row.appendChild(col2);
-
-			let inputGroup2 = document.createElement('div');
-			inputGroup2.classList.add('input-group', 'mb-3');
-
-			col2.appendChild(inputGroup2);
-
-			let select2 = document.createElement('select');
-			select2.classList.add('form-select');
-			select2.id = 'inputGroupCostraintType';
-
-			inputGroup2.appendChild(select2);
-
-			// Read the operators from the numericalOperators array
-			for (let i = 0; i < $scope.numericalOperators.length; i++) {
-				let option = document.createElement('option');
-				option.textContent = $scope.numericalOperators[i];
-				select2.appendChild(option);
-			}
-
-			let col3 = document.createElement('div');
-			col3.classList.add('col-3');
-
-			row.appendChild(col3);
-
-			let input3 = document.createElement('input');
-			input3.type = 'text';
-			input3.classList.add('form-control');
-			input3.placeholder = 'Value';
-			input3.setAttribute('aria-label', 'Value');
-
-			col3.appendChild(input3);
-
-			let modalFooter = document.createElement('div');
-			modalFooter.classList.add('modal-footer');
-
-			modalContent.appendChild(modalFooter);
-
-			let buttonClose = createButtonClose();
-
-			modalFooter.appendChild(buttonClose);
-
-			let buttonSave = createButtonSave('Add Costraint');
-
-			modalFooter.appendChild(buttonSave);
-
-			const modalInstance = new bootstrap.Modal(modal);
-			modalInstance.show();
-
-			buttonSave.onclick = function () {
-
-				const costraint = {
-					name: select1.value,
-					type: select2.value,
-					value: input3.value
-				}
-
-				console.log(`Adding costraint: ${costraint.name} ${costraint.type} ${costraint.value}`);
-				node.parameters.push(costraint);
-
-				const newBadge = createNewBadge(node, costraint, appendTo);
-
-				appendTo.append(newBadge);
-
-				closeModal(modalInstance, modal);
-			}
-
-			return modal;
-		}
-
-		function createAddCategoricalCostraintModal(node, appendTo) {
-			/*
-				Create:
-				<!-- Modal -->
-				<div class="modal fade" id="addCategoricalCostraintModal" tabindex="-1" aria-labelledby="addCategoricalCostraintModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-lg">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="addCategoricalCostraintModalLabel">Add Categorical Costraint</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<!-- Costraint Name -->
-								<div class="col-6">
-									<div class="input-group mb-3">
-										<select class="form-select" id="inputGroupCostraintName">
-											<option selected>Type of Database</option>
-											<option value="1">Network Protocol</option>
-										</select>
-									</div>
-								</div>
-								<!-- Costraint Value -->
-								<div class="col-6">
-									<div class="input-group mb-3">
-										<select class="form-select" id="inputGroupCostraintName">
-											<option selected>SQL</option>
-											<option value="1">NoSQL</option>
-											<option value="2">Graph</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Add Costraint</button>
-						</div>
-						</div>
-					</div>
-				</div>
-				*/
-			let modal = document.createElement('div');
-			modal.classList.add('modal', 'fade');
-			modal.id = 'addCategoricalCostraintModal';
-			modal.tabIndex = -1;
-			modal.setAttribute('aria-labelledby', 'addCategoricalCostraintModalLabel');
-			modal.setAttribute('aria-hidden', 'true');
-
-			let modalDialog = document.createElement('div');
-			modalDialog.classList.add('modal-dialog', 'modal-dialog-centered', 'modal-lg');
-
-			modal.appendChild(modalDialog);
-
-			let modalContent = document.createElement('div');
-			modalContent.classList.add('modal-content');
-
-			modalDialog.appendChild(modalContent);
-
-			let modalHeader = document.createElement('div');
-			modalHeader.classList.add('modal-header');
-
-			modalContent.appendChild(modalHeader);
-
-			let modalTitle = document.createElement('h1');
-			modalTitle.classList.add('modal-title', 'fs-5');
-			modalTitle.id = 'addCategoricalCostraintModalLabel';
-			modalTitle.textContent = 'Add Categorical Costraint';
-
-			modalHeader.appendChild(modalTitle);
-
-			let modalButton = document.createElement('button');
-			modalButton.type = 'button';
-			modalButton.classList.add('btn-close');
-			modalButton.setAttribute('data-bs-dismiss', 'modal');
-			modalButton.setAttribute('aria-label', 'Close');
-
-			modalHeader.appendChild(modalButton);
-
-			let modalBody = document.createElement('div');
-			modalBody.classList.add('modal-body');
-
-			modalContent.appendChild(modalBody);
-
-			let row = document.createElement('div');
-			row.classList.add('row');
-
-			modalBody.appendChild(row);
-
-			let col1 = document.createElement('div');
-			col1.classList.add('col-6');
-
-			row.appendChild(col1);
-
-			let inputGroup1 = document.createElement('div');
-			inputGroup1.classList.add('input-group', 'mb-3');
-
-			col1.appendChild(inputGroup1);
-
-			let select1 = document.createElement('select');
-			select1.classList.add('form-select');
-			select1.id = 'inputGroupCostraintName';
-
-			inputGroup1.appendChild(select1);
-
-			// Read the possible options from the categoricalCostraints array
-			for (let i = 0; i < $scope.categoricalCostraints.length; i++) {
-				let option = document.createElement('option');
-				option.textContent = $scope.categoricalCostraints[i].name;
-				select1.appendChild(option);
-			}
-
-			let col2 = document.createElement('div');
-			col2.classList.add('col-6');
-
-			row.appendChild(col2);
-
-			let inputGroup2 = document.createElement('div');
-			inputGroup2.classList.add('input-group', 'mb-3');
-
-			col2.appendChild(inputGroup2);
-
-			let select2 = document.createElement('select');
-			select2.classList.add('form-select');
-			select2.id = 'inputGroupCostraintName';
-
-			inputGroup2.appendChild(select2);
-
-			// Read the options for the selected costraint
-			for (let i = 0; i < $scope.categoricalCostraints[0].options.length; i++) {
-				let option = document.createElement('option');
-				option.textContent = $scope.categoricalCostraints[0].options[i];
-				select2.appendChild(option);
-			}
-
-			select1.onchange = function () {
-				// Remove all the options from the select2
-				select2.innerHTML = '';
-
-				// Read the options for the selected costraint
-				for (let i = 0; i < $scope.categoricalCostraints[select1.selectedIndex].options.length; i++) {
-					let option = document.createElement('option');
-					option.textContent = $scope.categoricalCostraints[select1.selectedIndex].options[i];
-					select2.appendChild(option);
-				}
-			}
-
-			let modalFooter = document.createElement('div');
-			modalFooter.classList.add('modal-footer');
-
-			modalContent.appendChild(modalFooter);
-
-			let buttonClose = createButtonClose();
-
-			modalFooter.appendChild(buttonClose);
-
-			let buttonSave = createButtonSave('Add New Costraint');
-
-			modalFooter.appendChild(buttonSave);
-
-			const modalInstance = new bootstrap.Modal(modal);
-			modalInstance.show();
-
-			buttonSave.onclick = function () {
-
-				const costraint = {
-					name: select1.value,
-					type: '==',
-					value: select2.value
-				}
-
-				node.parameters.push(costraint);
-
-				// Create a new badge for the costraint
-				const newBadge = createNewBadge(node, costraint, appendTo);
-
-				// Add the badge to the modal in first position
-				appendTo.append(newBadge);
-
-				closeModal(modalInstance, modal);
-			}
 		}
 
 		function createButtonSave(name) {
