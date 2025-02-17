@@ -528,7 +528,7 @@ angular.module('app', ['flowChart',])
 			// Retrieve nodes from the workflow; default to an empty array if not defined
 			var nodes = ($scope.chartViewModel.data && $scope.chartViewModel.data.nodes) || [];
 
-			// Build the HTML table with parameters on separate lines
+			// Build the HTML table with editable selects for each categorical constraint
 			var tableHtml = `<table class="table">
 				<thead>
 					<tr>
@@ -539,14 +539,25 @@ angular.module('app', ['flowChart',])
 				</thead>
 				<tbody>
 					${nodes.map(node => {
-				var paramsHtml = Object.entries(node.parameters || {}).map(entry => {
-					return entry[0] + ": " + entry[1];
-				}).join('<br/>');
+				// For each categorical constraint, create a select element.
+				var selectsHtml = $scope.categoricalConstraints.map(cc => {
+					var currentVal = (node.parameters && node.parameters[cc.name]) || cc.options[0];
+					// Build options html
+					var optionsHtml = cc.options.map(option => {
+						return `<option value="${option}" ${option === currentVal ? 'selected' : ''}>${option}</option>`;
+					}).join('');
+					return `<div>
+										<label>${cc.name}:</label>
+										<select id="cc-${node.id}-${cc.name}" class="form-select form-select-sm" style="display:inline-block; width:auto; margin-left:5px;">
+											${optionsHtml}
+										</select>
+									</div>`;
+				}).join('');
 				return `<tr>
-							<td>${node.name}</td>
-							<td>${node.tags ? node.tags.join(', ') : ''}</td>
-							<td>${paramsHtml}</td>
-						</tr>`;
+									<td>${node.name}</td>
+									<td>${node.tags ? node.tags.join(', ') : ''}</td>
+									<td>${selectsHtml}</td>
+								</tr>`;
 			}).join('')}
 				</tbody>
 			</table>`;
@@ -565,7 +576,7 @@ angular.module('app', ['flowChart',])
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Constraints</button>
+				        <button type="button" class="btn btn-primary" id="saveConstraintsButton">Save Constraints</button>
 				      </div>
 				    </div>
 				  </div>
@@ -577,7 +588,23 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(modal);
 			let modalInstance = new bootstrap.Modal(modal);
 			modalInstance.show();
-			// Cleanup modal on hide
+
+			// Bind the Save Constraints button
+			modal.querySelector("#saveConstraintsButton").onclick = function () {
+				// Loop over each node and update its parameters from the select elements
+				nodes.forEach(node => {
+					$scope.categoricalConstraints.forEach(cc => {
+						let selectEl = document.getElementById(`cc-${node.id}-${cc.name}`);
+						if (selectEl) {
+							node.parameters[cc.name] = selectEl.value;
+						}
+					});
+				});
+				// Optionally trigger any update required on the chartViewModel here.
+				modalInstance.hide();
+				modal.remove();
+			};
+			// Cleanup modal on hide (if closed via the Close button)
 			modal.addEventListener('hidden.bs.modal', function () {
 				modal.remove();
 			});
