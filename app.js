@@ -525,17 +525,43 @@ angular.module('app', ['flowChart',])
 		};
 
 		$scope.openSetConstraints = function () {
+			// Retrieve nodes from the workflow; default to an empty array if not defined
+			var nodes = ($scope.chartViewModel.data && $scope.chartViewModel.data.nodes) || [];
+
+			// Build the HTML table with parameters on separate lines
+			var tableHtml = `<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Tags</th>
+						<th>Parameters</th>
+					</tr>
+				</thead>
+				<tbody>
+					${nodes.map(node => {
+				var paramsHtml = Object.entries(node.parameters || {}).map(entry => {
+					return entry[0] + ": " + entry[1];
+				}).join('<br/>');
+				return `<tr>
+							<td>${node.name}</td>
+							<td>${node.tags ? node.tags.join(', ') : ''}</td>
+							<td>${paramsHtml}</td>
+						</tr>`;
+			}).join('')}
+				</tbody>
+			</table>`;
+
+			// Use a larger modal by adding "modal-xl" to the modal-dialog classes
 			let modalHtml = `
 				<div class="modal fade" id="setConstraintsModal" tabindex="-1" aria-labelledby="setConstraintsModalLabel" aria-hidden="true">
-				  <div class="modal-dialog modal-dialog-centered">
+				  <div class="modal-dialog modal-xl modal-dialog-centered">
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <h1 class="modal-title fs-5" id="setConstraintsModalLabel">Set Constraints</h1>
 				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				      </div>
 				      <div class="modal-body">
-				        <!-- Add your constraint configuration here -->
-				        <p>Configure your constraints below.</p>
+				        ${tableHtml}
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
