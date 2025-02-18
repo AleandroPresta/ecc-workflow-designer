@@ -817,15 +817,20 @@ angular.module('app', ['flowChart',])
 			return filteredWorkflow;
 		}
 
-		$scope.solveWithLLM = function (workflow, catalog, model) {
+		$scope.solveWithLLM = async function (workflow, catalog, model) {
 			const url = 'http://127.0.0.1:8000/api/v1/solve/llm';
 			const data = [
 				$scope.filterWorkflow(workflow),
 				catalog
 			];
-			// postToServer(url, data);
 			console.log("Posting to server...");
-			postToServer(url, data);
+			try {
+				const response = await postToServer(url, data);
+				const result = response["request_body"]["result"]["result"];
+				console.log("Result", result);
+			} catch (error) {
+				console.error("Error in solveWithLLM:", error);
+			}
 		}
 
 		// Add helper function for fetch with timeout
@@ -839,7 +844,7 @@ angular.module('app', ['flowChart',])
 				.finally(() => clearTimeout(timer));
 		}
 
-		function postToServer(url, data) {
+		async function postToServer(url, data) {
 			// Create and show loading indicator
 			let loadingIndicator = document.createElement('div');
 			loadingIndicator.id = 'loadingIndicator';
@@ -848,35 +853,33 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(loadingIndicator);
 
 			const request = {
-				mode: 'no-cors', // No CORS policy
+				// mode: 'no-cors', // No CORS policy
 				method: 'POST', // Specify the HTTP method
 				headers: {
 					'Content-Type': 'application/json', // Specify the content type
 				},
 				body: JSON.stringify(data) // Convert the JSON object to a string
 			};
-			console.log(`Request:\n${JSON.stringify(request)}\n`);
+
+			// console.log(`Request:\n${JSON.stringify(request)}\n`);
 
 			// Use fetchWithTimeout instead of fetch
-			fetchWithTimeout(url, request, 60000)
-				.then(response => {
-					if (!response.ok) {
-						throw new Error(`HTTP error! status: ${response.status}`);
-					}
-					return response.json(); // Parse the response JSON
-				})
-				.then(data => {
-					console.log('Success:', data);
-				})
-				.catch((error) => {
-					console.error('Fetch error:', error);
-					alert(`An error occurred: ${error.message}`);
-				})
-				.finally(() => {
-					if (loadingIndicator.parentNode) {
-						loadingIndicator.parentNode.removeChild(loadingIndicator);
-					}
-				});
+			try {
+				const response = await fetchWithTimeout(url, request, 60000);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const respData = await response.json();
+				return respData;
+			} catch (error) {
+				console.error('Fetch error:', error);
+				alert(`An error occurred: ${error.message}`);
+				throw error;
+			} finally {
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+				}
+			}
 		}
 
 		$scope.saveFile = function () {
