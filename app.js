@@ -338,6 +338,26 @@ angular.module('app', ['flowChart',])
 			'Communication'
 		]
 
+		// Default catalogs for each cloud provider (with appropriate link)
+		$scope.defaultCatalogs = [
+			{
+				provider_name: "Amazon Web Services",
+				catalog_link: "./catalogs/aws_catalog.json"
+			},
+			{
+				provider_name: "Microsoft Azure",
+				catalog_link: ""
+			},
+			{
+				provider_name: "Google Cloud Platform",
+				catalog_link: ""
+			}
+		]
+
+		$scope.solvingMethods = [
+			"LLM (GPT 3.5-turbo)", "Linear Programming", "Petri Net"
+		]
+
 		$scope.openAddNodeModal = function () {
 			// Create a blank node
 			let node = {
@@ -698,53 +718,246 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
-		$scope.findMatch = function () {
-			sendCatalogAndWorkflowToServer();
+		// Updated function to display the result as a table with one row per abstract service
+		function showResults(result) {
+			// If result is a string, try to parse it.
+			if (typeof result === "string") {
+				try {
+					result = JSON.parse(result);
+				} catch (e) {
+					console.error("Failed to parse result string", e);
+					alert("Could not parse server result.");
+					return;
+				}
+			}
+			// Ensure result.result is an array.
+			let services = result.result;
+			if (!services || !Array.isArray(services)) {
+				console.error("No valid 'result' array found in response", result);
+				alert("No valid data received.");
+				return;
+			}
+			// Build the table HTML using specific fields.
+			let tableHtml = `
+				  <table class="table table-bordered">
+					<thead>
+					  <tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Layer</th>
+						<th>Tags</th>
+						<th>AWS Services</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  ${services.map(service => {
+				let tagsStr = Array.isArray(service.abstractservice_tags)
+					? service.abstractservice_tags.join(", ")
+					: service.abstractservice_tags || "";
+				let awsStr = "";
+				if (service.aws_services && Array.isArray(service.aws_services)) {
+					awsStr = service.aws_services.map(s =>
+						`Name: ${s.service_name}, Type: ${s.service_type}`
+					).join("<br>");
+				}
+				return `<tr>
+									<td>${service.abstractservice_id}</td>
+									<td>${service.abstractservice_name}</td>
+									<td>${service.abstractservice_type}</td>
+									<td>${service.abstractservice_layer}</td>
+									<td>${tagsStr}</td>
+									<td>${awsStr}</td>
+								  </tr>`;
+			}).join('')}
+					</tbody>
+				  </table>
+				`;
+
+			let resultModalHtml = `
+				  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-xl modal-dialog-centered">
+					  <div class="modal-content">
+						<div class="modal-header">
+						  <h5 class="modal-title" id="resultModalLabel">Results</h5>
+						  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+						  ${tableHtml}
+						</div>
+					  </div>
+					</div>
+				  </div>
+				`;
+
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = resultModalHtml;
+			let resultModal = wrapper.firstElementChild;
+			document.body.appendChild(resultModal);
+			let resultModalInstance = new bootstrap.Modal(resultModal);
+			resultModalInstance.show();
 		}
 
-		function sendCatalogAndWorkflowToServer() {
-			;
-			const catalog = loadDefaultCatalog();
+		$scope.openFindMatchModal = function () {
+			let modalHtml = `
+					<div class="modal fade" id="findMatchModal" tabindex="-1" aria-labelledby="findMatchModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-dialog-centered">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="findMatchModalLabel">Find Match</h5>
+					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					      </div>
+					      <div class="modal-body">
+					        <div class="container">
+					          <div class="row">
+					            <div class="col">
+					              <p>Select Catalog Option</p>
+					              <select id="defaultCatalogSelector" class="form-select">
+					                ${$scope.defaultCatalogs.map(cat => `<option value="${cat.catalog_link}">${cat.provider_name}</option>`).join('')}
+					              </select>
+					            </div>
+					            <div class="col">
+					              <p>Select Solving Method</p>
+					              <select id="solvingMethodSelector" class="form-select">
+					                ${$scope.solvingMethods.map(method => `<option value="${method}">${method}</option>`).join('')}
+					              </select>
+					            </div>
+					          </div>
+					        </div>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					        <button type="button" class="btn btn-primary" id="runButton">Run</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				`;
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = modalHtml;
+			let modal = wrapper.firstElementChild;
+			document.body.appendChild(modal);
+			let modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+			// Attach async click event to the Run button
+			modal.querySelector("#runButton").addEventListener('click', async function () {
+				let catalogSelector = document.getElementById("defaultCatalogSelector");
+				let solvingSelector = document.getElementById("solvingMethodSelector");
+				let catalogLink = catalogSelector ? catalogSelector.value : "";
+				let solvingMethod = solvingSelector ? solvingSelector.value : "";
+				if (catalogLink && catalogLink.trim() !== "") {
+					try {
+						// Fetch catalog content.
+						const catalogData = await fetch(catalogLink).then(response => response.text());
+						if (solvingMethod === "LLM (GPT 3.5-turbo)") {
+							console.log("Running LLM (GPT 3.5-turbo)...");
+							const response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, "gpt3.5-turbo");
+							// Extract only the result inside the request_body
+							const result = response.request_body.result;
+							console.log("Result:", result);
+							// Close the find-match modal and show the results modal formatted as JSON
+							modalInstance.hide();
+							showResults(result);
+						}
+					} catch (error) {
+						console.error("Error in openFindMatchModal:", error);
+					}
+				} else {
+					console.log("No catalog link provided.");
+				}
+			});
+			// Cleanup modal when hidden
+			modal.addEventListener('hidden.bs.modal', function () {
+				modal.remove();
+			});
+		};
 
-			// Define the URL of the server
+		// Filters the workflow keeping only the relevant information
+		$scope.filterWorkflow = function (workflow) {
+			// Create a deep copy of the workflow to avoid modifying the original
+			let filteredWorkflow = JSON.parse(JSON.stringify(workflow));
+
+			// Remove connections
+			delete filteredWorkflow.connections;
+
+			// Filter each node to keep only the specified fields
+			filteredWorkflow.nodes = filteredWorkflow.nodes.map(node => {
+				return {
+					name: node.name,
+					id: node.id,
+					type: node.type,
+					description: node.description,
+					tags: node.tags,
+					parameters: node.parameters
+				};
+			});
+
+			return filteredWorkflow;
+		}
+
+		$scope.solveWithLLM = async function (workflow, catalog, model) {
 			const url = 'http://127.0.0.1:8000/api/v1/solve/llm';
-			// Get the data from the chart
-			const workflow = $scope.chartViewModel.data
-			const data = [workflow, catalog];
-			// Send the data to the server
-			postToServer(url, data);
+			const data = [
+				$scope.filterWorkflow(workflow),
+				catalog
+			];
+			// Post to server and return response.
+			try {
+				const response = await postToServer(url, data);
+				return response;
+			} catch (error) {
+				console.error("Error in solveWithLLM:", error);
+				throw error;
+			}
 		}
 
-		// Loads the default catalog of services
-		function loadDefaultCatalog() {
-			const defaultCatalog = {
-			};
-
-			return defaultCatalog;
+		// Add helper function for fetch with timeout
+		function fetchWithTimeout(url, options, timeout = 60000) { // 60 seconds timeout
+			const controller = new AbortController();
+			const timer = setTimeout(() => {
+				controller.abort();
+			}, timeout);
+			options.signal = controller.signal;
+			return fetch(url, options)
+				.finally(() => clearTimeout(timer));
 		}
 
-		// Sends the data to the server
-		function postToServer(url, data) {
+		async function postToServer(url, data) {
+			// Create and show loading indicator
+			let loadingIndicator = document.createElement('div');
+			loadingIndicator.id = 'loadingIndicator';
+			loadingIndicator.style = "position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #000; padding: 10px; z-index: 9999;";
+			loadingIndicator.textContent = "Loading...";
+			document.body.appendChild(loadingIndicator);
+
 			const request = {
-				mode: 'no-cors', // No CORS policy
+				// mode: 'no-cors', // No CORS policy
 				method: 'POST', // Specify the HTTP method
 				headers: {
 					'Content-Type': 'application/json', // Specify the content type
 				},
 				body: JSON.stringify(data) // Convert the JSON object to a string
 			};
-			console.log(`Request:\n${JSON.stringify(request)}\n`);
-			// Send the POST request using fetch
-			fetch(url, request)
-				.then(response => response.json()) // Parse the response JSON
-				.then(data => {
-					console.log('Success:', data); // Handle the response data
-				})
-				.catch((error) => {
-					// Show the error modal
-					const errorModal = new bootstrap.Modal(document.getElementById('connectionErrorModal'));
-					errorModal.show();
-				});
+
+			// console.log(`Request:\n${JSON.stringify(request)}\n`);
+
+			// Use fetchWithTimeout instead of fetch
+			try {
+				const response = await fetchWithTimeout(url, request, 60000);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const respData = await response.json();
+				return respData;
+			} catch (error) {
+				console.error('Fetch error:', error);
+				alert(`An error occurred: ${error.message}`);
+				throw error;
+			} finally {
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+				}
+			}
 		}
 
 		$scope.saveFile = function () {
