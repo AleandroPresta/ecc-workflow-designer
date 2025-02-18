@@ -338,6 +338,22 @@ angular.module('app', ['flowChart',])
 			'Communication'
 		]
 
+		// Default catalogs for each cloud provider (with appropriate link)
+		$scope.defaultCatalogs = [
+			{
+				provider_name: "Amazon Web Services",
+				catalog_link: ""
+			},
+			{
+				provider_name: "Microsoft Azure",
+				catalog_link: ""
+			},
+			{
+				provider_name: "Google Cloud Platform",
+				catalog_link: ""
+			}
+		]
+
 		$scope.openAddNodeModal = function () {
 			// Create a blank node
 			let node = {
@@ -699,8 +715,54 @@ angular.module('app', ['flowChart',])
 		}
 
 		$scope.openFindMatchModal = function () {
-			console.log("openFindMatchModal");
-		}
+			// Define a modal for Find Match with 2 sections in a grid layout
+			let modalHtml = `
+				<div class="modal fade" id="findMatchModal" tabindex="-1" aria-labelledby="findMatchModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-dialog-centered">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="findMatchModalLabel">Find Match</h5>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <div class="container">
+				          <div class="row">
+				            <div class="col">
+				              <p>Select Catalog Option</p>
+				              <div class="form-check">
+				                <input class="form-check-input" type="radio" name="catalogOption" id="radioLoadCatalog" value="load">
+				                <label class="form-check-label" for="radioLoadCatalog">Load Catalog</label>
+				              </div>
+				              <div class="form-check">
+				                <input class="form-check-input" type="radio" name="catalogOption" id="radioDefaultCatalog" value="default" checked>
+				                <label class="form-check-label" for="radioDefaultCatalog">Use Default Catalog</label>
+				              </div>
+				            </div>
+				            <div class="col">
+				              <p>Execution Information</p>
+				              <input type="text" class="form-control" id="executionInfo" placeholder="Enter execution information">
+				            </div>
+				          </div>
+				        </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			`;
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = modalHtml;
+			let modal = wrapper.firstElementChild;
+			document.body.appendChild(modal);
+			let modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+			// Cleanup modal when hidden
+			modal.addEventListener('hidden.bs.modal', function () {
+				modal.remove();
+			});
+		};
 
 		$scope.findMatch = function () {
 			sendCatalogAndWorkflowToServer();
