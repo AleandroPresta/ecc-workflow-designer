@@ -342,7 +342,7 @@ angular.module('app', ['flowChart',])
 		$scope.defaultCatalogs = [
 			{
 				provider_name: "Amazon Web Services",
-				catalog_link: ""
+				catalog_link: "./catalogs/aws_catalog.json"
 			},
 			{
 				provider_name: "Microsoft Azure",
@@ -352,6 +352,10 @@ angular.module('app', ['flowChart',])
 				provider_name: "Google Cloud Platform",
 				catalog_link: ""
 			}
+		]
+
+		$scope.solvingMethods = [
+			"LLM (GPT 3.5-turbo)", "Linear Programming", "Petri Net"
 		]
 
 		$scope.openAddNodeModal = function () {
@@ -715,49 +719,70 @@ angular.module('app', ['flowChart',])
 		}
 
 		$scope.openFindMatchModal = function () {
-			// Define a modal for Find Match with 2 sections in a grid layout
+			// Define a modal for Find Match with 2 sections in a grid layout.
+			// Left section: a dropdown for default catalogs.
+			// Right section: a dropdown for solving methods.
 			let modalHtml = `
-				<div class="modal fade" id="findMatchModal" tabindex="-1" aria-labelledby="findMatchModalLabel" aria-hidden="true">
-				  <div class="modal-dialog modal-dialog-centered">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="findMatchModalLabel">Find Match</h5>
-				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				      </div>
-				      <div class="modal-body">
-				        <div class="container">
-				          <div class="row">
-				            <div class="col">
-				              <p>Select Catalog Option</p>
-				              <div class="form-check">
-				                <input class="form-check-input" type="radio" name="catalogOption" id="radioLoadCatalog" value="load">
-				                <label class="form-check-label" for="radioLoadCatalog">Load Catalog</label>
-				              </div>
-				              <div class="form-check">
-				                <input class="form-check-input" type="radio" name="catalogOption" id="radioDefaultCatalog" value="default" checked>
-				                <label class="form-check-label" for="radioDefaultCatalog">Use Default Catalog</label>
-				              </div>
-				            </div>
-				            <div class="col">
-				              <p>Execution Information</p>
-				              <input type="text" class="form-control" id="executionInfo" placeholder="Enter execution information">
-				            </div>
-				          </div>
-				        </div>
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-			`;
+					<div class="modal fade" id="findMatchModal" tabindex="-1" aria-labelledby="findMatchModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-dialog-centered">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="findMatchModalLabel">Find Match</h5>
+					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					      </div>
+					      <div class="modal-body">
+					        <div class="container">
+					          <div class="row">
+					            <div class="col">
+					              <p>Select Catalog Option</p>
+					              <select id="defaultCatalogSelector" class="form-select">
+					                ${$scope.defaultCatalogs.map(cat => `<option value="${cat.catalog_link}">${cat.provider_name}</option>`).join('')}
+					              </select>
+					            </div>
+					            <div class="col">
+					              <p>Select Solving Method</p>
+					              <select id="solvingMethodSelector" class="form-select">
+					                ${$scope.solvingMethods.map(method => `<option value="${method}">${method}</option>`).join('')}
+					              </select>
+					            </div>
+					          </div>
+					        </div>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					        <button type="button" class="btn btn-primary" id="runButton">Run</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				`;
 			let wrapper = document.createElement('div');
 			wrapper.innerHTML = modalHtml;
 			let modal = wrapper.firstElementChild;
 			document.body.appendChild(modal);
 			let modalInstance = new bootstrap.Modal(modal);
 			modalInstance.show();
+			// Attach click event to the Run button
+			modal.querySelector("#runButton").addEventListener('click', function () {
+				let catalogSelector = document.getElementById("defaultCatalogSelector");
+				let solvingSelector = document.getElementById("solvingMethodSelector");
+				let catalogLink = catalogSelector ? catalogSelector.value : "";
+				let solvingMethod = solvingSelector ? solvingSelector.value : "";
+				console.log("Selected catalog link:", catalogLink);
+				console.log("Selected solving method:", solvingMethod);
+				if (catalogLink && catalogLink.trim() !== "") {
+					fetch(catalogLink)
+						.then(response => response.text())
+						.then(data => {
+							console.log("Fetched catalog content:", data);
+						})
+						.catch(error => {
+							console.error("Error fetching catalog:", error);
+						});
+				} else {
+					console.log("No catalog link provided.");
+				}
+			});
 			// Cleanup modal when hidden
 			modal.addEventListener('hidden.bs.modal', function () {
 				modal.remove();
