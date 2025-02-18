@@ -698,6 +698,10 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
+		$scope.openFindMatchModal = function () {
+			console.log("openFindMatchModal");
+		}
+
 		$scope.findMatch = function () {
 			sendCatalogAndWorkflowToServer();
 		}
