@@ -718,10 +718,87 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
+		// Updated function to display the result as a table with one row per abstract service
+		function showResults(result) {
+			// If result is a string, try to parse it.
+			if (typeof result === "string") {
+				try {
+					result = JSON.parse(result);
+				} catch (e) {
+					console.error("Failed to parse result string", e);
+					alert("Could not parse server result.");
+					return;
+				}
+			}
+			// Ensure result.result is an array.
+			let services = result.result;
+			if (!services || !Array.isArray(services)) {
+				console.error("No valid 'result' array found in response", result);
+				alert("No valid data received.");
+				return;
+			}
+			// Build the table HTML using specific fields.
+			let tableHtml = `
+				  <table class="table table-bordered">
+					<thead>
+					  <tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Layer</th>
+						<th>Tags</th>
+						<th>AWS Services</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  ${services.map(service => {
+				let tagsStr = Array.isArray(service.abstractservice_tags)
+					? service.abstractservice_tags.join(", ")
+					: service.abstractservice_tags || "";
+				let awsStr = "";
+				if (service.aws_services && Array.isArray(service.aws_services)) {
+					awsStr = service.aws_services.map(s =>
+						`Name: ${s.service_name}, Type: ${s.service_type}`
+					).join("<br>");
+				}
+				return `<tr>
+									<td>${service.abstractservice_id}</td>
+									<td>${service.abstractservice_name}</td>
+									<td>${service.abstractservice_type}</td>
+									<td>${service.abstractservice_layer}</td>
+									<td>${tagsStr}</td>
+									<td>${awsStr}</td>
+								  </tr>`;
+			}).join('')}
+					</tbody>
+				  </table>
+				`;
+
+			let resultModalHtml = `
+				  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-xl modal-dialog-centered">
+					  <div class="modal-content">
+						<div class="modal-header">
+						  <h5 class="modal-title" id="resultModalLabel">Results</h5>
+						  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+						  ${tableHtml}
+						</div>
+					  </div>
+					</div>
+				  </div>
+				`;
+
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = resultModalHtml;
+			let resultModal = wrapper.firstElementChild;
+			document.body.appendChild(resultModal);
+			let resultModalInstance = new bootstrap.Modal(resultModal);
+			resultModalInstance.show();
+		}
+
 		$scope.openFindMatchModal = function () {
-			// Define a modal for Find Match with 2 sections in a grid layout.
-			// Left section: a dropdown for default catalogs.
-			// Right section: a dropdown for solving methods.
 			let modalHtml = `
 					<div class="modal fade" id="findMatchModal" tabindex="-1" aria-labelledby="findMatchModalLabel" aria-hidden="true">
 					  <div class="modal-dialog modal-dialog-centered">
@@ -772,11 +849,15 @@ angular.module('app', ['flowChart',])
 					try {
 						// Fetch catalog content.
 						const catalogData = await fetch(catalogLink).then(response => response.text());
-						// If the solving method is LLM (GPT 3.5-turbo), call solveWithLLM and print response.
 						if (solvingMethod === "LLM (GPT 3.5-turbo)") {
 							console.log("Running LLM (GPT 3.5-turbo)...");
 							const response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, "gpt3.5-turbo");
-							console.log("Response:", response);
+							// Extract only the result inside the request_body
+							const result = response.request_body.result;
+							console.log("Result:", result);
+							// Close the find-match modal and show the results modal formatted as JSON
+							modalInstance.hide();
+							showResults(result);
 						}
 					} catch (error) {
 						console.error("Error in openFindMatchModal:", error);
