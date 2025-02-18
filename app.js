@@ -768,13 +768,18 @@ angular.module('app', ['flowChart',])
 				let solvingSelector = document.getElementById("solvingMethodSelector");
 				let catalogLink = catalogSelector ? catalogSelector.value : "";
 				let solvingMethod = solvingSelector ? solvingSelector.value : "";
-				console.log("Selected catalog link:", catalogLink);
-				console.log("Selected solving method:", solvingMethod);
 				if (catalogLink && catalogLink.trim() !== "") {
 					fetch(catalogLink)
 						.then(response => response.text())
 						.then(data => {
-							console.log("Fetched catalog content:", data);
+							if (solvingMethod === "LLM (GPT 3.5-turbo)") {
+								console.log("Running LLM (GPT 3.5-turbo)...");
+								$scope.solveWithLLM(
+									$scope.chartViewModel.data,
+									data,
+									"gpt3.5-turbo"
+								);
+							}
 						})
 						.catch(error => {
 							console.error("Error fetching catalog:", error);
@@ -789,33 +794,59 @@ angular.module('app', ['flowChart',])
 			});
 		};
 
-		$scope.findMatch = function () {
-			sendCatalogAndWorkflowToServer();
+		// Filters the workflow keeping only the relevant information
+		$scope.filterWorkflow = function (workflow) {
+			// Create a deep copy of the workflow to avoid modifying the original
+			let filteredWorkflow = JSON.parse(JSON.stringify(workflow));
+
+			// Remove connections
+			delete filteredWorkflow.connections;
+
+			// Filter each node to keep only the specified fields
+			filteredWorkflow.nodes = filteredWorkflow.nodes.map(node => {
+				return {
+					name: node.name,
+					id: node.id,
+					type: node.type,
+					description: node.description,
+					tags: node.tags,
+					parameters: node.parameters
+				};
+			});
+
+			return filteredWorkflow;
 		}
 
-		function sendCatalogAndWorkflowToServer() {
-			;
-			const catalog = loadDefaultCatalog();
-
-			// Define the URL of the server
+		$scope.solveWithLLM = function (workflow, catalog, model) {
 			const url = 'http://127.0.0.1:8000/api/v1/solve/llm';
-			// Get the data from the chart
-			const workflow = $scope.chartViewModel.data
-			const data = [workflow, catalog];
-			// Send the data to the server
+			const data = [
+				$scope.filterWorkflow(workflow),
+				catalog
+			];
+			// postToServer(url, data);
+			console.log("Posting to server...");
 			postToServer(url, data);
 		}
 
-		// Loads the default catalog of services
-		function loadDefaultCatalog() {
-			const defaultCatalog = {
-			};
-
-			return defaultCatalog;
+		// Add helper function for fetch with timeout
+		function fetchWithTimeout(url, options, timeout = 60000) { // 60 seconds timeout
+			const controller = new AbortController();
+			const timer = setTimeout(() => {
+				controller.abort();
+			}, timeout);
+			options.signal = controller.signal;
+			return fetch(url, options)
+				.finally(() => clearTimeout(timer));
 		}
 
-		// Sends the data to the server
 		function postToServer(url, data) {
+			// Create and show loading indicator
+			let loadingIndicator = document.createElement('div');
+			loadingIndicator.id = 'loadingIndicator';
+			loadingIndicator.style = "position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #000; padding: 10px; z-index: 9999;";
+			loadingIndicator.textContent = "Loading...";
+			document.body.appendChild(loadingIndicator);
+
 			const request = {
 				mode: 'no-cors', // No CORS policy
 				method: 'POST', // Specify the HTTP method
@@ -825,16 +856,26 @@ angular.module('app', ['flowChart',])
 				body: JSON.stringify(data) // Convert the JSON object to a string
 			};
 			console.log(`Request:\n${JSON.stringify(request)}\n`);
-			// Send the POST request using fetch
-			fetch(url, request)
-				.then(response => response.json()) // Parse the response JSON
+
+			// Use fetchWithTimeout instead of fetch
+			fetchWithTimeout(url, request, 60000)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`HTTP error! status: ${response.status}`);
+					}
+					return response.json(); // Parse the response JSON
+				})
 				.then(data => {
-					console.log('Success:', data); // Handle the response data
+					console.log('Success:', data);
 				})
 				.catch((error) => {
-					// Show the error modal
-					const errorModal = new bootstrap.Modal(document.getElementById('connectionErrorModal'));
-					errorModal.show();
+					console.error('Fetch error:', error);
+					alert(`An error occurred: ${error.message}`);
+				})
+				.finally(() => {
+					if (loadingIndicator.parentNode) {
+						loadingIndicator.parentNode.removeChild(loadingIndicator);
+					}
 				});
 		}
 
