@@ -762,28 +762,25 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(modal);
 			let modalInstance = new bootstrap.Modal(modal);
 			modalInstance.show();
-			// Attach click event to the Run button
-			modal.querySelector("#runButton").addEventListener('click', function () {
+			// Attach async click event to the Run button
+			modal.querySelector("#runButton").addEventListener('click', async function () {
 				let catalogSelector = document.getElementById("defaultCatalogSelector");
 				let solvingSelector = document.getElementById("solvingMethodSelector");
 				let catalogLink = catalogSelector ? catalogSelector.value : "";
 				let solvingMethod = solvingSelector ? solvingSelector.value : "";
 				if (catalogLink && catalogLink.trim() !== "") {
-					fetch(catalogLink)
-						.then(response => response.text())
-						.then(data => {
-							if (solvingMethod === "LLM (GPT 3.5-turbo)") {
-								console.log("Running LLM (GPT 3.5-turbo)...");
-								$scope.solveWithLLM(
-									$scope.chartViewModel.data,
-									data,
-									"gpt3.5-turbo"
-								);
-							}
-						})
-						.catch(error => {
-							console.error("Error fetching catalog:", error);
-						});
+					try {
+						// Fetch catalog content.
+						const catalogData = await fetch(catalogLink).then(response => response.text());
+						// If the solving method is LLM (GPT 3.5-turbo), call solveWithLLM and print response.
+						if (solvingMethod === "LLM (GPT 3.5-turbo)") {
+							console.log("Running LLM (GPT 3.5-turbo)...");
+							const response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, "gpt3.5-turbo");
+							console.log("Response:", response);
+						}
+					} catch (error) {
+						console.error("Error in openFindMatchModal:", error);
+					}
 				} else {
 					console.log("No catalog link provided.");
 				}
@@ -823,13 +820,13 @@ angular.module('app', ['flowChart',])
 				$scope.filterWorkflow(workflow),
 				catalog
 			];
-			console.log("Posting to server...");
+			// Post to server and return response.
 			try {
 				const response = await postToServer(url, data);
-				const result = response["request_body"]["result"]["result"];
-				console.log("Result", result);
+				return response;
 			} catch (error) {
 				console.error("Error in solveWithLLM:", error);
+				throw error;
 			}
 		}
 
