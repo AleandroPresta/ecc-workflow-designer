@@ -362,6 +362,134 @@ angular.module('app', ['flowChart',])
 			"Petri Net"
 		]
 
+		$scope.serviceTags = [
+			"A2A",
+			"A2P",
+			"AI",
+			"API Management",
+			"Access Management",
+			"Analytics",
+			"Android",
+			"App Testing",
+			"Applications",
+			"Authentication",
+			"Authorization",
+			"Automation",
+			"Availability",
+			"Big Data",
+			"Block Storage",
+			"Bluetooth",
+			"Build",
+			"Business",
+			"Calendar",
+			"Central Hub",
+			"Cloud",
+			"Compute",
+			"Configuration",
+			"Container Registry",
+			"Containerized Applications",
+			"Continuous Delivery",
+			"Continuous Integration",
+			"Control",
+			"Corporate Websites",
+			"Cost Reduction",
+			"Cost-Effective",
+			"DaaS",
+			"DNS",
+			"Data Collection",
+			"Data Exchange",
+			"Data Preparation",
+			"Data Transfer",
+			"Dedicated Connection",
+			"Deployment",
+			"Desktop",
+			"Developer Tools",
+			"Development",
+			"Device Management",
+			"Document Database",
+			"Document Storage",
+			"EC2",
+			"EFS",
+			"ETL",
+			"Email",
+			"Evaluation",
+			"Feedback",
+			"File Transfer",
+			"Forecasting",
+			"Framework",
+			"Full-Stack",
+			"Gateway",
+			"Geocoding",
+			"Geofencing",
+			"Governance",
+			"Greengrass",
+			"Hadoop",
+			"High Performance",
+			"Highly Available",
+			"Identity",
+			"Industrial Equipment",
+			"InfluxDB",
+			"In-Memory Cache",
+			"In-Memory Database",
+			"Inference",
+			"Integration",
+			"IoT",
+			"Isolation",
+			"Key-Value",
+			"Location",
+			"Logs",
+			"ML",
+			"Machine Learning",
+			"Management",
+			"Managed",
+			"Maps",
+			"Memcached",
+			"Messaging",
+			"Metrics",
+			"Mobile",
+			"MongoDB",
+			"Monitoring",
+			"Networking",
+			"NoSQL",
+			"Object Storage",
+			"Observability",
+			"Operational Applications",
+			"Optimization",
+			"Performance",
+			"Persistent Storage",
+			"PostgreSQL",
+			"Private Network",
+			"Push Notifications",
+			"RESTful",
+			"Real-Time",
+			"Redis",
+			"Relational Database",
+			"Repository",
+			"S3",
+			"SMS",
+			"Scalability",
+			"Scalable",
+			"Secure",
+			"Security",
+			"Server",
+			"Serverless",
+			"Sharing",
+			"Spark",
+			"Storage",
+			"Streaming",
+			"Streaming Data",
+			"Third-Party Data",
+			"Time Series Database",
+			"User Management",
+			"VPC",
+			"VPS",
+			"Video Streaming",
+			"Virtual Applications",
+			"Visibility",
+			"Web",
+			"5G"
+		]
+
 		$scope.openAddNodeModal = function () {
 			// Create a blank node
 			let node = {
@@ -553,7 +681,7 @@ angular.module('app', ['flowChart',])
 			var nodes = ($scope.chartViewModel.data && $scope.chartViewModel.data.nodes) || [];
 
 			// Build the HTML table with editable selects for each categorical constraint
-			var tableHtml = `<table class="table">
+			var tableHtml = `<table class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>
 						<th>Name</th>
@@ -563,25 +691,42 @@ angular.module('app', ['flowChart',])
 				</thead>
 				<tbody>
 					${nodes.map(node => {
-				// For each categorical constraint, create a select element.
+				// Build tags column with removable badges and add-tag interface.
+				let tagsHtml = `<div class="tags-container mb-2" id="tags-container-${node.id}">
+						${(node.tags && node.tags.length)
+						? node.tags.map(tag => `<span class="custom-badge me-1">
+									${tag}
+									<button type="button" class="btn btn-sm btn-outline-light ms-1 remove-tag" data-node-id="${node.id}" data-tag="${tag}">&times;</button>
+									</span>`).join('')
+						: '<span class="text-muted">—</span>'}
+					</div>
+						<div class="input-group">
+							<select class="form-select form-select-sm add-tag-select" id="add-tag-select-${node.id}">
+								<option value="">Add tag...</option>
+								${$scope.serviceTags.map(tag => `<option value="${tag}">${tag}</option>`).join('')}
+							</select>
+							<button type="button" class="btn btn-sm btn-primary add-tag-button" data-node-id="${node.id}">Add</button>
+						</div>`;
+
+				// Build parameters as before.
 				var selectsHtml = $scope.categoricalConstraints.map(cc => {
 					var currentVal = (node.parameters && node.parameters[cc.name]) || cc.options[0];
-					// Build options html
 					var optionsHtml = cc.options.map(option => {
 						return `<option value="${option}" ${option === currentVal ? 'selected' : ''}>${option}</option>`;
 					}).join('');
-					return `<div>
-										<label>${cc.name}:</label>
-										<select id="cc-${node.id}-${cc.name}" class="form-select form-select-sm" style="display:inline-block; width:auto; margin-left:5px;">
-											${optionsHtml}
-										</select>
-									</div>`;
+					return `<div class="mb-2">
+									<label class="form-label me-1">${cc.name}:</label>
+									<select id="cc-${node.id}-${cc.name}" class="form-select form-select-sm d-inline-block" style="width:auto;">
+										${optionsHtml}
+									</select>
+								</div>`;
 				}).join('');
+
 				return `<tr>
-									<td>${node.name}</td>
-									<td>${node.tags ? node.tags.join(', ') : ''}</td>
-									<td>${selectsHtml}</td>
-								</tr>`;
+								<td>${node.name}</td>
+								<td>${tagsHtml}</td>
+								<td>${selectsHtml}</td>
+							</tr>`;
 			}).join('')}
 				</tbody>
 			</table>`;
@@ -591,9 +736,9 @@ angular.module('app', ['flowChart',])
 				<div class="modal fade" id="setConstraintsModal" tabindex="-1" aria-labelledby="setConstraintsModalLabel" aria-hidden="true">
 				  <div class="modal-dialog modal-xl modal-dialog-centered">
 				    <div class="modal-content">
-				      <div class="modal-header">
+				      <div class="modal-header bg-primary text-white">
 				        <h1 class="modal-title fs-5" id="setConstraintsModalLabel">Set Constraints</h1>
-				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 				      </div>
 				      <div class="modal-body">
 				        ${tableHtml}
@@ -617,6 +762,75 @@ angular.module('app', ['flowChart',])
 			modal.querySelector("#saveConstraintsButton").onclick = function () {
 				// Loop over each node and update its parameters from the select elements
 				nodes.forEach(node => {
+					$scope.categoricalConstraints.forEach(cc => {
+						let selectEl = document.getElementById(`cc-${node.id}-${cc.name}`);
+						if (selectEl) {
+							node.parameters[cc.name] = selectEl.value;
+						}
+					});
+				});
+				// Optionally trigger any update required on the chartViewModel here.
+				modalInstance.hide();
+				modal.remove();
+			};
+
+			// After inserting the modal into the DOM (before binding Save Constraints), add the following event bindings:
+			setTimeout(function () {
+				// Bind remove button click events.
+				document.querySelectorAll('.remove-tag').forEach(function (btn) {
+					btn.addEventListener('click', function (e) {
+						const nodeId = this.getAttribute('data-node-id');
+						const tag = this.getAttribute('data-tag');
+						const container = document.getElementById(`tags-container-${nodeId}`);
+						// Remove badge from DOM.
+						this.parentElement.remove();
+					});
+				});
+				// Bind add button click events.
+				document.querySelectorAll('.add-tag-button').forEach(function (btn) {
+					btn.addEventListener('click', function () {
+						const nodeId = this.getAttribute('data-node-id');
+						const select = document.getElementById(`add-tag-select-${nodeId}`);
+						const tag = select.value;
+						if (tag) {
+							const container = document.getElementById(`tags-container-${nodeId}`);
+							// If placeholder exists, remove it.
+							if (container.innerHTML.indexOf('text-muted') !== -1) {
+								container.innerHTML = "";
+							}
+							// Append new badge if not already present.
+							if (!container.innerHTML.includes(`data-tag="${tag}"`)) {
+								const span = document.createElement('span');
+								span.className = "custom-badge me-1";
+								span.innerHTML = `${tag} <button type="button" class="btn btn-sm btn-outline-light ms-1 remove-tag" data-node-id="${nodeId}" data-tag="${tag}">&times;</button>`;
+								container.appendChild(span);
+								// Bind remove event on the new button.
+								span.querySelector('.remove-tag').addEventListener('click', function () {
+									this.parentElement.remove();
+								});
+							}
+							// Reset select.
+							select.value = "";
+						}
+					});
+				});
+			}, 100); // slight delay to ensure modal is in the DOM
+
+			// In modal Save Constraints button binding, before closing modal, update node.tags from DOM:
+			modal.querySelector("#saveConstraintsButton").onclick = function () {
+				nodes.forEach(node => {
+					// Update tags from corresponding container.
+					const container = document.getElementById(`tags-container-${node.id}`);
+					if (container) {
+						// Find all span elements that are badges.
+						const badgeSpans = container.querySelectorAll('.custom-badge');
+						let tagsArray = [];
+						badgeSpans.forEach(badge => {
+							const tagText = badge.textContent.replace('×', '').trim();
+							tagsArray.push(tagText);
+						});
+						node.tags = tagsArray;
+					}
 					$scope.categoricalConstraints.forEach(cc => {
 						let selectEl = document.getElementById(`cc-${node.id}-${cc.name}`);
 						if (selectEl) {
