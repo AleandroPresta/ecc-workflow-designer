@@ -355,7 +355,11 @@ angular.module('app', ['flowChart',])
 		]
 
 		$scope.solvingMethods = [
-			"LLM (GPT 3.5-turbo)", "Linear Programming", "Petri Net"
+			"LLM (GPT 3.5-turbo)",
+			"LLM (GPT 4o)",
+			"LLM (o1-mini)",
+			"Linear Programming",
+			"Petri Net"
 		]
 
 		$scope.openAddNodeModal = function () {
@@ -849,16 +853,29 @@ angular.module('app', ['flowChart',])
 					try {
 						// Fetch catalog content.
 						const catalogData = await fetch(catalogLink).then(response => response.text());
+						let model_id = 0;
+						let response = "";
 						if (solvingMethod === "LLM (GPT 3.5-turbo)") {
+							model_id = 1;
 							console.log("Running LLM (GPT 3.5-turbo)...");
-							const response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, "gpt3.5-turbo");
-							// Extract only the result inside the request_body
-							const result = response.request_body.result;
-							console.log("Result:", result);
-							// Close the find-match modal and show the results modal formatted as JSON
-							modalInstance.hide();
-							showResults(result);
+							response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, model_id);
 						}
+						if (solvingMethod === "LLM (GPT 4o)") {
+							model_id = 2;
+							console.log("Running LLM (GPT 4o)...");
+							response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, model_id);
+						}
+						if (solvingMethod === "LLM (o1-mini)") {
+							model_id = 3;
+							console.log("Running LLM (GPT o1-mini)...");
+							response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, model_id);
+						}
+						// Extract only the result inside the request_body
+						const result = response.request_body.result;
+						console.log("Result:", result);
+						// Close the find-match modal and show the results modal formatted as JSON
+						modalInstance.hide();
+						showResults(result);
 					} catch (error) {
 						console.error("Error in openFindMatchModal:", error);
 					}
@@ -895,8 +912,8 @@ angular.module('app', ['flowChart',])
 			return filteredWorkflow;
 		}
 
-		$scope.solveWithLLM = async function (workflow, catalog, model) {
-			const url = 'http://127.0.0.1:8000/api/v1/solve/llm';
+		$scope.solveWithLLM = async function (workflow, catalog, model_id) {
+			const url = `http://127.0.0.1:8000/api/v1/solve/llm/${model_id}`;
 			const data = [
 				$scope.filterWorkflow(workflow),
 				catalog
