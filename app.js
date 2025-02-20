@@ -806,34 +806,34 @@ angular.module('app', ['flowChart',])
 			let modalHtml = `
 					<div class="modal fade" id="findMatchModal" tabindex="-1" aria-labelledby="findMatchModalLabel" aria-hidden="true">
 					  <div class="modal-dialog modal-dialog-centered">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <h5 class="modal-title" id="findMatchModalLabel">Find Match</h5>
-					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					      </div>
-					      <div class="modal-body">
-					        <div class="container">
-					          <div class="row">
-					            <div class="col">
-					              <p>Select Catalog Option</p>
-					              <select id="defaultCatalogSelector" class="form-select">
-					                ${$scope.defaultCatalogs.map(cat => `<option value="${cat.catalog_link}">${cat.provider_name}</option>`).join('')}
-					              </select>
-					            </div>
-					            <div class="col">
-					              <p>Select Solving Method</p>
-					              <select id="solvingMethodSelector" class="form-select">
-					                ${$scope.solvingMethods.map(method => `<option value="${method}">${method}</option>`).join('')}
-					              </select>
-					            </div>
-					          </div>
-					        </div>
-					      </div>
-					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					        <button type="button" class="btn btn-primary" id="runButton">Run</button>
-					      </div>
-					    </div>
+						<div class="modal-content">
+						  <div class="modal-header">
+							<h5 class="modal-title" id="findMatchModalLabel">Find Match</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						  </div>
+						  <div class="modal-body">
+							<div class="container">
+							  <div class="row">
+								<div class="col-12 mb-3">
+								  <p>Select Catalog Option</p>
+								  <select id="defaultCatalogSelector" class="form-select">
+									${$scope.defaultCatalogs.map(cat => `<option value="${cat.catalog_link}">${cat.provider_name}</option>`).join('')}
+								  </select>
+								</div>
+								<div class="col-12">
+								  <p>Select Solving Method</p>
+								  <select id="solvingMethodSelector" class="form-select">
+									${$scope.solvingMethods.map(method => `<option value="${method}">${method}</option>`).join('')}
+								  </select>
+								</div>
+							  </div>
+							</div>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" id="runButton">Run</button>
+						  </div>
+						</div>
 					  </div>
 					</div>
 				`;
