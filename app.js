@@ -856,7 +856,7 @@ angular.module('app', ['flowChart',])
 			if (input2.value.trim() === "") {
 				node.quantity = 1;
 			} else {
-				node.quantity = parseInt(node.quantity);
+				node.quantity = parseInt(input2.value);
 			}
 
 			// Increment the nextNodeID
@@ -864,30 +864,6 @@ angular.module('app', ['flowChart',])
 
 			// Add the node to the chart
 			$scope.chartViewModel.addNode(node);
-		}
-
-		function closeModal(modalInstance, modal) {
-			modalInstance.hide();
-			document.body.removeChild(modal);
-		}
-
-		function createButtonSave(name) {
-			let buttonSave = document.createElement('button');
-			buttonSave.type = 'button';
-			buttonSave.classList.add('btn', 'btn-primary');
-			buttonSave.textContent = name;
-
-			return buttonSave;
-		}
-
-		function createButtonClose() {
-			let buttonClose = document.createElement('button');
-			buttonClose.type = 'button';
-			buttonClose.classList.add('btn', 'btn-secondary');
-			buttonClose.setAttribute('data-bs-dismiss', 'modal');
-			buttonClose.textContent = 'Close';
-
-			return buttonClose
 		}
 
 		// ############################################################################################################
@@ -937,7 +913,7 @@ angular.module('app', ['flowChart',])
 		}
 
 		// Updated function to display the result as a table with one row per abstract service
-		function showResults(result) {
+		$scope.showResults = function (result) {
 			// If result is a string, try to parse it.
 			if (typeof result === "string") {
 				try {
@@ -955,58 +931,23 @@ angular.module('app', ['flowChart',])
 				alert("No valid data received.");
 				return;
 			}
-			// Build the table HTML using specific fields.
-			let tableHtml = `
-				  <table class="table table-bordered">
-					<thead>
-					  <tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Type</th>
-						<th>Layer</th>
-						<th>Tags</th>
-						<th>AWS Services</th>
-					  </tr>
-					</thead>
-					<tbody>
-					  ${services.map(service => {
-				let tagsStr = Array.isArray(service.abstractservice_tags)
-					? service.abstractservice_tags.join(", ")
-					: service.abstractservice_tags || "";
-				let awsStr = "";
-				if (service.aws_services && Array.isArray(service.aws_services)) {
-					awsStr = service.aws_services.map(s =>
-						`Name: ${s.service_name}, Type: ${s.service_type}`
-					).join("<br>");
-				}
-				return `<tr>
-									<td>${service.abstractservice_id}</td>
-									<td>${service.abstractservice_name}</td>
-									<td>${service.abstractservice_type}</td>
-									<td>${service.abstractservice_layer}</td>
-									<td>${tagsStr}</td>
-									<td>${awsStr}</td>
-								  </tr>`;
-			}).join('')}
-					</tbody>
-				  </table>
-				`;
+			let tableHtml = $scope.createTable(services);
 
 			let resultModalHtml = `
-				  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-xl modal-dialog-centered">
-					  <div class="modal-content">
-						<div class="modal-header">
-						  <h5 class="modal-title" id="resultModalLabel">Results</h5>
-						  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body" style="max-height:80vh; overflow-y:auto;">
-						  ${tableHtml}
+					  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-fullscreen modal-dialog-centered">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h5 class="modal-title" id="resultModalLabel">Results</h5>
+							  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+							  ${tableHtml}
+							</div>
+						  </div>
 						</div>
 					  </div>
-					</div>
-				  </div>
-				`;
+					`;
 
 			let wrapper = document.createElement('div');
 			wrapper.innerHTML = resultModalHtml;
@@ -1014,6 +955,73 @@ angular.module('app', ['flowChart',])
 			document.body.appendChild(resultModal);
 			let resultModalInstance = new bootstrap.Modal(resultModal);
 			resultModalInstance.show();
+		}
+
+		$scope.createTable = function (jsonData) {
+			if (!Array.isArray(jsonData) || jsonData.length === 0) {
+				return '<div class="alert alert-info">No data available</div>';
+			}
+
+			let tableHTML = `
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Abstract Service</th>
+                    <th>Type</th>
+                    <th>Layer</th>
+                    <th>Tags</th>
+                    <th>AWS Services</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+			jsonData.forEach(item => {
+				tableHTML += `
+            <tr>
+                <td>
+                    <strong>${item.abstractservice_name}</strong>
+                    <div class="text-muted small">
+                        ID: <span class="custom-badge">${item.abstractservice_id}</span>
+                    </div>
+                </td>
+                <td><span class="custom-badge">${item.abstractservice_type}</span></td>
+                <td><span class="custom-badge">${item.abstractservice_layer}</span></td>
+                <td>${Array.isArray(item.abstractservice_tags) && item.abstractservice_tags.length
+						? item.abstractservice_tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+						: '<span class="text-muted">—</span>'
+					}</td>
+                <td>${(function formatAws(services) {
+						if (!Array.isArray(services) || services.length === 0) return '<span class="text-muted">—</span>';
+						return services.map(svc => {
+							return `
+								<div>
+									<strong>${svc.service_name}</strong>
+									<div class="text-muted small">
+										Type: <span class="custom-badge">${svc.service_type}</span>
+									</div>
+									<div class="text-muted small">
+										Layers: ${Array.isArray(svc.service_layers) && svc.service_layers.length
+									? svc.service_layers.map(layer => `<span class="custom-badge">${layer}</span>`).join(' ')
+									: '<span class="text-muted">—</span>'
+								}
+									</div>
+									<div class="text-muted small">
+										Tags: ${Array.isArray(svc.service_tags) && svc.service_tags.length
+									? svc.service_tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+									: '<span class="text-muted">—</span>'
+								}
+									</div>
+								</div>
+                            `;
+						}).join('');
+					})(item.aws_services)}</td>
+            </tr>`;
+			});
+
+			tableHTML += `
+            </tbody>
+        </table>`;
+			return tableHTML;
 		}
 
 		$scope.openFindMatchModal = function () {
@@ -1089,7 +1097,7 @@ angular.module('app', ['flowChart',])
 						console.log("Result:", result);
 						// Close the find-match modal and show the results modal formatted as JSON
 						modalInstance.hide();
-						showResults(result);
+						$scope.showResults(result);
 					} catch (error) {
 						console.error("Error in openFindMatchModal:", error);
 					}
@@ -1157,8 +1165,15 @@ angular.module('app', ['flowChart',])
 			// Create and show loading indicator
 			let loadingIndicator = document.createElement('div');
 			loadingIndicator.id = 'loadingIndicator';
-			loadingIndicator.style = "position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #000; padding: 10px; z-index: 9999;";
-			loadingIndicator.textContent = "Loading...";
+			loadingIndicator.className = 'position-fixed top-0 end-0 p-3';
+			loadingIndicator.innerHTML = `
+			  <div class="d-flex align-items-center bg-light border rounded p-2 shadow">
+				<div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+				  <span class="visually-hidden">Loading...</span>
+				</div>
+				<strong>Loading...</strong>
+			  </div>
+			`;
 			document.body.appendChild(loadingIndicator);
 
 			const request = {
@@ -1187,6 +1202,7 @@ angular.module('app', ['flowChart',])
 			} finally {
 				if (loadingIndicator.parentNode) {
 					loadingIndicator.parentNode.removeChild(loadingIndicator);
+					alert("Match found!");
 				}
 			}
 		}
