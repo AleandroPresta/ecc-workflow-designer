@@ -1157,8 +1157,15 @@ angular.module('app', ['flowChart',])
 			// Create and show loading indicator
 			let loadingIndicator = document.createElement('div');
 			loadingIndicator.id = 'loadingIndicator';
-			loadingIndicator.style = "position: fixed; top: 20px; right: 20px; background: #fff; border: 1px solid #000; padding: 10px; z-index: 9999;";
-			loadingIndicator.textContent = "Loading...";
+			loadingIndicator.className = 'position-fixed top-0 end-0 p-3';
+			loadingIndicator.innerHTML = `
+			  <div class="d-flex align-items-center bg-light border rounded p-2 shadow">
+				<div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+				  <span class="visually-hidden">Loading...</span>
+				</div>
+				<strong>Loading...</strong>
+			  </div>
+			`;
 			document.body.appendChild(loadingIndicator);
 
 			const request = {
