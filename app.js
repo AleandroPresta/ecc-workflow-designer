@@ -1194,6 +1194,7 @@ angular.module('app', ['flowChart',])
 			} finally {
 				if (loadingIndicator.parentNode) {
 					loadingIndicator.parentNode.removeChild(loadingIndicator);
+					alert("Match found!");
 				}
 			}
 		}
