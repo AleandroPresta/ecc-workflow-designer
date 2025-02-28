@@ -490,6 +490,134 @@ angular.module('app', ['flowChart',])
 			"5G"
 		]
 
+		$scope.serviceTagsDescription = {
+			"A2A": "Application-to-Application - Services for direct communication between applications",
+			"A2P": "Application-to-Person - Services for applications to communicate with people",
+			"AI": "Artificial Intelligence - Machine learning and cognitive services",
+			"API Management": "API gateway, monitoring, and management tools",
+			"Access Management": "Identity and access management services",
+			"Analytics": "Data analysis and business intelligence services",
+			"Android": "Android platform-specific services",
+			"App Testing": "Application testing and quality assurance tools",
+			"Applications": "General application services",
+			"Authentication": "User authentication services",
+			"Authorization": "Permission and authorization services",
+			"Automation": "Process and workflow automation tools",
+			"Availability": "High availability and redundancy services",
+			"Big Data": "Large-scale data processing frameworks",
+			"Block Storage": "Block-level storage services",
+			"Bluetooth": "Bluetooth communication services",
+			"Build": "Build and compilation tools",
+			"Business": "Business-oriented services",
+			"Calendar": "Calendar and scheduling services",
+			"Central Hub": "Central integration and management services",
+			"Cloud": "Cloud computing services",
+			"Compute": "Computational resources and services",
+			"Configuration": "Configuration management services",
+			"Container Registry": "Storage for container images",
+			"Containerized Applications": "Services for containerized applications",
+			"Continuous Delivery": "CD pipeline services",
+			"Continuous Integration": "CI pipeline services",
+			"Control": "Control and management services",
+			"Corporate Websites": "Enterprise website hosting",
+			"Cost Reduction": "Services focused on reducing costs",
+			"Cost-Effective": "Economical service options",
+			"DaaS": "Desktop as a Service",
+			"DNS": "Domain Name System services",
+			"Data Collection": "Data gathering and ingestion services",
+			"Data Exchange": "Data transfer and sharing services",
+			"Data Preparation": "Data cleaning and preparation services",
+			"Data Transfer": "Services for moving data between systems",
+			"Dedicated Connection": "Private network connection services",
+			"Deployment": "Application deployment services",
+			"Desktop": "Desktop computing services",
+			"Developer Tools": "Software development tools",
+			"Development": "Development environment services",
+			"Device Management": "IoT and endpoint device management",
+			"Document Database": "NoSQL document storage systems",
+			"Document Storage": "Document storage and management",
+			"EC2": "Amazon Elastic Compute Cloud",
+			"EFS": "Amazon Elastic File System",
+			"ETL": "Extract, Transform, Load data processing",
+			"Email": "Email communication services",
+			"Evaluation": "Assessment and evaluation services",
+			"Feedback": "User feedback collection services",
+			"File Transfer": "File transmission services",
+			"Forecasting": "Predictive analysis services",
+			"Framework": "Development frameworks and libraries",
+			"Full-Stack": "Complete application stack services",
+			"Gateway": "Network gateway services",
+			"Geocoding": "Location-based services",
+			"Geofencing": "Geographic boundary services",
+			"Governance": "IT governance and compliance services",
+			"Greengrass": "AWS IoT Greengrass services",
+			"Hadoop": "Hadoop-based big data services",
+			"High Performance": "High-performance computing services",
+			"Highly Available": "Services with high availability guarantees",
+			"Identity": "User identity management",
+			"Industrial Equipment": "Industrial IoT services",
+			"InfluxDB": "Time series database services",
+			"In-Memory Cache": "Memory-based caching services",
+			"In-Memory Database": "Memory-optimized database services",
+			"Inference": "ML model inference services",
+			"Integration": "System integration services",
+			"IoT": "Internet of Things services",
+			"Isolation": "Network isolation services",
+			"Key-Value": "Key-value data storage",
+			"Location": "Location-based services",
+			"Logs": "Log management services",
+			"ML": "Machine Learning services",
+			"Machine Learning": "AI and ML model training services",
+			"Management": "Resource management services",
+			"Managed": "Fully managed services",
+			"Maps": "Mapping and geographic services",
+			"Memcached": "Memcached-compatible caching",
+			"Messaging": "Message queue and pub/sub services",
+			"Metrics": "Performance measurement services",
+			"Mobile": "Mobile application services",
+			"MongoDB": "MongoDB-compatible database services",
+			"Monitoring": "System monitoring services",
+			"Networking": "Network infrastructure services",
+			"NoSQL": "Non-relational database services",
+			"Object Storage": "Object-based storage services",
+			"Observability": "Application monitoring and tracing",
+			"Operational Applications": "Applications for business operations",
+			"Optimization": "Performance optimization services",
+			"Performance": "High-performance services",
+			"Persistent Storage": "Durable storage services",
+			"PostgreSQL": "PostgreSQL database services",
+			"Private Network": "Isolated network services",
+			"Push Notifications": "Mobile push notification services",
+			"RESTful": "REST API-based services",
+			"Real-Time": "Real-time processing services",
+			"Redis": "Redis-compatible in-memory services",
+			"Relational Database": "SQL database services",
+			"Repository": "Code and artifact repository services",
+			"S3": "Simple Storage Service",
+			"SMS": "Text messaging services",
+			"Scalability": "Auto-scaling services",
+			"Scalable": "Services that can scale with demand",
+			"Secure": "Security-enhanced services",
+			"Security": "Data and application security services",
+			"Server": "Server-based computing services",
+			"Serverless": "Function-as-a-service platforms",
+			"Sharing": "Resource sharing services",
+			"Spark": "Apache Spark big data services",
+			"Storage": "Data storage services",
+			"Streaming": "Data streaming services",
+			"Streaming Data": "Real-time data stream processing",
+			"Third-Party Data": "External data integration services",
+			"Time Series Database": "Time-series data storage",
+			"User Management": "User administration services",
+			"VPC": "Virtual Private Cloud",
+			"VPS": "Virtual Private Server",
+			"Video Streaming": "Video delivery services",
+			"Virtual Applications": "Virtualized application services",
+			"Visibility": "Resource visibility services",
+			"Web": "Web hosting and services",
+			"5G": "5G network services"
+		};
+
 		$scope.openAddNodeModal = function () {
 			// Create a blank node
 			let node = {
@@ -703,7 +831,9 @@ angular.module('app', ['flowChart',])
 						<div class="input-group">
 							<select class="form-select form-select-sm add-tag-select" id="add-tag-select-${node.id}">
 								<option value="">Add tag...</option>
-								${$scope.serviceTags.map(tag => `<option value="${tag}">${tag}</option>`).join('')}
+								${$scope.serviceTags.map(tag =>
+							`<option value="${tag}" title="${$scope.serviceTagsDescription[tag] || 'No description available'}">${tag}</option>`
+						).join('')}
 							</select>
 							<button type="button" class="btn btn-sm btn-primary add-tag-button" data-node-id="${node.id}">Add</button>
 						</div>`;
@@ -993,6 +1123,13 @@ angular.module('app', ['flowChart',])
                 <td>${(function formatAws(services) {
 						if (!Array.isArray(services) || services.length === 0) return '<span class="text-muted">—</span>';
 						return services.map(svc => {
+							// Parse tags from either string or array format
+							const tags = typeof svc.service_tags === 'string'
+								? svc.service_tags.split(',').map(t => t.trim())
+								: Array.isArray(svc.service_tags)
+									? svc.service_tags
+									: [];
+
 							return `
 								<div>
 									<strong>${svc.service_name}</strong>
@@ -1006,8 +1143,8 @@ angular.module('app', ['flowChart',])
 								}
 									</div>
 									<div class="text-muted small">
-										Tags: ${Array.isArray(svc.service_tags) && svc.service_tags.length
-									? svc.service_tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+										Tags: ${tags.length > 0
+									? tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
 									: '<span class="text-muted">—</span>'
 								}
 									</div>
@@ -1150,46 +1287,49 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
-		// Add helper function for fetch with timeout
-		function fetchWithTimeout(url, options, timeout = 60000) { // 60 seconds timeout
+		// Change the fetchWithTimeout implementation and make it part of $scope
+		$scope.fetchWithTimeout = function (url, options, timeout = 600000) { // 10 minutes timeout
 			const controller = new AbortController();
 			const timer = setTimeout(() => {
 				controller.abort();
 			}, timeout);
-			options.signal = controller.signal;
+
+			// Combine any existing signal with our controller
+			if (options.signal) {
+				const originalSignal = options.signal;
+				options.signal = controller.signal;
+
+				// If original signal aborts, abort our controller too
+				originalSignal.addEventListener('abort', () => controller.abort());
+			} else {
+				options.signal = controller.signal;
+			}
+
 			return fetch(url, options)
 				.finally(() => clearTimeout(timer));
 		}
 
+		// Update the postToServer function to use a longer timeout for o1-mini
 		async function postToServer(url, data) {
-			// Create and show loading indicator
-			let loadingIndicator = document.createElement('div');
-			loadingIndicator.id = 'loadingIndicator';
-			loadingIndicator.className = 'position-fixed top-0 end-0 p-3';
-			loadingIndicator.innerHTML = `
-			  <div class="d-flex align-items-center bg-light border rounded p-2 shadow">
-				<div class="spinner-border spinner-border-sm text-primary me-2" role="status">
-				  <span class="visually-hidden">Loading...</span>
-				</div>
-				<strong>Loading...</strong>
-			  </div>
-			`;
-			document.body.appendChild(loadingIndicator);
+			// Create loading indicator
+			// ...existing code...
 
 			const request = {
-				// mode: 'no-cors', // No CORS policy
-				method: 'POST', // Specify the HTTP method
+				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json', // Specify the content type
+					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data) // Convert the JSON object to a string
+				body: JSON.stringify(data)
 			};
 
-			// console.log(`Request:\n${JSON.stringify(request)}\n`);
-
-			// Use fetchWithTimeout instead of fetch
 			try {
-				const response = await fetchWithTimeout(url, request, 60000);
+				// Determine appropriate timeout based on the model being used
+				const isO1Mini = url.includes('3'); // Check if using model_id 3 (o1-mini)
+				const timeout = isO1Mini ? 1800000 : 600000; // 30 min for o1-mini, 10 min for others
+
+				// Use the modified fetchWithTimeout function with longer timeout
+				const response = await $scope.fetchWithTimeout(url, request, timeout);
+
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
@@ -1197,13 +1337,16 @@ angular.module('app', ['flowChart',])
 				return respData;
 			} catch (error) {
 				console.error('Fetch error:', error);
-				alert(`An error occurred: ${error.message}`);
+
+				// Show more specific error messages
+				if (error.name === 'AbortError') {
+					alert('The request timed out. For o1-mini model, consider using GPT-4o instead as it\'s faster.');
+				} else {
+					alert(`An error occurred: ${error.message}`);
+				}
 				throw error;
 			} finally {
-				if (loadingIndicator.parentNode) {
-					loadingIndicator.parentNode.removeChild(loadingIndicator);
-					alert("Match found!");
-				}
+				// ...existing cleanup code...
 			}
 		}
 
