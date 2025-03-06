@@ -1312,8 +1312,21 @@ angular.module('app', ['flowChart',])
 		// Update the postToServer function to use a longer timeout for o1-mini
 		async function postToServer(url, data) {
 			// Create loading indicator
-			// ...existing code...
+			// Create and show loading indicator
+			let loadingIndicator = document.createElement('div');
+			loadingIndicator.id = 'loadingIndicator';
+			loadingIndicator.className = 'position-fixed top-0 end-0 p-3';
+			loadingIndicator.innerHTML = `
+			  <div class="d-flex align-items-center bg-light border rounded p-2 shadow">
+				<div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+				  <span class="visually-hidden">Loading...</span>
+				</div>
+				<strong>Loading...</strong>
+			  </div>
+			`;
+			document.body.appendChild(loadingIndicator);
 
+			// Create the request object
 			const request = {
 				method: 'POST',
 				headers: {
@@ -1346,7 +1359,11 @@ angular.module('app', ['flowChart',])
 				}
 				throw error;
 			} finally {
-				// ...existing cleanup code...
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+					alert("Match found!");
+				}
+
 			}
 		}
 
