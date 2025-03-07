@@ -1087,6 +1087,7 @@ angular.module('app', ['flowChart',])
 			resultModalInstance.show();
 		}
 
+		// Update the createTable function to add event handlers for badge hover
 		$scope.createTable = function (jsonData) {
 			if (!Array.isArray(jsonData) || jsonData.length === 0) {
 				return '<div class="alert alert-info">No data available</div>';
@@ -1111,13 +1112,13 @@ angular.module('app', ['flowChart',])
                 <td>
                     <strong>${item.abstractservice_name}</strong>
                     <div class="text-muted small">
-                        ID: <span class="custom-badge">${item.abstractservice_id}</span>
+                        ID: <span class="custom-badge" data-badge-text="${item.abstractservice_id}">${item.abstractservice_id}</span>
                     </div>
                 </td>
-                <td><span class="custom-badge">${item.abstractservice_type}</span></td>
-                <td><span class="custom-badge">${item.abstractservice_layer}</span></td>
+                <td><span class="custom-badge" data-badge-text="${item.abstractservice_type}">${item.abstractservice_type}</span></td>
+                <td><span class="custom-badge" data-badge-text="${item.abstractservice_layer}">${item.abstractservice_layer}</span></td>
                 <td>${Array.isArray(item.abstractservice_tags) && item.abstractservice_tags.length
-						? item.abstractservice_tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+						? item.abstractservice_tags.map(tag => `<span class="custom-badge" data-badge-text="${tag}">${tag}</span>`).join(' ')
 						: '<span class="text-muted">—</span>'
 					}</td>
                 <td>${(function formatAws(services) {
@@ -1131,25 +1132,25 @@ angular.module('app', ['flowChart',])
 									: [];
 
 							return `
-								<div>
-									<strong>${svc.service_name}</strong>
-									<div class="text-muted small">
-										Type: <span class="custom-badge">${svc.service_type}</span>
-									</div>
-									<div class="text-muted small">
-										Layers: ${Array.isArray(svc.service_layers) && svc.service_layers.length
-									? svc.service_layers.map(layer => `<span class="custom-badge">${layer}</span>`).join(' ')
+                            <div>
+                                <strong>${svc.service_name}</strong>
+                                <div class="text-muted small">
+                                    Type: <span class="custom-badge" data-badge-text="${svc.service_type}">${svc.service_type}</span>
+                                </div>
+                                <div class="text-muted small">
+                                    Layers: ${Array.isArray(svc.service_layers) && svc.service_layers.length
+									? svc.service_layers.map(layer => `<span class="custom-badge" data-badge-text="${layer}">${layer}</span>`).join(' ')
 									: '<span class="text-muted">—</span>'
 								}
-									</div>
-									<div class="text-muted small">
-										Tags: ${tags.length > 0
-									? tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+                                </div>
+                                <div class="text-muted small">
+                                    Tags: ${tags.length > 0
+									? tags.map(tag => `<span class="custom-badge" data-badge-text="${tag}">${tag}</span>`).join(' ')
 									: '<span class="text-muted">—</span>'
 								}
-									</div>
-								</div>
-                            `;
+                                </div>
+                            </div>
+                        `;
 						}).join('');
 					})(item.aws_services)}</td>
             </tr>`;
@@ -1158,6 +1159,36 @@ angular.module('app', ['flowChart',])
 			tableHTML += `
             </tbody>
         </table>`;
+
+			// Add event listeners for badge highlighting after the table is rendered
+			setTimeout(() => {
+				const badges = document.querySelectorAll('.custom-badge');
+
+				badges.forEach(badge => {
+					badge.addEventListener('mouseenter', function () {
+						const badgeText = this.getAttribute('data-badge-text');
+						const row = this.closest('tr');
+
+						if (row) {
+							// Find all badges with the same text in this row
+							const matchingBadges = row.querySelectorAll(`.custom-badge[data-badge-text="${badgeText}"]`);
+							matchingBadges.forEach(b => b.classList.add('highlighted'));
+						}
+					});
+
+					badge.addEventListener('mouseleave', function () {
+						const badgeText = this.getAttribute('data-badge-text');
+						const row = this.closest('tr');
+
+						if (row) {
+							// Find all badges with the same text in this row
+							const matchingBadges = row.querySelectorAll(`.custom-badge[data-badge-text="${badgeText}"]`);
+							matchingBadges.forEach(b => b.classList.remove('highlighted'));
+						}
+					});
+				});
+			}, 100);
+
 			return tableHTML;
 		}
 
