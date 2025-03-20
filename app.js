@@ -1260,6 +1260,10 @@ angular.module('app', ['flowChart',])
 							console.log("Running LLM (GPT o1-mini)...");
 							response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, model_id);
 						}
+						if (solvingMethod === "Linear Programming") {
+							console.log("Running Linear Programming...");
+							response = await $scope.solveWithLinear($scope.chartViewModel.data, catalogData);
+						}
 						// Extract only the result inside the request_body
 						const result = response.request_body.result;
 						console.log("Result:", result);
@@ -1318,6 +1322,23 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
+		$scope.solveWithLinear = async function (workflow, catalog) {
+			const url = `http://127.0.0.1:8000/api/v1/solve/linear`;
+			const data = [
+				$scope.filterWorkflow(workflow),
+				catalog
+			];
+			// Post to server and return response.
+			try {
+				const response = await postToServer(url, data);
+				return response;
+			}
+			catch (error) {
+				console.error("Error in solveWithLinear:", error);
+				throw error;
+			}
+		}
+
 		// Change the fetchWithTimeout implementation and make it part of $scope
 		$scope.fetchWithTimeout = function (url, options, timeout = 600000) { // 10 minutes timeout
 			const controller = new AbortController();
@@ -1367,12 +1388,8 @@ angular.module('app', ['flowChart',])
 			};
 
 			try {
-				// Determine appropriate timeout based on the model being used
-				const isO1Mini = url.includes('3'); // Check if using model_id 3 (o1-mini)
-				const timeout = isO1Mini ? 1800000 : 600000; // 30 min for o1-mini, 10 min for others
-
 				// Use the modified fetchWithTimeout function with longer timeout
-				const response = await $scope.fetchWithTimeout(url, request, timeout);
+				const response = await $scope.fetchWithTimeout(url, request, 1800000);
 
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
