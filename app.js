@@ -1087,6 +1087,7 @@ angular.module('app', ['flowChart',])
 			resultModalInstance.show();
 		}
 
+		// Update the createTable function to add event handlers for badge hover
 		$scope.createTable = function (jsonData) {
 			if (!Array.isArray(jsonData) || jsonData.length === 0) {
 				return '<div class="alert alert-info">No data available</div>';
@@ -1111,13 +1112,13 @@ angular.module('app', ['flowChart',])
                 <td>
                     <strong>${item.abstractservice_name}</strong>
                     <div class="text-muted small">
-                        ID: <span class="custom-badge">${item.abstractservice_id}</span>
+                        ID: <span class="custom-badge" data-badge-text="${item.abstractservice_id}">${item.abstractservice_id}</span>
                     </div>
                 </td>
-                <td><span class="custom-badge">${item.abstractservice_type}</span></td>
-                <td><span class="custom-badge">${item.abstractservice_layer}</span></td>
+                <td><span class="custom-badge" data-badge-text="${item.abstractservice_type}">${item.abstractservice_type}</span></td>
+                <td><span class="custom-badge" data-badge-text="${item.abstractservice_layer}">${item.abstractservice_layer}</span></td>
                 <td>${Array.isArray(item.abstractservice_tags) && item.abstractservice_tags.length
-						? item.abstractservice_tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+						? item.abstractservice_tags.map(tag => `<span class="custom-badge" data-badge-text="${tag}">${tag}</span>`).join(' ')
 						: '<span class="text-muted">—</span>'
 					}</td>
                 <td>${(function formatAws(services) {
@@ -1131,25 +1132,25 @@ angular.module('app', ['flowChart',])
 									: [];
 
 							return `
-								<div>
-									<strong>${svc.service_name}</strong>
-									<div class="text-muted small">
-										Type: <span class="custom-badge">${svc.service_type}</span>
-									</div>
-									<div class="text-muted small">
-										Layers: ${Array.isArray(svc.service_layers) && svc.service_layers.length
-									? svc.service_layers.map(layer => `<span class="custom-badge">${layer}</span>`).join(' ')
+                            <div>
+                                <strong>${svc.service_name}</strong>
+                                <div class="text-muted small">
+                                    Type: <span class="custom-badge" data-badge-text="${svc.service_type}">${svc.service_type}</span>
+                                </div>
+                                <div class="text-muted small">
+                                    Layers: ${Array.isArray(svc.service_layers) && svc.service_layers.length
+									? svc.service_layers.map(layer => `<span class="custom-badge" data-badge-text="${layer}">${layer}</span>`).join(' ')
 									: '<span class="text-muted">—</span>'
 								}
-									</div>
-									<div class="text-muted small">
-										Tags: ${tags.length > 0
-									? tags.map(tag => `<span class="custom-badge">${tag}</span>`).join(' ')
+                                </div>
+                                <div class="text-muted small">
+                                    Tags: ${tags.length > 0
+									? tags.map(tag => `<span class="custom-badge" data-badge-text="${tag}">${tag}</span>`).join(' ')
 									: '<span class="text-muted">—</span>'
 								}
-									</div>
-								</div>
-                            `;
+                                </div>
+                            </div>
+                        `;
 						}).join('');
 					})(item.aws_services)}</td>
             </tr>`;
@@ -1158,6 +1159,36 @@ angular.module('app', ['flowChart',])
 			tableHTML += `
             </tbody>
         </table>`;
+
+			// Add event listeners for badge highlighting after the table is rendered
+			setTimeout(() => {
+				const badges = document.querySelectorAll('.custom-badge');
+
+				badges.forEach(badge => {
+					badge.addEventListener('mouseenter', function () {
+						const badgeText = this.getAttribute('data-badge-text');
+						const row = this.closest('tr');
+
+						if (row) {
+							// Find all badges with the same text in this row
+							const matchingBadges = row.querySelectorAll(`.custom-badge[data-badge-text="${badgeText}"]`);
+							matchingBadges.forEach(b => b.classList.add('highlighted'));
+						}
+					});
+
+					badge.addEventListener('mouseleave', function () {
+						const badgeText = this.getAttribute('data-badge-text');
+						const row = this.closest('tr');
+
+						if (row) {
+							// Find all badges with the same text in this row
+							const matchingBadges = row.querySelectorAll(`.custom-badge[data-badge-text="${badgeText}"]`);
+							matchingBadges.forEach(b => b.classList.remove('highlighted'));
+						}
+					});
+				});
+			}, 100);
+
 			return tableHTML;
 		}
 
@@ -1229,6 +1260,10 @@ angular.module('app', ['flowChart',])
 							console.log("Running LLM (GPT o1-mini)...");
 							response = await $scope.solveWithLLM($scope.chartViewModel.data, catalogData, model_id);
 						}
+						if (solvingMethod === "Linear Programming") {
+							console.log("Running Linear Programming...");
+							response = await $scope.solveWithLinear($scope.chartViewModel.data, catalogData);
+						}
 						// Extract only the result inside the request_body
 						const result = response.request_body.result;
 						console.log("Result:", result);
@@ -1287,6 +1322,23 @@ angular.module('app', ['flowChart',])
 			}
 		}
 
+		$scope.solveWithLinear = async function (workflow, catalog) {
+			const url = `http://127.0.0.1:8000/api/v1/solve/linear`;
+			const data = [
+				$scope.filterWorkflow(workflow),
+				catalog
+			];
+			// Post to server and return response.
+			try {
+				const response = await postToServer(url, data);
+				return response;
+			}
+			catch (error) {
+				console.error("Error in solveWithLinear:", error);
+				throw error;
+			}
+		}
+
 		// Change the fetchWithTimeout implementation and make it part of $scope
 		$scope.fetchWithTimeout = function (url, options, timeout = 600000) { // 10 minutes timeout
 			const controller = new AbortController();
@@ -1336,12 +1388,8 @@ angular.module('app', ['flowChart',])
 			};
 
 			try {
-				// Determine appropriate timeout based on the model being used
-				const isO1Mini = url.includes('3'); // Check if using model_id 3 (o1-mini)
-				const timeout = isO1Mini ? 1800000 : 600000; // 30 min for o1-mini, 10 min for others
-
 				// Use the modified fetchWithTimeout function with longer timeout
-				const response = await $scope.fetchWithTimeout(url, request, timeout);
+				const response = await $scope.fetchWithTimeout(url, request, 1800000);
 
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);

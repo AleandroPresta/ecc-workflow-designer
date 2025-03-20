@@ -13,11 +13,14 @@
 	transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-.custom-badge:hover {
+/* Modified hover with dark yellow */
+.custom-badge:hover,
+.custom-badge.highlighted {
 	transform: translateY(-2px);
-	/* Slightly lighten blue gradient on hover */
-	background: linear-gradient(135deg, #0b5ed7 0%, #004085 100%);
+	/* Dark yellow gradient on hover for high contrast */
+	background: linear-gradient(135deg, #f0c000 0%, #c09000 100%);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	color: #000; /* Change text to black for better readability on yellow */
 }
 
 .custom-badge .remove-tag {
