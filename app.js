@@ -2,6 +2,8 @@
 // Define the 'app' module.
 //
 angular.module('app', ['flowChart',])
+	// Change API_URL to a relative path so that Nginx handles /api proxying
+	.constant('API_URL', "/api")
 
 	//
 	// Simple service to create a prompt.
@@ -21,7 +23,7 @@ angular.module('app', ['flowChart',])
 	//
 	// Application controller.
 	//
-	.controller('AppCtrl', ['$scope', 'prompt', function AppCtrl($scope, prompt) {
+	.controller('AppCtrl', ['$scope', 'prompt', 'API_URL', function AppCtrl($scope, prompt, API_URL) {
 
 		//
 		// Code for the delete key.
@@ -1307,7 +1309,8 @@ angular.module('app', ['flowChart',])
 		}
 
 		$scope.solveWithLLM = async function (workflow, catalog, model_id) {
-			const url = `http://127.0.0.1:8000/api/v1/solve/llm/${model_id}`;
+			// Updated to use API_URL constant
+			const url = `${API_URL}/v1/solve/llm/${model_id}`;
 			const data = [
 				$scope.filterWorkflow(workflow),
 				catalog
@@ -1323,7 +1326,8 @@ angular.module('app', ['flowChart',])
 		}
 
 		$scope.solveWithLinear = async function (workflow, catalog) {
-			const url = `http://127.0.0.1:8000/api/v1/solve/linear`;
+			// Updated to use API_URL constant
+			const url = `${API_URL}/v1/solve/linear`;
 			const data = [
 				$scope.filterWorkflow(workflow),
 				catalog
