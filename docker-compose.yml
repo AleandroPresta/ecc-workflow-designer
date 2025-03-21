@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+    frontend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+        networks:
+            - ecc-workflow-network
+        volumes:
+            - ./:/usr/share/nginx/html
+
+networks:
+    ecc-workflow-network:
+        external: true
