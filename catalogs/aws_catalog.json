@@ -545,6 +545,21 @@
 			"Description Short": "Provides broad support for TensorFlow, helping customers develop and serve their own models across computer vision (CV), natural language processing (NLP), speech translation, and more.",
 			"layers": ["on-premise", "far-edge", "near-edge", "cloud"],
 			"Tags": "Machine Learning, AI, Framework, Development, Deployment"
+		},
+		{
+			"ID": "59",
+			"Service Name": "Greengrass - Stream Manager",
+			"Service Type": "Communication",
+			"Service Category": "Internet of Things",
+			"Description Short": "Supports streaming data from devices to the cloud and between devices.",
+			"layers": [
+				"on-device",
+				"on-premise",
+				"far-edge",
+				"near-edge",
+				"cloud"
+			],
+			"Tags": "IoT, Bluetooth, Gateway, Streaming, Scalability"
 		}
 	]
 }

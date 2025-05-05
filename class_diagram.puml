@@ -49,5 +49,6 @@ Node *-- "0..*" Port
 Connection --> "1" Port: source
 Connection --> "1" Port: target
 WorkflowService --> "1" Workflow: manages
+Workflow "1" <--> "1" FlowchartViewModel
 
 @enduml
