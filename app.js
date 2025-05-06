@@ -348,7 +348,7 @@ angular.module('app', ['flowChart',])
 			},
 			{
 				provider_name: "Microsoft Azure",
-				catalog_link: ""
+				catalog_link: "./catalogs/azure_catalog.json"
 			},
 			{
 				provider_name: "Google Cloud Platform",
@@ -1103,7 +1103,7 @@ angular.module('app', ['flowChart',])
                     <th>Type</th>
                     <th>Layer</th>
                     <th>Tags</th>
-                    <th>AWS Services</th>
+                    <th>Services</th>
                 </tr>
             </thead>
             <tbody>`;
