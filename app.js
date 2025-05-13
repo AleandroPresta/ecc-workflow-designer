@@ -3,7 +3,7 @@
 //
 angular.module('app', ['flowChart',])
 	// Change API_URL to a relative path so that Nginx handles /api proxying
-	.constant('API_URL', "/api")
+	.constant('API_URL', "http://127.0.0.1:8000/api")
 
 	//
 	// Simple service to create a prompt.
@@ -348,7 +348,7 @@ angular.module('app', ['flowChart',])
 			},
 			{
 				provider_name: "Microsoft Azure",
-				catalog_link: ""
+				catalog_link: "./catalogs/azure_catalog.json"
 			},
 			{
 				provider_name: "Google Cloud Platform",
@@ -1103,7 +1103,7 @@ angular.module('app', ['flowChart',])
                     <th>Type</th>
                     <th>Layer</th>
                     <th>Tags</th>
-                    <th>AWS Services</th>
+                    <th>Services</th>
                 </tr>
             </thead>
             <tbody>`;
@@ -1243,8 +1243,8 @@ angular.module('app', ['flowChart',])
 				let solvingMethod = solvingSelector ? solvingSelector.value : "";
 				if (catalogLink && catalogLink.trim() !== "") {
 					try {
-						// Fetch catalog content.
-						const catalogData = await fetch(catalogLink).then(response => response.text());
+						// Fetch catalog content as JSON object (fix)
+						const catalogData = await fetch(catalogLink).then(response => response.json());
 						let model_id = 0;
 						let response = "";
 						if (solvingMethod === "LLM (GPT 3.5-turbo)") {
@@ -1390,6 +1390,9 @@ angular.module('app', ['flowChart',])
 				},
 				body: JSON.stringify(data)
 			};
+
+			console.log("Posting to url: ", url);
+			console.log("Request body: ", request.body);
 
 			try {
 				// Use the modified fetchWithTimeout function with longer timeout
