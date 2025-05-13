@@ -1243,8 +1243,8 @@ angular.module('app', ['flowChart',])
 				let solvingMethod = solvingSelector ? solvingSelector.value : "";
 				if (catalogLink && catalogLink.trim() !== "") {
 					try {
-						// Fetch catalog content.
-						const catalogData = await fetch(catalogLink).then(response => response.text());
+						// Fetch catalog content as JSON object (fix)
+						const catalogData = await fetch(catalogLink).then(response => response.json());
 						let model_id = 0;
 						let response = "";
 						if (solvingMethod === "LLM (GPT 3.5-turbo)") {
@@ -1388,8 +1388,10 @@ angular.module('app', ['flowChart',])
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data)
+				body: data
 			};
+
+			console.log(request);
 
 			try {
 				// Use the modified fetchWithTimeout function with longer timeout
