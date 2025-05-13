@@ -3,7 +3,7 @@
 //
 angular.module('app', ['flowChart',])
 	// Change API_URL to a relative path so that Nginx handles /api proxying
-	.constant('API_URL', "/api")
+	.constant('API_URL', "http://127.0.0.1:8000/api")
 
 	//
 	// Simple service to create a prompt.
@@ -1388,10 +1388,11 @@ angular.module('app', ['flowChart',])
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: data
+				body: JSON.stringify(data)
 			};
 
-			console.log(request);
+			console.log("Posting to url: ", url);
+			console.log("Request body: ", request.body);
 
 			try {
 				// Use the modified fetchWithTimeout function with longer timeout
