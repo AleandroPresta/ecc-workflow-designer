@@ -352,7 +352,7 @@ angular.module('app', ['flowChart',])
 			},
 			{
 				provider_name: "Google Cloud Platform",
-				catalog_link: ""
+				catalog_link: "./catalogs/gcp_catalog.json"
 			}
 		]
 
