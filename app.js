@@ -3,7 +3,7 @@
 //
 angular.module('app', ['flowChart',])
 	// Change API_URL to a relative path so that Nginx handles /api proxying
-	.constant('API_URL', "http://127.0.0.1:8000/api")
+	.constant('API_URL', "/api")
 
 	//
 	// Simple service to create a prompt.
