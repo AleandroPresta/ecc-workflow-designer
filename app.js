@@ -1525,18 +1525,23 @@ angular.module('app', ['flowChart',])
 					reader.onload = function (e) {
 						try {
 							const jsonData = JSON.parse(e.target.result);
+
+							// Make sure we have the expected properties
+							if (!jsonData.nodes || !jsonData.connections) {
+								console.error('JSON file missing required nodes or connections properties');
+								alert('Invalid JSON format. File must contain nodes and connections.');
+								return;
+							}
+
 							// Extract only nodes and connections from the jsonData
 							const nodes = jsonData.nodes;
 							const connections = jsonData.connections;
 							// Put this into a new object
 							const newJsonData = { nodes, connections };
-							// You can now use jsonData in your app
-							// Add the data to the chart
-							$scope.chartViewModel = newJsonData;
-							// Set the loaded nextNodeID
-							nextNodeID = jsonData.nextNodeID;
-							// Update the view model
-							$scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel);
+							// Set nextNodeID from the file if available, otherwise use default
+							nextNodeID = jsonData.nextNodeID || nextNodeID;
+							// Add the data to the chart - make a proper ChartViewModel
+							$scope.chartViewModel = new flowchart.ChartViewModel(newJsonData);
 
 						} catch (error) {
 							console.error('Error parsing JSON:', error);
