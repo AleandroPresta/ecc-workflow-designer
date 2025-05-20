@@ -1063,6 +1063,7 @@ angular.module('app', ['flowChart',])
 				alert("No valid data received.");
 				return;
 			}
+			$scope.services = services; // <-- Make services available to modal scope
 			let tableHtml = $scope.createTable(services);
 
 			let resultModalHtml = `
@@ -1072,7 +1073,7 @@ angular.module('app', ['flowChart',])
 							<div class="modal-header d-flex justify-content-between">
 							  <h5 class="modal-title" id="resultModalLabel">Results</h5>
 							  <div>
-								<button type="button" class="btn btn-primary" ng-click="adviseSolution()">Advise</button>
+								<button type="button" class="btn btn-primary" ng-click="adviseSolution(services)">Advise</button>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							  </div>
 							</div>
@@ -1290,8 +1291,129 @@ angular.module('app', ['flowChart',])
 			});
 		};
 
-		$scope.adviseSolution = function () {
-			alert("Advise button clicked!");
+		$scope.adviseSolution = async function (services) {
+			// Basic checks before making the request
+			if (!services) {
+				alert("No services data provided.");
+				return;
+			}
+			if (!Array.isArray(services)) {
+				alert("Services data is not an array.");
+				return;
+			}
+			if (services.length === 0) {
+				alert("Services array is empty.");
+				return;
+			}
+
+			// Close the results modal if open
+			var resultModal = document.getElementById('resultModal');
+			if (resultModal) {
+				var resultModalInstance = bootstrap.Modal.getInstance(resultModal);
+				if (resultModalInstance) {
+					resultModalInstance.hide();
+				} else {
+					// fallback: remove from DOM if not managed by bootstrap
+					resultModal.remove();
+				}
+			}
+
+			// Show loading spinner
+			let loadingIndicator = document.createElement('div');
+			loadingIndicator.id = 'adviseLoadingIndicator';
+			loadingIndicator.className = 'position-fixed top-0 end-0 p-3';
+			loadingIndicator.innerHTML = `
+              <div class="d-flex align-items-center bg-light border rounded p-2 shadow">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <strong>Advising...</strong>
+              </div>
+            `;
+			document.body.appendChild(loadingIndicator);
+
+			// Prepare the request
+			const url = `${API_URL}/v1/advise/2`;
+			const request = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(services)
+			};
+			try {
+				const response = await fetch(url, request);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const respData = await response.json();
+				// Hide loading spinner
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+				}
+				// Extract and show only the valuable result data
+				const result = respData.request_body && respData.request_body.result ? respData.request_body.result : [];
+				$scope.showAdviseResults(result);
+			} catch (error) {
+				// Hide loading spinner
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+				}
+				console.error('Error in adviseSolution:', error);
+				alert(`An error occurred: ${error.message}`);
+			}
+		};
+
+		$scope.showAdviseResults = function (result) {
+			if (!Array.isArray(result) || result.length === 0) {
+				alert("No advice results to display.");
+				return;
+			}
+			let tableHtml = `
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Abstract Service</th>
+                            <th>Layer</th>
+                            <th>Best Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${result.map(item => `
+                            <tr>
+                                <td>${item.abstractservice_name || ''}</td>
+                                <td>${item.abstractservice_layer || ''}</td>
+                                <td>${item.best_service !== null ? item.best_service : '<span class="text-muted">—</span>'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+			let modalHtml = `
+                <div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="adviseResultModalLabel">Advising Results</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        ${tableHtml}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            `;
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = modalHtml;
+			let modal = wrapper.firstElementChild;
+			document.body.appendChild(modal);
+			let modalInstance = new bootstrap.Modal(modal);
+			modalInstance.show();
+			// Cleanup modal on hide
+			modal.addEventListener('hidden.bs.modal', function () {
+				modal.remove();
+			});
 		};
 
 		// Filters the workflow keeping only the relevant information
