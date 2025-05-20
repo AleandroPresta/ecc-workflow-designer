@@ -23,7 +23,7 @@ angular.module('app', ['flowChart',])
 	//
 	// Application controller.
 	//
-	.controller('AppCtrl', ['$scope', 'prompt', 'API_URL', function AppCtrl($scope, prompt, API_URL) {
+	.controller('AppCtrl', ['$scope', 'prompt', 'API_URL', '$compile', function AppCtrl($scope, prompt, API_URL, $compile) {
 
 		//
 		// Code for the delete key.
@@ -1072,7 +1072,7 @@ angular.module('app', ['flowChart',])
 							<div class="modal-header d-flex justify-content-between">
 							  <h5 class="modal-title" id="resultModalLabel">Results</h5>
 							  <div>
-								<button type="button" class="btn btn-primary">Advise</button>
+								<button type="button" class="btn btn-primary" ng-click="adviseSolution()">Advise</button>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							  </div>
 							</div>
@@ -1087,8 +1087,10 @@ angular.module('app', ['flowChart',])
 			let wrapper = document.createElement('div');
 			wrapper.innerHTML = resultModalHtml;
 			let resultModal = wrapper.firstElementChild;
-			document.body.appendChild(resultModal);
-			let resultModalInstance = new bootstrap.Modal(resultModal);
+			// Use $compile to link modal to $scope
+			let compiledModal = $compile(resultModal)($scope)[0];
+			document.body.appendChild(compiledModal);
+			let resultModalInstance = new bootstrap.Modal(compiledModal);
 			resultModalInstance.show();
 		}
 
@@ -1272,7 +1274,7 @@ angular.module('app', ['flowChart',])
 						// Extract only the result inside the request_body
 						const result = response.request_body.result;
 						console.log("Result:", result);
-						// Close the find-match modal and show the results modal formatted as JSON
+						// Close the find-match modal and // show the results modal formatted as JSON
 						modalInstance.hide();
 						$scope.showResults(result);
 					} catch (error) {
@@ -1282,10 +1284,14 @@ angular.module('app', ['flowChart',])
 					console.log("No catalog link provided.");
 				}
 			});
-			// Cleanup modal when hidden
+			// Cleanup modal when errorden
 			modal.addEventListener('hidden.bs.modal', function () {
 				modal.remove();
 			});
+		};
+
+		$scope.adviseSolution = function () {
+			alert("Advise button clicked!");
 		};
 
 		// Filters the workflow keeping only the relevant information
@@ -1393,9 +1399,6 @@ angular.module('app', ['flowChart',])
 				},
 				body: JSON.stringify(data)
 			};
-
-			console.log("Posting to url: ", url);
-			console.log("Request body: ", request.body);
 
 			try {
 				// Use the modified fetchWithTimeout function with longer timeout
