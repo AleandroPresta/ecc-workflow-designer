@@ -1069,9 +1069,12 @@ angular.module('app', ['flowChart',])
 					  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-fullscreen modal-dialog-centered">
 						  <div class="modal-content">
-							<div class="modal-header">
+							<div class="modal-header d-flex justify-content-between">
 							  <h5 class="modal-title" id="resultModalLabel">Results</h5>
-							  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							  <div>
+								<button type="button" class="btn btn-primary">Advise</button>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							  </div>
 							</div>
 							<div class="modal-body" style="max-height:80vh; overflow-y:auto;">
 							  ${tableHtml}
