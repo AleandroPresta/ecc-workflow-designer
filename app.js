@@ -1405,7 +1405,7 @@ angular.module('app', ['flowChart',])
 			let componentHtml = '<flowchart-result result="flowchartResultData"></flowchart-result>';
 			let modalHtml = `
                 <div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="adviseResultModalLabel">Advising Results</h5>
