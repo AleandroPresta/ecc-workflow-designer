@@ -1369,7 +1369,7 @@ angular.module('app', ['flowChart',])
 				alert("No advice results to display.");
 				return;
 			}
-			let componentHtml = '<flowchart-result></flowchart-result>';
+			let componentHtml = '<p>hi</p><flowchart-result></flowchart-result>';
 			let modalHtml = `
                 <div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered modal-lg">
