@@ -1369,26 +1369,7 @@ angular.module('app', ['flowChart',])
 				alert("No advice results to display.");
 				return;
 			}
-			let tableHtml = `
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Abstract Service</th>
-                            <th>Layer</th>
-                            <th>Best Service</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${result.map(item => `
-                            <tr>
-                                <td>${item.abstractservice_name || ''}</td>
-                                <td>${item.abstractservice_layer || ''}</td>
-                                <td>${item.best_service !== null ? item.best_service : '<span class="text-muted">—</span>'}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+			let componentHtml = '<flowchart-result></flowchart-result>';
 			let modalHtml = `
                 <div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -1398,7 +1379,7 @@ angular.module('app', ['flowChart',])
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        ${tableHtml}
+                        ${componentHtml}
                       </div>
                     </div>
                   </div>
@@ -1407,8 +1388,11 @@ angular.module('app', ['flowChart',])
 			let wrapper = document.createElement('div');
 			wrapper.innerHTML = modalHtml;
 			let modal = wrapper.firstElementChild;
-			document.body.appendChild(modal);
-			let modalInstance = new bootstrap.Modal(modal);
+			// Compile the component so AngularJS picks it up
+			let compiledModal = $compile(modal)($scope)[0];
+			document.body.appendChild(compiledModal);
+			$scope.$applyAsync(); // Ensure digest cycle runs
+			let modalInstance = new bootstrap.Modal(compiledModal);
 			modalInstance.show();
 			// Cleanup modal on hide
 			modal.addEventListener('hidden.bs.modal', function () {
