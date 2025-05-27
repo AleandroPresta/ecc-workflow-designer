@@ -23,7 +23,7 @@ angular.module('app', ['flowChart',])
 	//
 	// Application controller.
 	//
-	.controller('AppCtrl', ['$scope', 'prompt', 'API_URL', function AppCtrl($scope, prompt, API_URL) {
+	.controller('AppCtrl', ['$scope', 'prompt', 'API_URL', '$compile', function AppCtrl($scope, prompt, API_URL, $compile) {
 
 		//
 		// Code for the delete key.
@@ -1063,15 +1063,19 @@ angular.module('app', ['flowChart',])
 				alert("No valid data received.");
 				return;
 			}
+			$scope.services = services; // <-- Make services available to modal scope
 			let tableHtml = $scope.createTable(services);
 
 			let resultModalHtml = `
 					  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-fullscreen modal-dialog-centered">
 						  <div class="modal-content">
-							<div class="modal-header">
+							<div class="modal-header d-flex justify-content-between">
 							  <h5 class="modal-title" id="resultModalLabel">Results</h5>
-							  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							  <div>
+								<button type="button" class="btn btn-primary" ng-click="adviseSolution(services)">Advise</button>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							  </div>
 							</div>
 							<div class="modal-body" style="max-height:80vh; overflow-y:auto;">
 							  ${tableHtml}
@@ -1084,8 +1088,10 @@ angular.module('app', ['flowChart',])
 			let wrapper = document.createElement('div');
 			wrapper.innerHTML = resultModalHtml;
 			let resultModal = wrapper.firstElementChild;
-			document.body.appendChild(resultModal);
-			let resultModalInstance = new bootstrap.Modal(resultModal);
+			// Use $compile to link modal to $scope
+			let compiledModal = $compile(resultModal)($scope)[0];
+			document.body.appendChild(compiledModal);
+			let resultModalInstance = new bootstrap.Modal(compiledModal);
 			resultModalInstance.show();
 		}
 
@@ -1269,7 +1275,7 @@ angular.module('app', ['flowChart',])
 						// Extract only the result inside the request_body
 						const result = response.request_body.result;
 						console.log("Result:", result);
-						// Close the find-match modal and show the results modal formatted as JSON
+						// Close the find-match modal and // show the results modal formatted as JSON
 						modalInstance.hide();
 						$scope.showResults(result);
 					} catch (error) {
@@ -1279,7 +1285,128 @@ angular.module('app', ['flowChart',])
 					console.log("No catalog link provided.");
 				}
 			});
-			// Cleanup modal when hidden
+			// Cleanup modal when errorden
+			modal.addEventListener('hidden.bs.modal', function () {
+				modal.remove();
+			});
+		};
+
+		$scope.adviseSolution = async function (services) {
+			// Basic checks before making the request
+			if (!services) {
+				alert("No services data provided.");
+				return;
+			}
+			if (!Array.isArray(services)) {
+				alert("Services data is not an array.");
+				return;
+			}
+			if (services.length === 0) {
+				alert("Services array is empty.");
+				return;
+			}
+
+			// Close the results modal if open
+			var resultModal = document.getElementById('resultModal');
+			if (resultModal) {
+				var resultModalInstance = bootstrap.Modal.getInstance(resultModal);
+				if (resultModalInstance) {
+					resultModalInstance.hide();
+				} else {
+					// fallback: remove from DOM if not managed by bootstrap
+					resultModal.remove();
+				}
+			}
+
+			// Show loading spinner
+			let loadingIndicator = document.createElement('div');
+			loadingIndicator.id = 'adviseLoadingIndicator';
+			loadingIndicator.className = 'position-fixed top-0 end-0 p-3';
+			loadingIndicator.innerHTML = `
+              <div class="d-flex align-items-center bg-light border rounded p-2 shadow">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <strong>Advising...</strong>
+              </div>
+            `;
+			document.body.appendChild(loadingIndicator);
+
+			// Prepare the request
+			const url = `${API_URL}/v1/advise/2`;
+			const request = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(services)
+			};
+			try {
+				const response = await fetch(url, request);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const respData = await response.json();
+				// Hide loading spinner
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+				}
+				// Extract and show only the valuable result data
+				const result = respData.request_body && respData.request_body.result ? respData.request_body.result : [];
+				$scope.showAdviseResults(result);
+			} catch (error) {
+				// Hide loading spinner
+				if (loadingIndicator.parentNode) {
+					loadingIndicator.parentNode.removeChild(loadingIndicator);
+				}
+				console.error('Error in adviseSolution:', error);
+				alert(`An error occurred: ${error.message}`);
+			}
+		};
+
+		$scope.showAdviseResults = function (result) {
+			if (!Array.isArray(result) || result.length === 0) {
+				alert("No advice results to display.");
+				return;
+			}
+			let nodes = $scope.chartViewModel.data.nodes;
+			// For each node, add a new property 'best service' with the best service from the result
+			nodes.forEach(node => {
+				let bestService = result.find(service => service.abstractservice_id === node.id).best_service;
+				if (!bestService) {
+					console.warn(`No best service found for node ID ${node.id}`);
+					node.best_service = null; // or set to a default value
+				} else {
+					node.best_service = bestService;
+				}
+			});
+			let connections = $scope.chartViewModel.data.connections;
+			$scope.resultData = { nodes: nodes, connections: connections };
+			let componentHtml = '<result result="resultData"></result>';
+			console.log(componentHtml)
+			let modalHtml = `
+				<div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="adviseResultModalLabel">Advising Results</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						${componentHtml}
+					  </div>
+					</div>
+				  </div>
+				</div>
+			`;
+			let wrapper = document.createElement('div');
+			wrapper.innerHTML = modalHtml;
+			let modal = wrapper.firstElementChild;
+			let compiledModal = $compile(modal)($scope)[0];
+			document.body.appendChild(compiledModal);
+			$scope.$applyAsync();
+			let modalInstance = new bootstrap.Modal(compiledModal);
+			modalInstance.show();
 			modal.addEventListener('hidden.bs.modal', function () {
 				modal.remove();
 			});
@@ -1390,9 +1517,6 @@ angular.module('app', ['flowChart',])
 				},
 				body: JSON.stringify(data)
 			};
-
-			console.log("Posting to url: ", url);
-			console.log("Request body: ", request.body);
 
 			try {
 				// Use the modified fetchWithTimeout function with longer timeout
@@ -1525,18 +1649,23 @@ angular.module('app', ['flowChart',])
 					reader.onload = function (e) {
 						try {
 							const jsonData = JSON.parse(e.target.result);
+
+							// Make sure we have the expected properties
+							if (!jsonData.nodes || !jsonData.connections) {
+								console.error('JSON file missing required nodes or connections properties');
+								alert('Invalid JSON format. File must contain nodes and connections.');
+								return;
+							}
+
 							// Extract only nodes and connections from the jsonData
 							const nodes = jsonData.nodes;
 							const connections = jsonData.connections;
 							// Put this into a new object
 							const newJsonData = { nodes, connections };
-							// You can now use jsonData in your app
-							// Add the data to the chart
-							$scope.chartViewModel = newJsonData;
-							// Set the loaded nextNodeID
-							nextNodeID = jsonData.nextNodeID;
-							// Update the view model
-							$scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel);
+							// Set nextNodeID from the file if available, otherwise use default
+							nextNodeID = jsonData.nextNodeID || nextNodeID;
+							// Add the data to the chart - make a proper ChartViewModel
+							$scope.chartViewModel = new flowchart.ChartViewModel(newJsonData);
 
 						} catch (error) {
 							console.error('Error parsing JSON:', error);

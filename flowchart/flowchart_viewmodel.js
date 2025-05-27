@@ -223,6 +223,15 @@ var flowchart = {
 			return this.data.image;
 		}
 
+		// Returns the best service for the node
+		this.best_service = function () {
+			if (this.data.best_service) {
+				return this.data.best_service;
+			} else {
+				return "No service selected";
+			}
+		}
+
 		// Changes the image of the node
 		this.changeImage = function (newImageUrl) {
 			console.log(`Changing image to: ${newImageUrl}`)
