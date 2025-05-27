@@ -1369,55 +1369,36 @@ angular.module('app', ['flowChart',])
 				alert("No advice results to display.");
 				return;
 			}
-			// Find the corresponding nodes in the current flowchart by matching id/abstractservice_id
-			var chartNodes = ($scope.chartViewModel && $scope.chartViewModel.data && $scope.chartViewModel.data.nodes) || [];
-			// Map abstractservice_id to result index for quick lookup
-			var idToResultIdx = {};
-			result.forEach(function (item, i) {
-				var id = item.abstractservice_id || item.id || item.name;
-				if (id !== undefined) idToResultIdx[id] = i;
-			});
-			// Build nodes array for the result graph, copying positions from the flowchart
-			var nodes = [];
-			result.forEach(function (item, i) {
-				var id = item.abstractservice_id || item.id || item.name;
-				var chartNode = chartNodes.find(function (n) {
-					return n.id == id || n.name == id;
-				});
-				nodes.push({
-					x: chartNode ? chartNode.x : 100 + 60 * i,
-					y: chartNode ? chartNode.y : 100 + 60 * i,
-					label: item.abstractservice_name || item.name || ("Node " + i),
-					id: i
-				});
-			});
-			// Copy connections from the flowchart, but only include those between nodes present in the result
-			var chartConnections = ($scope.chartViewModel && $scope.chartViewModel.data && $scope.chartViewModel.data.connections) || [];
-			var connections = [];
-			chartConnections.forEach(function (conn) {
-				var fromIdx = idToResultIdx[conn.from];
-				var toIdx = idToResultIdx[conn.to];
-				if (fromIdx !== undefined && toIdx !== undefined) {
-					connections.push({ from: fromIdx, to: toIdx });
+			let nodes = $scope.chartViewModel.data.nodes;
+			console.table("Original nodes:", nodes);
+			// For each node, add a new property 'best service' with the best service from the result
+			nodes.forEach(node => {
+				let bestService = result.find(service => service.abstractservice_id === node.id).best_service;
+				if (!bestService) {
+					console.warn(`No best service found for node ID ${node.id}`);
+					node.best_service = null; // or set to a default value
+				} else {
+					node.best_service = bestService;
 				}
 			});
+			let connections = $scope.chartViewModel.data.connections;
 			$scope.flowchartResultData = { nodes: nodes, connections: connections };
 			let componentHtml = '<flowchart-result result="flowchartResultData"></flowchart-result>';
 			let modalHtml = `
-                <div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="adviseResultModalLabel">Advising Results</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        ${componentHtml}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            `;
+				<div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="adviseResultModalLabel">Advising Results</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						${componentHtml}
+					  </div>
+					</div>
+				  </div>
+				</div>
+			`;
 			let wrapper = document.createElement('div');
 			wrapper.innerHTML = modalHtml;
 			let modal = wrapper.firstElementChild;
