@@ -1383,7 +1383,6 @@ angular.module('app', ['flowChart',])
 			let connections = $scope.chartViewModel.data.connections;
 			$scope.resultData = { nodes: nodes, connections: connections };
 			let componentHtml = '<result result="resultData"></result>';
-			console.log(componentHtml)
 			let modalHtml = `
 				<div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
 				  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
