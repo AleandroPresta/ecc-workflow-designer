@@ -131,6 +131,8 @@ The element (in this case the SVG element) that contains the draggable elements.
 */
 
 .draggable-container {
+	/* SVG container for the flowchart */
+	position: relative;
 }
 
 rect {
@@ -257,4 +259,67 @@ Drag selection rectangle.
 /* Make cursor inside the dropdown menu of the group button to pointer */
 a {
 	cursor: pointer;
+}
+
+/* Result Component Zoom Styles - Following main flowchart pattern exactly */
+.result-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	/* Match flowchart-container - no overflow hidden here */
+}
+
+.result-chart-container {
+	/* Container that gets the zoom transformation - matches flow-chart directive behavior */
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.result-chart-container.zoom-element {
+	width: 300%;
+	height: 300%;
+	transform-origin: top left; /* Same as main flowchart */
+	transition: transform 0.2s ease;
+	overflow: hidden; /* Only the zoom-element has overflow hidden */
+}
+
+.result-svg {
+	cursor: grab;
+	/* Remove all zoom-related styling from SVG - it's now handled by the container */
+}
+
+.result-svg:active {
+	cursor: grabbing;
+}
+
+.zoom-controls {
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 8px;
+	padding: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	border: 1px solid #e0e0e0;
+}
+
+.zoom-controls .btn-group-vertical .btn {
+	border-radius: 4px;
+	margin-bottom: 2px;
+	min-width: 50px;
+	font-size: 12px;
+	padding: 4px 8px;
+}
+
+.zoom-controls .btn-group-vertical .btn:last-child {
+	margin-bottom: 0;
+}
+
+.zoom-controls .btn:hover {
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+}
+
+.zoom-controls small {
+	font-size: 10px;
+	font-weight: 500;
 }
