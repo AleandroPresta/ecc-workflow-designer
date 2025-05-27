@@ -1370,7 +1370,6 @@ angular.module('app', ['flowChart',])
 				return;
 			}
 			let nodes = $scope.chartViewModel.data.nodes;
-			console.table("Original nodes:", nodes);
 			// For each node, add a new property 'best service' with the best service from the result
 			nodes.forEach(node => {
 				let bestService = result.find(service => service.abstractservice_id === node.id).best_service;

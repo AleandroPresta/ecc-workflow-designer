@@ -6,13 +6,24 @@ angular.module('app')
         return {
             restrict: 'E',
             scope: {
-                result: '=' // Bind the result data
+                result: '=' // Receives the pre-merged { nodes, connections }
             },
             templateUrl: 'flowchart-result/flowchart-result.template.html',
             controller: ['$scope', function ($scope) {
                 $scope.$watch('result', function (newVal) {
-                    console.log('[flowchart-result] result changed:', newVal);
-                }, true); // Watch for changes in the result data
+                    // Log for debugging
+                    console.log('[flowchart-result] input result:', newVal);
+
+                    // Validate input
+                    if (!newVal || !Array.isArray(newVal.nodes) || !Array.isArray(newVal.connections)) {
+                        $scope.staticChart = null;
+                        console.log('[flowchart-result] Invalid or incomplete data (missing nodes or connections array), setting staticChart to null.');
+                        return;
+                    }
+
+                    // Use the pre-merged data directly
+                    $scope.staticChart = new flowchart.ChartViewModel(newVal);
+                }, true);
             }]
         };
     });
