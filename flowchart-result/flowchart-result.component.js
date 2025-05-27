@@ -8,7 +8,7 @@ angular.module('app')
             scope: {
                 result: '=' // Receives the pre-merged { nodes, connections }
             },
-            templateUrl: 'flowchart-result/flowchart-result.template.html',
+            templateUrl: 'ecc-workflow-designer/flowchart-result/flowchart-result.template.html?v=' + Date.now(),
             controller: ['$scope', function ($scope) {
                 $scope.$watch('result', function (newVal) {
                     // Log for debugging
