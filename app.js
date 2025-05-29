@@ -828,7 +828,7 @@ angular.module('app', ['flowChart',])
 									${tag}
 									<button type="button" class="btn btn-sm btn-outline-light ms-1 remove-tag" data-node-id="${node.id}" data-tag="${tag}">&times;</button>
 									</span>`).join('')
-						: '<span class="text-muted">—</span>'}
+						: '<span class="text-muted">No tags for this element</span>'}
 					</div>
 						<div class="input-group">
 							<select class="form-select form-select-sm add-tag-select" id="add-tag-select-${node.id}">
@@ -1127,10 +1127,10 @@ angular.module('app', ['flowChart',])
                 <td><span class="custom-badge" data-badge-text="${item.abstractservice_layer}">${item.abstractservice_layer}</span></td>
                 <td>${Array.isArray(item.abstractservice_tags) && item.abstractservice_tags.length
 						? item.abstractservice_tags.map(tag => `<span class="custom-badge" data-badge-text="${tag}">${tag}</span>`).join(' ')
-						: '<span class="text-muted">—</span>'
+						: '<span class="text-muted">No tags for this element</span>'
 					}</td>
                 <td>${(function formatAws(services) {
-						if (!Array.isArray(services) || services.length === 0) return '<span class="text-muted">—</span>';
+						if (!Array.isArray(services) || services.length === 0) return '<span class="text-muted">No services for this element</span>';
 						return services.map(svc => {
 							// Parse tags from either string or array format
 							const tags = typeof svc.service_tags === 'string'
@@ -1148,13 +1148,13 @@ angular.module('app', ['flowChart',])
                                 <div class="text-muted small">
                                     Layers: ${Array.isArray(svc.service_layers) && svc.service_layers.length
 									? svc.service_layers.map(layer => `<span class="custom-badge" data-badge-text="${layer}">${layer}</span>`).join(' ')
-									: '<span class="text-muted">—</span>'
+									: '<span class="text-muted">No layers for this service</span>'
 								}
                                 </div>
                                 <div class="text-muted small">
                                     Tags: ${tags.length > 0
 									? tags.map(tag => `<span class="custom-badge" data-badge-text="${tag}">${tag}</span>`).join(' ')
-									: '<span class="text-muted">—</span>'
+									: '<span class="text-muted">No tags for this service</span>'
 								}
                                 </div>
                             </div>
@@ -1383,7 +1383,6 @@ angular.module('app', ['flowChart',])
 			let connections = $scope.chartViewModel.data.connections;
 			$scope.resultData = { nodes: nodes, connections: connections };
 			let componentHtml = '<result result="resultData"></result>';
-			console.log(componentHtml)
 			let modalHtml = `
 				<div class="modal fade" id="adviseResultModal" tabindex="-1" aria-labelledby="adviseResultModalLabel" aria-hidden="true">
 				  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
