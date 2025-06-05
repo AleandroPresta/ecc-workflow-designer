@@ -1,6 +1,3 @@
-console.log('[result] component script loaded');
-console.log('[result] directive definition loaded');
-
 angular.module('app')
     .directive('result', function () {
         return {
@@ -10,10 +7,16 @@ angular.module('app')
             },
             templateUrl: 'result/result.template.html?v=' + Date.now(),
             controller: ['$scope', function ($scope) {
+
                 // Initialize zoom functionality (matching main flowchart pattern)
                 $scope.scale = 1;
                 const minScale = 0.3; // Allow more zoom out than main flowchart
                 const maxScale = 3;   // Allow more zoom in than main flowchart
+
+                // Deployment icons functionality
+                $scope.deploymentIcons = {
+
+                };
 
                 $scope.handleWheel = function (event) {
                     event.preventDefault(); // Prevent the default scroll behavior
@@ -43,18 +46,22 @@ angular.module('app')
                 };
 
                 $scope.$watch('result', function (newVal) {
-                    // Log for debugging
-                    console.log('[result] input result:', newVal);
-
                     // Validate input
                     if (!newVal || !Array.isArray(newVal.nodes) || !Array.isArray(newVal.connections)) {
                         $scope.staticChart = null;
-                        console.log('[result] Invalid or incomplete data (missing nodes or connections array), setting staticChart to null.');
+                        console.err('[result] Invalid or incomplete data (missing nodes or connections array), setting staticChart to null.');
                         return;
                     }
 
                     // Use the pre-merged data directly
                     $scope.staticChart = new flowchart.ChartViewModel(newVal);
+
+                    // Assign an icon to each node based on the name of the service assigned to it
+                    $scope.staticChart.nodes.forEach(function (node) {
+                        if (node.best_service) {
+                            console.log('[result] Node service:', node.best_service);
+                        }
+                    });
                 }, true);
             }]
         };
