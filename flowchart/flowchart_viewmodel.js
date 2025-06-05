@@ -232,6 +232,14 @@ var flowchart = {
 			}
 		}
 
+		this.icon = function () {
+			if (this.data.icon) {
+				return this.data.icon;
+			} else {
+				return '../assets/deploy-icons/generic-cloud-icon.png';
+			}
+		}
+
 		// Changes the image of the node
 		this.changeImage = function (newImageUrl) {
 			console.log(`Changing image to: ${newImageUrl}`)

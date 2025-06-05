@@ -216,7 +216,7 @@ angular.module('app')
                                 node.data.icon = $scope.gcpDeploymentIcons[serviceName];
                             }
                         } else {
-                            node.data.icon = 'assets/deploy-icons/generic-cloud-icon.png'; // Default icon for nodes without a service
+                            node.data.icon = '../assets/deploy-icons/generic-cloud-icon.png'; // Default icon for nodes without a service
                         }
                         console.log(node.data.icon);
                     });
