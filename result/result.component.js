@@ -211,17 +211,27 @@ angular.module('app')
 
                     // Assign an icon to each node based on the name of the service assigned to it
                     $scope.staticChart.nodes.forEach(function (node) {
-                        if (node && node.data && node.data.best_service) {
+                        if ($scope.hasBestService(node)) {
                             const serviceName = node.data.best_service;
-                            if ($scope.gcpDeploymentIcons[serviceName]) {
+                            if ($scope.isGcpService(serviceName)) {
                                 node.data.icon = $scope.gcpDeploymentIcons[serviceName];
-                            } else {
-                                node.data.icon = 'assets/deploy-icons/gcp/gcp-default-icon.svg'; // Default icon for unrecognized services
                             }
+                        } else {
+                            node.data.icon = 'assets/deploy-icons/generic-cloud-icon'; // Default icon for nodes without a service
                         }
-                        console.log(node.data.icon);
                     });
                 }, true);
+
+                $scope.hasBestService = function (node) {
+                    return node && node.data && node.data.best_service;
+                };
+
+                $scope.isGcpService = function (serviceName) {
+                    if ($scope.gcpDeploymentIcons[serviceName]) {
+                        return true;
+                    }
+                    return false;
+                }
             }]
         };
     });
