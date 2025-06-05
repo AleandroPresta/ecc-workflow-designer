@@ -178,8 +178,7 @@ angular.module('app')
                     } else {
                         $scope.zoomOut();
                     }
-                    // Manually trigger digest cycle to apply changes
-                    $scope.$apply();
+                    // Note: $apply() is handled by the onWheel directive, no need to call it here
                 };
 
                 $scope.zoomIn = function () {
