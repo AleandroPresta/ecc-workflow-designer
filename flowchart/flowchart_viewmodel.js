@@ -236,7 +236,7 @@ var flowchart = {
 			if (this.data.icon) {
 				return this.data.icon;
 			} else {
-				return '../assets/deploy-icons/generic-cloud-icon.png';
+				return ''; // No icon if one is not found
 			}
 		}
 

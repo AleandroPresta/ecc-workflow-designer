@@ -208,6 +208,10 @@ angular.module('app')
                     // Use the pre-merged data directly
                     $scope.staticChart = new flowchart.ChartViewModel(newVal);
 
+                    // Reset the icons for all nodes
+                    $scope.staticChart.nodes.forEach(function (node) {
+                        node.data.icon = ''; // Reset icon to empty string
+                    });
                     // Assign an icon to each node based on the name of the service assigned to it
                     $scope.staticChart.nodes.forEach(function (node) {
                         if ($scope.hasBestService(node)) {
@@ -216,7 +220,7 @@ angular.module('app')
                                 node.data.icon = $scope.gcpDeploymentIcons[serviceName];
                             }
                         } else {
-                            node.data.icon = '../assets/deploy-icons/generic-cloud-icon.png'; // Default icon for nodes without a service
+                            node.data.icon = ''; // No icon if no best service is assigned
                         }
                         console.log(node.data.icon);
                     });
