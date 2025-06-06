@@ -228,7 +228,7 @@ var flowchart = {
 			if (this.data.best_service) {
 				return this.data.best_service;
 			} else {
-				return "No service selected";
+				return "";
 			}
 		}
 
